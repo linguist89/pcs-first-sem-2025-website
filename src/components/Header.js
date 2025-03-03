@@ -49,16 +49,23 @@ const Header = () => {
   };
   
   return (
-    <header className="bg-bg-primary shadow-elevation-1 sticky top-0 z-10">
+    <header className="bg-[color:var(--color-primary)] shadow-md sticky top-0 z-50 text-white">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-3">
-          <BrainLogo className="w-10 h-10" primaryColor="var(--color-primary)" secondaryColor="var(--color-secondary)" />
+          <BrainLogo className="w-10 h-10" primaryColor="white" secondaryColor="rgba(255,255,255,0.9)" />
           <span className="text-xl font-semibold">Python for CogSci</span>
         </Link>
         
+        <nav className="hidden md:flex items-center gap-8">
+          <Link href="/" className="font-medium hover:text-white/80 transition-colors">Home</Link>
+          <Link href="/lessons" className="font-medium hover:text-white/80 transition-colors">Lessons</Link>
+          <Link href="/resources" className="font-medium hover:text-white/80 transition-colors">Resources</Link>
+          <Link href="/about" className="font-medium hover:text-white/80 transition-colors">About</Link>
+        </nav>
+        
         <button 
           onClick={toggleTheme} 
-          className="btn ripple p-2 rounded-full"
+          className="btn ripple p-2 rounded-full text-white hover:bg-white/10 cursor-pointer"
           aria-label="Toggle theme"
         >
           {isDarkTheme ? (

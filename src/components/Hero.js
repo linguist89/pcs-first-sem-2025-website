@@ -22,12 +22,46 @@ const Hero = () => {
   };
 
   return (
-    <section className="py-24 md:py-32 overflow-hidden relative">
-      {/* Background decorative elements */}
+    <section className="py-32 md:py-40 overflow-hidden relative">
+      {/* New modern abstract shapes background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-primary/30 to-secondary/10 blur-3xl"></div>
-        <div className="absolute top-40 -left-20 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-secondary/20 to-accent/10 blur-3xl"></div>
-        <div className="absolute -bottom-20 right-20 w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-accent/20 to-primary/10 blur-3xl"></div>
+        {/* Geometric elements - only rectangular shapes */}
+        <motion.div 
+          className="absolute top-[30%] right-[20%] w-32 h-32 bg-accent/5 rounded-lg rotate-12"
+          initial={{ opacity: 0, rotate: 0 }}
+          animate={{ opacity: 1, rotate: 12 }}
+          transition={{ duration: 1.2, delay: 0.3 }}
+        />
+        <motion.div 
+          className="absolute bottom-[20%] left-[25%] w-40 h-40 bg-primary/5 rounded-lg -rotate-12"
+          initial={{ opacity: 0, rotate: 0 }}
+          animate={{ opacity: 1, rotate: -12 }}
+          transition={{ duration: 1.2, delay: 0.4 }}
+        />
+
+        {/* Subtle lines */}
+        <div className="absolute inset-0 overflow-hidden">
+          {[...Array(5)].map((_, i) => (
+            <motion.div 
+              key={i}
+              className="absolute h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent w-full"
+              style={{ top: `${20 + i * 15}%` }}
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ duration: 2, delay: 0.1 * i, ease: "easeOut" }}
+            />
+          ))}
+          {[...Array(3)].map((_, i) => (
+            <motion.div 
+              key={i}
+              className="absolute w-px bg-gradient-to-b from-transparent via-secondary/15 to-transparent h-full"
+              style={{ left: `${30 + i * 20}%` }}
+              initial={{ opacity: 0, scaleY: 0 }}
+              animate={{ opacity: 1, scaleY: 1 }}
+              transition={{ duration: 2, delay: 0.2 * i, ease: "easeOut" }}
+            />
+          ))}
+        </div>
         
         {/* Grid pattern with reduced opacity */}
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
@@ -35,15 +69,96 @@ const Hero = () => {
       
       <div className="container mx-auto px-6 relative z-10">
         <motion.div 
-          className="flex flex-col md:flex-row items-center"
+          className="flex flex-col md:flex-row-reverse items-center justify-between gap-10"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="md:w-1/2 mb-16 md:mb-0">
+          <div className="md:w-5/12">
+            <div className="relative">
+              {/* Code Snippet Panels */}
+              <div className="relative w-full h-[450px]">
+                <motion.div 
+                  className="absolute p-5 bg-gradient-to-br from-bg-primary to-primary/5 backdrop-blur-sm rounded-2xl shadow-xl w-full max-w-sm z-30"
+                  style={{ left: '0%', top: '5%' }}
+                  initial={{ opacity: 0, x: -50, y: 50, rotate: -3 }}
+                  animate={{ opacity: 1, x: 0, y: 0, rotate: -3 }}
+                  transition={{ duration: 0.7, delay: 0.7 }}
+                  whileHover={{ scale: 1.02, rotate: -2 }}
+                >
+                  <div className="flex items-center mb-3">
+                    <div className="w-3 h-3 rounded-full bg-error-color mr-2"></div>
+                    <div className="w-3 h-3 rounded-full bg-warning-color mr-2"></div>
+                    <div className="w-3 h-3 rounded-full bg-success-color mr-2"></div>
+                    <span className="text-xs text-text-secondary ml-2 font-mono">data_import.py</span>
+                  </div>
+                  <pre className="text-sm font-mono bg-neutral-dark/40 p-3 rounded-lg">
+                    <code className="text-primary whitespace-pre-wrap">
+                      <span className="text-secondary">import</span> pandas <span className="text-secondary">as</span> pd
+                      <span className="text-secondary">import</span> numpy <span className="text-secondary">as</span> np
+
+                      <span className="text-accent"># Load cognitive data</span>
+                      data = pd.read_csv(<span className="text-success-color">'data.csv'</span>)
+                    </code>
+                  </pre>
+                </motion.div>
+                
+                <motion.div 
+                  className="absolute p-5 bg-gradient-to-br from-bg-primary to-secondary/5 backdrop-blur-sm rounded-2xl shadow-xl w-full max-w-sm z-20"
+                  style={{ left: '10%', top: '40%' }}
+                  initial={{ opacity: 0, x: 50, y: -50, rotate: 2 }}
+                  animate={{ opacity: 1, x: 0, y: 0, rotate: 2 }}
+                  transition={{ duration: 0.7, delay: 1 }}
+                  whileHover={{ scale: 1.02, rotate: 3 }}
+                >
+                  <div className="flex items-center mb-3">
+                    <div className="w-3 h-3 rounded-full bg-error-color mr-2"></div>
+                    <div className="w-3 h-3 rounded-full bg-warning-color mr-2"></div>
+                    <div className="w-3 h-3 rounded-full bg-success-color mr-2"></div>
+                    <span className="text-xs text-text-secondary ml-2 font-mono">plot.py</span>
+                  </div>
+                  <pre className="text-sm font-mono bg-neutral-dark/40 p-3 rounded-lg">
+                    <code className="text-secondary whitespace-pre-wrap">
+                      <span className="text-secondary">import</span> matplotlib.pyplot <span className="text-secondary">as</span> plt
+
+                      <span className="text-accent"># Visualize results</span>
+                      plt.plot(results)
+                      plt.title(<span className="text-success-color">'Results'</span>)
+                    </code>
+                  </pre>
+                </motion.div>
+                
+                <motion.div 
+                  className="absolute p-5 bg-gradient-to-br from-bg-primary to-accent/5 backdrop-blur-sm rounded-2xl shadow-xl w-full max-w-sm z-10"
+                  style={{ left: '20%', top: '75%' }}
+                  initial={{ opacity: 0, y: 50, rotate: -1 }}
+                  animate={{ opacity: 1, y: 0, rotate: -1 }}
+                  transition={{ duration: 0.7, delay: 1.3 }}
+                  whileHover={{ scale: 1.02, rotate: 0 }}
+                >
+                  <div className="flex items-center mb-3">
+                    <div className="w-3 h-3 rounded-full bg-error-color mr-2"></div>
+                    <div className="w-3 h-3 rounded-full bg-warning-color mr-2"></div>
+                    <div className="w-3 h-3 rounded-full bg-success-color mr-2"></div>
+                    <span className="text-xs text-text-secondary ml-2 font-mono">model.py</span>
+                  </div>
+                  <pre className="text-sm font-mono bg-neutral-dark/40 p-3 rounded-lg">
+                    <code className="text-accent whitespace-pre-wrap">
+                      <span className="text-secondary">from</span> sklearn.linear_model <span className="text-secondary">import</span> LinearRegression
+
+                      model = LinearRegression()
+                      model.fit(X_train, y_train)
+                    </code>
+                  </pre>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="md:w-6/12">
             {/* Course label */}
             <motion.div 
-              className="inline-flex items-center bg-white/10 backdrop-blur-sm border border-white/20 px-5 py-2 rounded-full mb-8 shadow-sm"
+              className="inline-flex items-center bg-primary/10 backdrop-blur-sm px-5 py-2 rounded-full mb-8 shadow-sm"
               variants={itemVariants}
             >
               <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse mr-3"></span>
@@ -51,141 +166,29 @@ const Hero = () => {
             </motion.div>
             
             <motion.h1 
-              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-8 leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 leading-tight"
               variants={itemVariants}
             >
-              Python for{' '}
-              <div className="relative inline-block">
-                <span className="text-gradient bg-gradient-to-r from-primary via-secondary to-accent">
-                  Cognitive Science
-                </span>
-                <motion.div 
-                  className="absolute -bottom-2 left-0 h-2 bg-gradient-to-r from-primary via-secondary to-accent w-full rounded-full opacity-30"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 1, delay: 1 }}
-                ></motion.div>
-              </div>
+              Python for <span className="font-yellowtail">Cognitive Science</span>
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-text-secondary mb-10 max-w-xl leading-relaxed"
+              className="text-lg md:text-xl text-text-secondary mb-10 max-w-xl leading-relaxed"
               variants={itemVariants}
             >
-              Master Python programming fundamentals and unlock the potential of 
-              data analysis and machine learning for cognitive science research.
+              Build your skills from beginner to advanced with hands-on 
+              projects and real-world applications in cognitive science research.
             </motion.p>
-            
-            <motion.div 
-              className="flex flex-wrap gap-5 mb-16"
-              variants={itemVariants}
-            >
-              <motion.a 
-                href="#lessons" 
-                className="btn btn-primary ripple text-base py-3 px-8 shadow-lg shadow-primary/20"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Start Learning
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
-              </motion.a>
-              <motion.a 
-                href="#" 
-                className="btn border-2 border-primary/50 bg-transparent text-primary hover:bg-primary/5 ripple text-base py-3 px-8"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Course Resources
-              </motion.a>
-            </motion.div>
-            
-            {/* Stats */}
-            <motion.div 
-              className="grid grid-cols-3 gap-6"
-              variants={itemVariants}
-            >
-              <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-primary">7</div>
-                <div className="text-sm text-text-secondary">Core Lessons</div>
-              </div>
-              <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-secondary">35+</div>
-                <div className="text-sm text-text-secondary">Learning Topics</div>
-              </div>
-              <div className="text-center p-4 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="text-3xl font-bold text-accent">100%</div>
-                <div className="text-sm text-text-secondary">Beginner Friendly</div>
-              </div>
-            </motion.div>
-          </div>
-          
-          <div className="md:w-1/2 flex justify-center md:justify-end relative">
-            {/* Glowing background for illustration */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 blur-2xl"></div>
-            
-            {/* Floating code snippets with animations */}
-            <motion.div 
-              className="absolute -top-10 left-10 p-4 bg-bg-primary rounded-xl shadow-xl border border-border-light/20"
-              initial={{ opacity: 0, x: -50, y: 50, rotate: -5 }}
-              animate={{ opacity: 1, x: 0, y: 0, rotate: -5 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
-            >
-              <pre className="text-sm font-mono text-primary"><code>import pandas as pd</code></pre>
-            </motion.div>
-            
-            <motion.div 
-              className="absolute -bottom-5 right-10 p-4 bg-bg-primary rounded-xl shadow-xl border border-border-light/20"
-              initial={{ opacity: 0, x: 50, y: -50, rotate: 5 }}
-              animate={{ opacity: 1, x: 0, y: 0, rotate: 5 }}
-              transition={{ duration: 0.7, delay: 1 }}
-            >
-              <pre className="text-sm font-mono text-secondary"><code>plt.plot(results)</code></pre>
-            </motion.div>
-            
-            <motion.div 
-              className="absolute top-1/3 right-0 p-4 bg-bg-primary rounded-xl shadow-xl border border-border-light/20"
-              initial={{ opacity: 0, x: 50, rotate: 3 }}
-              animate={{ opacity: 1, x: 0, rotate: 3 }}
-              transition={{ duration: 0.7, delay: 1.3 }}
-            >
-              <pre className="text-sm font-mono text-accent"><code>model.fit(X, y)</code></pre>
-            </motion.div>
-            
-            {/* Main illustration with animation */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.8, 
-                delay: 0.3,
-                type: "spring",
-                stiffness: 100
-              }}
-              className="relative z-10"
-            >
-              <motion.div
-                animate={{ 
-                  y: [0, -10, 0],
-                }}
-                transition={{ 
-                  repeat: Infinity,
-                  duration: 3,
-                  ease: "easeInOut" 
-                }}
-              >
-                <BrainCode className="w-full max-w-xl drop-shadow-2xl" />
-              </motion.div>
-            </motion.div>
           </div>
         </motion.div>
       </div>
       
-      {/* Wave separator */}
+      {/* Modern wave separator */}
       <div className="absolute bottom-0 left-0 right-0 h-16 overflow-hidden">
-        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="h-full w-full text-bg-secondary fill-current">
-          <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="h-full w-full text-bg-secondary fill-current">
+          <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25"></path>
+          <path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5"></path>
+          <path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z"></path>
         </svg>
       </div>
     </section>

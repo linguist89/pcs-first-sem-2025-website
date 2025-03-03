@@ -45,18 +45,8 @@ export default function Home() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8 }}
           >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <span className="inline-block py-1.5 px-5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4 border border-primary/20">
-                Curriculum
-              </span>
-            </motion.div>
             <motion.h2 
-              className="text-4xl md:text-5xl font-bold mb-5 tracking-tight"
+              className="text-4xl md:text-5xl font-bold tracking-tight"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -64,60 +54,6 @@ export default function Home() {
             >
               Course Lessons
             </motion.h2>
-            <motion.p 
-              className="text-lg md:text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              Our comprehensive Python curriculum designed specifically for Cognitive Science students.
-              Each lesson builds upon previous concepts to prepare you for machine learning applications.
-            </motion.p>
-          </motion.div>
-          
-          {/* Search and filter */}
-          <motion.div 
-            className="flex flex-col md:flex-row justify-between items-center mb-14"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-          >
-            <div className="relative w-full md:w-96 mb-5 md:mb-0">
-              <input 
-                type="text" 
-                placeholder="Search lessons..." 
-                className="w-full rounded-xl border border-border-light/30 bg-bg-primary px-5 py-3 pl-12 focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-sm"
-              />
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-text-secondary absolute left-4 top-1/2 -translate-y-1/2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-            </div>
-            
-            <div className="flex gap-3">
-              <motion.button 
-                className="px-5 py-3 bg-primary text-text-inverse rounded-xl shadow-lg shadow-primary/20"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                All
-              </motion.button>
-              <motion.button 
-                className="px-5 py-3 bg-bg-primary text-text-secondary rounded-xl shadow-sm border border-border-light/30"
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)' }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Beginner
-              </motion.button>
-              <motion.button 
-                className="px-5 py-3 bg-bg-primary text-text-secondary rounded-xl shadow-sm border border-border-light/30"
-                whileHover={{ scale: 1.05, backgroundColor: 'rgba(var(--color-primary-rgb), 0.1)' }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Advanced
-              </motion.button>
-            </div>
           </motion.div>
           
           {/* Lessons grid */}
