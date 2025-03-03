@@ -14,18 +14,18 @@
       "Running Your First Program"
     ],
     "content": {
-      "introduction": "Welcome to your first Python lesson! In this interactive session, we'll explore Python fundamentals through a comprehensive Jupyter notebook. The notebook contains hands-on exercises and examples covering data types, control structures, and computational thinking concepts.",
+      "introduction": "🚀 Welcome to your first Python adventure! In this interactive session, we'll dive into Python fundamentals through a comprehensive Jupyter notebook. Get ready to explore data types, control structures, and computational thinking concepts through hands-on exercises and real-world examples.",
       "sections": [
         {
-          "title": "Getting Started",
-          "content": "To begin this lesson, you'll need to download and open the Jupyter notebook. The notebook contains all the code examples, exercises, and explanations you'll need. You can download it using the following command in your terminal:\n\n```bash\nwget https://raw.githubusercontent.com/your-repo/public/data/python_fundamentals.ipynb\n```\n\nOnce downloaded, you can open it in Jupyter Notebook or JupyterLab to start working through the exercises."
+          "title": "📥 Download Your Notebook",
+          "content": "To begin this exciting journey, you'll need to download and open the Jupyter notebook that contains all your learning materials. The notebook is packed with code examples, exercises, and clear explanations.\n\n**Download the notebook using this command:**\n\n```bash\n# Open your terminal and run:\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/master/public/data/python_fundamentals.ipynb\n\n# Or download directly from your browser using this URL:\nhttps://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/master/public/data/python_fundamentals.ipynb\n```\n\n> 💡 **Pro Tip**: After downloading, open the notebook in Jupyter Notebook or JupyterLab to start your interactive learning experience!"
         },
         {
-          "title": "What's Inside",
-          "content": "The notebook covers:\n- Basic Python data types\n- Control structures (if statements and loops)\n- Functions and their applications\n- Two group exercises with complete solutions\n- Reflection questions for deeper understanding"
+          "title": "📚 What You'll Learn",
+          "content": "This comprehensive notebook includes:\n\n✨ **Core Concepts**\n- Fundamental Python data types\n- Essential control structures\n- Function creation and usage\n\n🔨 **Practical Work**\n- Two engaging group exercises\n- Complete solution walkthroughs\n- Interactive coding challenges\n\n🤔 **Deep Learning**\n- Thought-provoking reflection questions\n- Real-world applications\n- Best practices and tips"
         }
       ],
-      "summary": "This interactive notebook will guide you through fundamental Python concepts with practical exercises. Make sure to work through each section carefully and try to complete the exercises before looking at the solutions."
+      "summary": "🎯 Your journey into Python programming starts here! This carefully crafted notebook will guide you through fundamental concepts with practical, hands-on exercises. Remember to experiment with the code and challenge yourself before checking the solutions. Happy coding! 🎉"
     }
   },
   {
