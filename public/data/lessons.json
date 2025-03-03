@@ -46,7 +46,7 @@
     "slug": "data-types-and-variables",
     "description": "Learn about Python's core data types, variables, and how to manipulate different kinds of data.",
     "iconName": "DataTypesIcon",
-    "visible": true,
+    "visible": false,
     "topics": [
       "Numbers and Math Operations",
       "Strings and Text Manipulation",
@@ -64,7 +64,7 @@
     "slug": "control-flow",
     "description": "Master control structures like conditionals and loops to create dynamic and responsive programs.",
     "iconName": "ControlFlowIcon",
-    "visible": true,
+    "visible": false,
     "topics": [
       "Conditional Statements",
       "For Loops",
@@ -79,7 +79,7 @@
     "slug": "functions-and-modules",
     "description": "Create reusable code with functions and organize your programs using Python modules.",
     "iconName": "FunctionsIcon",
-    "visible": true,
+    "visible": false,
     "topics": [
       "Defining Functions",
       "Parameters and Return Values",
@@ -94,7 +94,7 @@
     "slug": "data-analysis-with-pandas",
     "description": "Analyze and manipulate data effectively using the powerful Pandas library for data science.",
     "iconName": "PandasIcon",
-    "visible": true,
+    "visible": false,
     "topics": [
       "Introduction to Pandas",
       "DataFrames and Series",
@@ -109,7 +109,7 @@
     "slug": "data-visualization",
     "description": "Create informative and compelling visualizations using matplotlib, seaborn, and other Python libraries.",
     "iconName": "VisualizationIcon",
-    "visible": true,
+    "visible": false,
     "topics": [
       "Plotting with Matplotlib",
       "Statistical Visualization with Seaborn",
