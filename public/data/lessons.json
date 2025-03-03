@@ -14,30 +14,18 @@
       "Running Your First Program"
     ],
     "content": {
-      "introduction": "Python is a versatile and beginner-friendly programming language widely used in cognitive science research, data analysis, and machine learning. In this lesson, you'll learn the basics of Python and start writing your first programs.",
+      "introduction": "Welcome to your first Python lesson! In this interactive session, we'll explore Python fundamentals through a comprehensive Jupyter notebook. The notebook contains hands-on exercises and examples covering data types, control structures, and computational thinking concepts.",
       "sections": [
         {
-          "title": "What is Python?",
-          "content": "Python is a high-level, interpreted programming language known for its readability and ease of use. It supports multiple programming paradigms and has a comprehensive standard library."
+          "title": "Getting Started",
+          "content": "To begin this lesson, you'll need to download and open the Jupyter notebook. The notebook contains all the code examples, exercises, and explanations you'll need. You can download it using the following command in your terminal:\n\n```bash\nwget https://raw.githubusercontent.com/your-repo/public/data/python_fundamentals.ipynb\n```\n\nOnce downloaded, you can open it in Jupyter Notebook or JupyterLab to start working through the exercises."
         },
         {
-          "title": "Setting Up Your Environment",
-          "content": "We recommend using Anaconda, a distribution of Python that includes many scientific packages. You can download it from the Anaconda website and follow the installation instructions for your operating system."
-        },
-        {
-          "title": "Jupyter Notebooks",
-          "content": "Jupyter notebooks provide an interactive environment where you can write and execute code, visualize data, and document your work. To start a Jupyter notebook, open Anaconda Navigator and click on the Jupyter Notebook icon."
-        },
-        {
-          "title": "Basic Syntax",
-          "content": "Python syntax is designed to be readable and straightforward. Here are some basic examples: \n\n```python\n# This is a comment\nprint('Hello, World!') # This prints text\n\n# Variables\nx = 5\nname = 'Python'\n\n# Basic operations\nsum = x + 10\ngreeting = 'Hello, ' + name\n```"
-        },
-        {
-          "title": "Running Your First Program",
-          "content": "Let's write a simple program that asks for your name and responds with a greeting: \n\n```python\nname = input('What is your name? ')\nprint(f'Hello, {name}! Welcome to Python for Cognitive Science!')\n```"
+          "title": "What's Inside",
+          "content": "The notebook covers:\n- Basic Python data types\n- Control structures (if statements and loops)\n- Functions and their applications\n- Two group exercises with complete solutions\n- Reflection questions for deeper understanding"
         }
       ],
-      "summary": "In this lesson, you've learned what Python is, how to set up your development environment, and how to write and run basic Python code. You're now ready to explore more complex Python concepts in the upcoming lessons."
+      "summary": "This interactive notebook will guide you through fundamental Python concepts with practical exercises. Make sure to work through each section carefully and try to complete the exercises before looking at the solutions."
     }
   },
   {
