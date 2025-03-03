@@ -1,0 +1,228 @@
+{
+  "projectOverview": "This is a React-based web application using Javascript",
+  "cssArchitecture": {
+    "methodology": "Component-based architecture with BEM-inspired naming conventions",
+    "principles": [
+      "Component isolation - styles should not leak in or out of components",
+      "Single responsibility - each component should do one thing well",
+      "Reusability - components should be designed for reuse",
+      "Maintainability - code should be easy to understand and modify"
+    ],
+    "namingConvention": {
+      "components": "PascalCase (e.g., Header, ProductCard)",
+      "elements": "camelCase (e.g., navItem, buttonText)",
+      "modifiers": "camelCase with descriptive names (e.g., isActive, hasError)",
+      "utilities": "camelCase with descriptive function (e.g., textCenter, marginTop2)"
+    },
+    "fileOrganization": {
+      "structure": [
+        "1. Base/Reset styles",
+        "2. Design tokens (colors, typography, spacing, etc.)",
+        "3. Layout components",
+        "4. UI components",
+        "5. Page-specific styles",
+        "6. Utilities"
+      ],
+      "componentStructure": [
+        "Component-specific variables",
+        "Component base styles",
+        "Component elements",
+        "Component variants",
+        "Component states",
+        "Component responsive adjustments"
+      ]
+    }
+  },
+  "codingStandards": [
+    "Use functional components with hooks",
+    "Prefer const over let",
+    "Use camelCase for variables, PascalCase for components",
+    "Alias imports (@) from the src folder",
+    "This is a nextJS project, so use 'use client' if the component has state",
+    "Logos, favicons and illustrations should be in the public/images folder and should be svg format",
+    "Always prefer classes over IDs or element selectors for styling",
+    "Keep selectors as simple as possible to improve performance",
+    "Limit nesting to 3 levels maximum",
+    "Use comments to document complex code sections"
+  ],
+  "fileStructure": {
+    "src/components": "Reusable UI components, each in its own directory with styles",
+    "src/layouts": "Layout components like containers, grids, and sections",
+    "src/pages": "Top-level page components",
+    "src/styles": "Global styles, variables, and utilities",
+    "src/utils": "Helper functions and utilities",
+    "public/data": "JSON files for mock data",
+    "public/images": "Static images, logos, and icons"
+  },
+  "stylingSystem": {
+    "cssFramework": "TailwindCSS with custom configuration",
+    "globalStyles": {
+      "location": "src/styles/globals.css",
+      "purpose": "Reset styles, design tokens, and utility classes"
+    },
+    "componentStyles": {
+      "approach": "Co-located with components, using component-specific classes",
+      "naming": "ComponentName-elementName--modifierName pattern"
+    },
+    "designTokens": {
+      "implementation": "CSS variables in :root for light/dark themes",
+      "categories": [
+        "Colors",
+        "Typography",
+        "Spacing",
+        "Shadows",
+        "Borders",
+        "Transitions",
+        "Z-indices"
+      ]
+    },
+    "colorSystem": {
+      "principles": [
+        "All colours should be variables and not hardcoded",
+        "The website must be composed of 60% 30% 10% colour scheme of primary, secondary and accent",
+        "Colour hierarchy is important to draw attention to key elements"
+      ],
+      "variables": {
+        ":root": {
+          "--primary-color": "<primary-color>",
+          "--secondary-color": "<secondary-color>",
+          "--accent-color": "<accent-color>",
+          "--neutral-light": "<neutral-light>",
+          "--neutral-dark": "<neutral-dark>",
+          "--text-primary": "<text-primary>",
+          "--text-secondary": "<text-secondary>",
+          "--text-inverse": "<text-inverse>",
+          "--background-primary": "<background-primary>",
+          "--background-secondary": "<background-secondary>",
+          "--background-accent": "<background-accent>",
+          "--border-light": "<border-light>",
+          "--border-dark": "<border-dark>",
+          "--success-color": "<success-color>",
+          "--error-color": "<error-color>",
+          "--warning-color": "<warning-color>",
+          "--info-color": "<info-color>",
+          "--shadow-light": "<shadow-light>",
+          "--shadow-dark": "<shadow-dark>"
+        },
+        "[data-theme='dark']": {
+          "--primary-color": "<dark-primary-color>",
+          "--secondary-color": "<dark-secondary-color>",
+          "--accent-color": "<dark-accent-color>",
+          "--neutral-light": "<dark-neutral-light>",
+          "--neutral-dark": "<dark-neutral-dark>",
+          "--text-primary": "<dark-text-primary>",
+          "--text-secondary": "<dark-text-secondary>",
+          "--text-inverse": "<dark-text-inverse>",
+          "--background-primary": "<dark-background-primary>",
+          "--background-secondary": "<dark-background-secondary>",
+          "--background-accent": "<dark-background-accent>",
+          "--border-light": "<dark-border-light>",
+          "--border-dark": "<dark-border-dark>",
+          "--shadow-light": "<dark-shadow-light>",
+          "--shadow-dark": "<dark-shadow-dark>"
+        }
+      }
+    }
+  },
+  "layoutPrinciples": {
+    "patterns": [
+      "Follow F-pattern layout for content-heavy pages",
+      "Use Z-pattern for simpler landing pages",
+      "Maintain a 12-column grid system for responsive layouts"
+    ],
+    "spacing": [
+      "Use consistent spacing using Tailwind's spacing scale",
+      "More space around larger elements, less around smaller ones",
+      "Maintain a maximum content width of 80rem (max-w-7xl) for readability"
+    ],
+    "components": [
+      "Navigation items should be clearly visible and properly spaced",
+      "Footer should be organized in clear columns with consistent spacing",
+      "Sticky header should not exceed 5rem in height",
+      "Modal dialogs should be centered with a semi-transparent overlay",
+      "Forms should follow a single-column layout for better conversion rates",
+      "Use card layouts for grid-based content with consistent aspect ratios"
+    ],
+    "hierarchy": [
+      "Implement visual hierarchy with clear heading levels (h1 > h2 > h3)",
+      "Keep primary CTAs above the fold using accent colors",
+      "Related components should be visually grouped using consistent spacing or borders",
+      "Use subtle shadows and borders to create depth hierarchy"
+    ],
+    "responsiveness": [
+      "Design mobile-first, then enhance for larger screens",
+      "Use container queries for component-level responsive design",
+      "Ensure touch targets are at least 2.75rem × 2.75rem on mobile devices",
+      "Test across all common breakpoints (mobile, tablet, desktop, large desktop)"
+    ]
+  },
+  "technicalRequirements": {
+    "environment": [
+      "This is a windows machine so all commands should be powershell",
+      "This is a nextJS project using App Router"
+    ],
+    "images": [
+      "Use images from unsplash",
+      "Use image.unsplash domain to load images from unsplash not source.unsplash.com",
+      "Use images.remotePatterns instead of images.domains in next.config.js"
+    ],
+    "accessibility": [
+      "Add aria-label=\"Toggle theme\" to the theme button",
+      "Dark/Light mode toggle must be in the header",
+      "All components and pages must be optimized for mobile and desktop responsiveness",
+      "Ensure sufficient color contrast for text readability",
+      "Provide alternative text for all images",
+      "Ensure keyboard navigation works for all interactive elements"
+    ],
+    "performance": [
+      "Implement skeleton loading states for dynamic content",
+      "Optimize images for fast loading",
+      "Minimize CSS and JS bundle sizes",
+      "Use code splitting for large components"
+    ],
+    "dataManagement": [
+      "Any fake data should be in a json file located in the public/data folder, named relevant to the component or page using it",
+      "When using data, import it from the json file in public/data"
+    ]
+  },
+  "initialSetup": [
+    "Remove the code from the page.js file",
+    "Import the necessary landing page and/or hero into page.js",
+    "Header and Footer files should be on the layout.js",
+    "Add a favicon with the name of the website and a relevant svg logo",
+    "Set up the color system in globals.css using CSS variables",
+    "Configure Tailwind to use the design tokens",
+    "Create base component templates following the component architecture"
+  ],
+  "designSystem": {
+    "activeDesignStyle": "Material Design",
+    "designStyle": {
+      "name": "Material Design",
+      "purpose": "Developed by Google, Material Design simulates physicality in digital interfaces using shadows, motion, and responsive interactions. It enhances usability by providing tactile feedback, making abstract elements feel tangible.",
+      "emotionalImpact": [
+        "Trust: Consistent elevation and animation imply reliability",
+        "Engagement: Ripple effects and transitions mirror real-world physics, encouraging interaction",
+        "Modernity: Bold colors and grid-based layouts signal technological sophistication"
+      ],
+      "stylingCharacteristics": [
+        "Depth Simulation: box-shadow variables emulate layers (e.g., --elevation-1: 0 2px 4px rgba(0,0,0,0.1))",
+        "Dynamic Theming: --color-surface and --color-on-surface ensure contrast compliance",
+        "Motion Curves: Cubic Bézier transitions (--transition-speed: 0.3s) mimic natural movement"
+      ],
+      "cssExample": {
+        ".material-theme": {
+          "--color-primary": "#2196f3",
+          "--elevation-1": "0 2px 4px rgba(0,0,0,0.1)",
+          "--transition-speed": "0.3s"
+        }
+      },
+      "implementationGuidelines": [
+        "Use layered elements with consistent elevation patterns",
+        "Implement responsive animations for user interactions",
+        "Follow Material Design color system with primary, secondary, and surface colors",
+        "Incorporate paper-like surfaces and card-based layouts",
+        "Use consistent iconography and typography from Material Design guidelines"
+      ]
+    }
+  }
+}
