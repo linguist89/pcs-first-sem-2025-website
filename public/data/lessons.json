@@ -1,0 +1,136 @@
+[
+  {
+    "id": 1,
+    "title": "Introduction to Python",
+    "slug": "introduction-to-python",
+    "description": "Get started with Python basics, installation, and running your first code in a Jupyter notebook environment.",
+    "iconName": "IntroIcon",
+    "visible": true,
+    "topics": [
+      "Python Overview",
+      "Setting Up Your Environment",
+      "Jupyter Notebooks",
+      "Basic Syntax",
+      "Running Your First Program"
+    ],
+    "content": {
+      "introduction": "Python is a versatile and beginner-friendly programming language widely used in cognitive science research, data analysis, and machine learning. In this lesson, you'll learn the basics of Python and start writing your first programs.",
+      "sections": [
+        {
+          "title": "What is Python?",
+          "content": "Python is a high-level, interpreted programming language known for its readability and ease of use. It supports multiple programming paradigms and has a comprehensive standard library."
+        },
+        {
+          "title": "Setting Up Your Environment",
+          "content": "We recommend using Anaconda, a distribution of Python that includes many scientific packages. You can download it from the Anaconda website and follow the installation instructions for your operating system."
+        },
+        {
+          "title": "Jupyter Notebooks",
+          "content": "Jupyter notebooks provide an interactive environment where you can write and execute code, visualize data, and document your work. To start a Jupyter notebook, open Anaconda Navigator and click on the Jupyter Notebook icon."
+        },
+        {
+          "title": "Basic Syntax",
+          "content": "Python syntax is designed to be readable and straightforward. Here are some basic examples: \n\n```python\n# This is a comment\nprint('Hello, World!') # This prints text\n\n# Variables\nx = 5\nname = 'Python'\n\n# Basic operations\nsum = x + 10\ngreeting = 'Hello, ' + name\n```"
+        },
+        {
+          "title": "Running Your First Program",
+          "content": "Let's write a simple program that asks for your name and responds with a greeting: \n\n```python\nname = input('What is your name? ')\nprint(f'Hello, {name}! Welcome to Python for Cognitive Science!')\n```"
+        }
+      ],
+      "summary": "In this lesson, you've learned what Python is, how to set up your development environment, and how to write and run basic Python code. You're now ready to explore more complex Python concepts in the upcoming lessons."
+    }
+  },
+  {
+    "id": 2,
+    "title": "Data Types and Variables",
+    "slug": "data-types-and-variables",
+    "description": "Learn about Python's core data types, variables, and how to manipulate different kinds of data.",
+    "iconName": "DataTypesIcon",
+    "visible": true,
+    "topics": [
+      "Numbers and Math Operations",
+      "Strings and Text Manipulation",
+      "Lists and Collections",
+      "Dictionaries",
+      "Type Conversion"
+    ],
+    "content": {
+      "introduction": "Understanding data types and variables is fundamental to programming in Python. This lesson covers the main data types you'll use in cognitive science research and data analysis."
+    }
+  },
+  {
+    "id": 3,
+    "title": "Control Flow",
+    "slug": "control-flow",
+    "description": "Master control structures like conditionals and loops to create dynamic and responsive programs.",
+    "iconName": "ControlFlowIcon",
+    "visible": true,
+    "topics": [
+      "Conditional Statements",
+      "For Loops",
+      "While Loops",
+      "List Comprehensions",
+      "Handling Exceptions"
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Functions and Modules",
+    "slug": "functions-and-modules",
+    "description": "Create reusable code with functions and organize your programs using Python modules.",
+    "iconName": "FunctionsIcon",
+    "visible": true,
+    "topics": [
+      "Defining Functions",
+      "Parameters and Return Values",
+      "Lambda Functions",
+      "Importing Modules",
+      "Python Standard Library"
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Data Analysis with Pandas",
+    "slug": "data-analysis-with-pandas",
+    "description": "Analyze and manipulate data effectively using the powerful Pandas library for data science.",
+    "iconName": "PandasIcon",
+    "visible": true,
+    "topics": [
+      "Introduction to Pandas",
+      "DataFrames and Series",
+      "Data Loading and Inspection",
+      "Data Cleaning",
+      "Data Aggregation and Grouping"
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Data Visualization",
+    "slug": "data-visualization",
+    "description": "Create informative and compelling visualizations using matplotlib, seaborn, and other Python libraries.",
+    "iconName": "VisualizationIcon",
+    "visible": true,
+    "topics": [
+      "Plotting with Matplotlib",
+      "Statistical Visualization with Seaborn",
+      "Interactive Plots",
+      "Customizing Visualizations",
+      "Visualization Best Practices"
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Machine Learning Basics",
+    "slug": "machine-learning-basics",
+    "description": "Get introduced to fundamental machine learning concepts and implement simple ML models with scikit-learn.",
+    "iconName": "MachineLearningIcon",
+    "visible": false,
+    "topics": [
+      "Machine Learning Overview",
+      "Supervised vs. Unsupervised Learning",
+      "Training and Testing Data",
+      "Basic Classification Models",
+      "Model Evaluation"
+    ]
+  }
+] 

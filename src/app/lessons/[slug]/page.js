@@ -1,35 +1,50 @@
+"use client";
+
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useParams, notFound, useRouter } from 'next/navigation';
 import lessons from '@/app/lessonData';
-import { notFound } from 'next/navigation';
 
-export function generateStaticParams() {
-  return lessons.map(lesson => ({
-    slug: lesson.slug,
-  }));
-}
+export default function LessonPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [lesson, setLesson] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-export function generateMetadata({ params }) {
-  const lesson = lessons.find(lesson => lesson.slug === params.slug);
-  
-  if (!lesson) {
-    return {
-      title: 'Lesson Not Found',
-    };
+  useEffect(() => {
+    if (params?.slug) {
+      const foundLesson = lessons.find(l => l.slug === params.slug);
+      
+      if (!foundLesson || !foundLesson.visible) {
+        router.push('/not-found');
+      } else {
+        setLesson(foundLesson);
+      }
+      setLoading(false);
+    }
+  }, [params, router]);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen py-12">
+        <div className="container mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-300 rounded w-1/4 mb-4"></div>
+            <div className="h-24 bg-gray-300 rounded mb-8"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="h-64 bg-gray-300 rounded"></div>
+              <div className="md:col-span-2 h-96 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
-  
-  return {
-    title: `${lesson.title} | Python for Cognitive Science`,
-    description: lesson.description,
-  };
-}
 
-export default function LessonPage({ params }) {
-  const lesson = lessons.find(lesson => lesson.slug === params.slug);
-  
   if (!lesson) {
-    notFound();
+    return null;
   }
-  
+
   return (
     <div className="flex flex-col min-h-screen py-12">
       <div className="container mx-auto px-4">
@@ -90,25 +105,49 @@ export default function LessonPage({ params }) {
             <div className="card p-8">
               <div className="prose max-w-none">
                 <h2>Welcome to {lesson.title}</h2>
-                <p>
-                  This lesson is under development. Check back soon for the complete content.
-                </p>
-                <p>
-                  In this lesson, you'll learn about:
-                </p>
-                <ul>
-                  {lesson.topics.map((topic, index) => (
-                    <li key={index}>{topic}</li>
-                  ))}
-                </ul>
+                {lesson.content?.introduction && (
+                  <p>{lesson.content.introduction}</p>
+                )}
                 
-                <div className="bg-bg-accent p-4 rounded-lg border-l-4 border-primary mt-8">
-                  <h3 className="text-lg font-medium">Getting Started</h3>
-                  <p>
-                    To prepare for this lesson, make sure you have Python installed on your computer
-                    and have completed any prerequisite lessons.
-                  </p>
-                </div>
+                {lesson.content?.sections && lesson.content.sections.map((section, index) => (
+                  <div key={index} className="mt-6">
+                    <h3>{section.title}</h3>
+                    <div dangerouslySetInnerHTML={{ __html: formatContentWithCode(section.content) }} />
+                  </div>
+                ))}
+                
+                {!lesson.content?.sections && (
+                  <>
+                    <p>
+                      This lesson is under development. Check back soon for the complete content.
+                    </p>
+                    <p>
+                      In this lesson, you'll learn about:
+                    </p>
+                    <ul>
+                      {lesson.topics.map((topic, index) => (
+                        <li key={index}>{topic}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                
+                {lesson.content?.summary && (
+                  <div className="bg-bg-accent p-4 rounded-lg border-l-4 border-primary mt-8">
+                    <h3 className="text-lg font-medium">Summary</h3>
+                    <p>{lesson.content.summary}</p>
+                  </div>
+                )}
+                
+                {!lesson.content?.summary && (
+                  <div className="bg-bg-accent p-4 rounded-lg border-l-4 border-primary mt-8">
+                    <h3 className="text-lg font-medium">Getting Started</h3>
+                    <p>
+                      To prepare for this lesson, make sure you have Python installed on your computer
+                      and have completed any prerequisite lessons.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -116,4 +155,27 @@ export default function LessonPage({ params }) {
       </div>
     </div>
   );
+}
+
+// Helper function to format content with code blocks
+function formatContentWithCode(content) {
+  if (!content) return '';
+  
+  // This regex matches markdown code blocks with language specification
+  return content.replace(/```(\w+)\n([\s\S]+?)\n```/g, (match, language, code) => {
+    return `<pre class="language-${language}"><code>${escapeHtml(code)}</code></pre>`;
+  });
+}
+
+// Helper function to escape HTML
+function escapeHtml(html) {
+  const escapeMap = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  };
+  
+  return html.replace(/[&<>"']/g, match => escapeMap[match]);
 } 

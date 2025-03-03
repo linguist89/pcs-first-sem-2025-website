@@ -7,6 +7,11 @@
   --color-secondary: #9c27b0;
   --color-accent: #ff5252;
   
+  /* RGB versions for opacity control */
+  --color-primary-rgb: 30, 136, 229;
+  --color-secondary-rgb: 156, 39, 176;
+  --color-accent-rgb: 255, 82, 82;
+  
   /* Neutral Colors */
   --neutral-light: #f5f5f5;
   --neutral-dark: #212121;
@@ -60,6 +65,11 @@
   --color-secondary: #ce93d8;
   --color-accent: #ff8a80;
   
+  /* RGB versions for opacity control */
+  --color-primary-rgb: 100, 181, 246;
+  --color-secondary-rgb: 206, 147, 216;
+  --color-accent-rgb: 255, 138, 128;
+  
   --neutral-light: #424242;
   --neutral-dark: #121212;
   
@@ -83,6 +93,11 @@
     --color-primary: #64b5f6;
     --color-secondary: #ce93d8;
     --color-accent: #ff8a80;
+    
+    /* RGB versions for opacity control */
+    --color-primary-rgb: 100, 181, 246;
+    --color-secondary-rgb: 206, 147, 216;
+    --color-accent-rgb: 255, 138, 128;
     
     --neutral-light: #424242;
     --neutral-dark: #121212;
@@ -109,62 +124,98 @@ body {
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
+  line-height: 1.6;
   transition: background-color var(--transition-speed) var(--transition-easing), 
               color var(--transition-speed) var(--transition-easing);
 }
 
-/* Material Design-inspired utility classes */
+/* Improved Typography */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.025em;
+}
+
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: 1.5em;
+}
+
+/* Enhanced Material Design-inspired utility classes */
 .card {
   background-color: var(--background-primary);
-  border-radius: 8px;
+  border-radius: 16px;
   box-shadow: var(--elevation-1);
-  transition: box-shadow var(--transition-speed) var(--transition-easing), 
-              transform var(--transition-speed) var(--transition-easing),
-              background-color var(--transition-speed) var(--transition-easing);
+  transition: box-shadow 0.4s var(--transition-easing), 
+              transform 0.4s var(--transition-easing),
+              background-color 0.3s var(--transition-easing),
+              border-color 0.3s var(--transition-easing);
+  position: relative;
+  overflow: hidden;
 }
 
 .card:hover {
   box-shadow: var(--elevation-3);
-  transform: translateY(-2px);
 }
 
 .surface {
   background-color: var(--background-primary);
-  border-radius: 4px;
+  border-radius: 8px;
   padding: var(--spacing-unit);
   transition: background-color var(--transition-speed) var(--transition-easing);
 }
 
+/* Improved button styles */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  padding: 8px 16px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: background-color var(--transition-speed) var(--transition-easing), 
-              box-shadow var(--transition-speed) var(--transition-easing),
-              color var(--transition-speed) var(--transition-easing),
-              border-color var(--transition-speed) var(--transition-easing);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  transition: all 0.3s var(--transition-easing);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  font-size: 0.95rem;
 }
 
 .btn-primary {
   background-color: var(--color-primary);
   color: var(--text-inverse);
+  box-shadow: 0 4px 14px rgba(var(--color-primary-rgb), 0.4);
 }
 
 .btn-primary:hover {
   background-color: color-mix(in srgb, var(--color-primary), #000 10%);
-  box-shadow: var(--elevation-2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--color-primary-rgb), 0.5);
 }
 
-/* Material Ripple Effect (simplified) */
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 3px 10px rgba(var(--color-primary-rgb), 0.4);
+}
+
+/* Material Ripple Effect (improved) */
 .ripple {
   position: relative;
   overflow: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 .ripple::after {
@@ -174,16 +225,82 @@ body {
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
-  transition: width 0.5s, height 0.5s, opacity 0.5s;
+  transition: width 0.6s, height 0.6s, opacity 0.6s;
+  pointer-events: none;
 }
 
 .ripple:active::after {
-  width: 150%;
-  height: 150%;
+  width: 300%;
+  height: 300%;
   opacity: 1;
   transition: 0s;
+}
+
+.ripple-dark::after {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* Grid Pattern Background */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(var(--color-primary-rgb), 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center center;
+}
+
+/* Text Gradient */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  display: inline-block;
+  position: relative;
+}
+
+/* Glass morphism */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark-theme .glass {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Course Card Enhancements */
+.course-progress-bar {
+  height: 6px;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--background-secondary);
+}
+
+.course-progress-fill {
+  height: 100%;
+  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
+  border-radius: 10px;
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Utility classes for animations */
+.hover-float {
+  transition: transform 0.3s ease;
+}
+.hover-float:hover {
+  transform: translateY(-8px);
+}
+
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+.hover-scale:hover {
+  transform: scale(1.05);
 }
