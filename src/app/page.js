@@ -2,12 +2,12 @@
 
 import Hero from '@/components/Hero';
 import LessonCard from '@/components/LessonCard';
-import lessons from './lessonData';
+import lessonsData from '../../public/data/lessons.json';
 import { motion } from 'framer-motion';
 
 export default function Home() {
   // Filter lessons to only show those that are visible
-  const visibleLessons = lessons.filter(lesson => lesson.visible);
+  const visibleLessons = lessonsData.filter(lesson => lesson.visible);
 
   // Animation variants
   const sectionVariants = {
@@ -32,7 +32,7 @@ export default function Home() {
       <Hero />
       
       {/* Lessons section */}
-      <section id="lessons" className="py-24 bg-bg-secondary relative overflow-hidden">
+      <section id="lessons" className="py-24 bg-background-secondary relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] -translate-y-1/2 translate-x-1/3 rounded-full bg-gradient-to-b from-primary/10 to-secondary/5 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] translate-y-1/3 -translate-x-1/4 rounded-full bg-gradient-to-t from-primary/10 to-secondary/5 blur-3xl"></div>
@@ -46,7 +46,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
           >
             <motion.h2 
-              className="text-4xl md:text-5xl font-bold tracking-tight"
+              className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

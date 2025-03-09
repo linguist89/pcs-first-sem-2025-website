@@ -25,6 +25,36 @@
           "content": "This comprehensive notebook includes:\n\n✨ **Core Concepts**\n- Fundamental Python data types\n- Essential control structures\n- Function creation and usage\n\n🔨 **Practical Work**\n- Two engaging group exercises\n- Complete solution walkthroughs\n- Interactive coding challenges\n\n🤔 **Deep Learning**\n- Thought-provoking reflection questions\n- Real-world applications\n- Best practices and tips"
         }
       ],
+      "case_studies": [
+        {
+          "title": "Ariane 5 Disaster",
+          "year": 1996,
+          "description": "During its maiden flight, the Ariane 5 rocket self-destructed just 37 seconds after launch. The failure was caused by a data type conversion error: a 64-bit floating-point number (used to calculate the rocket's horizontal bias) was improperly converted into a 16-bit signed integer. This overflow led to a cascade of failures that resulted in the loss of the vehicle and cost hundreds of millions of dollars.",
+          "data_type_issue": "Conversion from 64-bit float to 16-bit signed integer leading to an overflow error.",
+          "source": "Bugsnag case study on Ariane 5 disaster"
+        },
+        {
+          "title": "Fannie Mae Spreadsheet Error",
+          "year": 2003,
+          "description": "A formatting error in a Microsoft Excel spreadsheet contributed to a $1 billion mistake by Fannie Mae. The error stemmed from improper handling of data types, which led to significant numerical inaccuracies in financial calculations.",
+          "data_type_issue": "Improper formatting and data type handling in spreadsheets, leading to numerical errors.",
+          "source": "The Guardian: Microsoft Excel's bloopers reel and related articles"
+        },
+        {
+          "title": "Tensor Shape Faults in Deep Learning Systems",
+          "year": 2021,
+          "description": "In production deep learning systems, tensor shape mismatches have led to system crashes and degraded model performance. Faults occur when expected tensor dimensions (often 64-bit floats) are implicitly cast or resized to lower-precision representations (e.g., 32-bit or 16-bit), causing subtle errors to accumulate and sometimes resulting in catastrophic failures.",
+          "data_type_issue": "Mismatches in tensor data types and shapes (e.g., from 64-bit to 32-bit), leading to runtime errors.",
+          "source": "An Empirical Study on Tensor Shape Faults in Deep Learning Systems (Wu et al., 2021)"
+        },
+        {
+          "title": "ONNX Model Converter Failures",
+          "year": 2023,
+          "description": "Deep learning model converters, used to translate models between different frameworks, have encountered failures due to incorrect handling of data types. For instance, a model originally trained using 64-bit floating-point precision may be converted to use 32-bit floats in ONNX, reducing numerical precision and causing semantic errors in downstream computations.",
+          "data_type_issue": "Errors in converting data types (from 64-bit to 32-bit floating-point) during model conversion.",
+          "source": "Analysis of Failures and Risks in Deep Learning Model Converters: A Case Study in the ONNX Ecosystem (Jajal et al., 2023)"
+        }
+      ],
       "summary": "🎯 Your journey into Python programming starts here! This carefully crafted notebook will guide you through fundamental concepts with practical, hands-on exercises. Remember to experiment with the code and challenge yourself before checking the solutions. Happy coding! 🎉"
     }
   },
