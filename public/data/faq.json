@@ -1,0 +1,101 @@
+{
+  "faqCategories": [
+    { "id": "general", "name": "General Questions", "icon": "❓" },
+    { "id": "courses", "name": "Courses & Lessons", "icon": "📚" },
+    { "id": "technical", "name": "Technical Support", "icon": "💻" },
+    { "id": "account", "name": "Account & Profile", "icon": "👤" },
+    { "id": "resources", "name": "Learning Resources", "icon": "📑" }
+  ],
+  "faqs": [
+    {
+      "id": 1,
+      "question": "What is this educational platform?",
+      "answer": "Our platform is an interactive learning environment designed to enhance classroom teaching and provide students with comprehensive resources for their digital technology education. It combines structured lessons, interactive exercises, and personalized learning paths.",
+      "category": "general"
+    },
+    {
+      "id": 2,
+      "question": "How do I get started with the platform?",
+      "answer": "To get started, simply create an account or log in with your provided credentials. Once logged in, you'll have access to your dashboard showing your enrolled courses, upcoming classes, and learning progress. We recommend starting with the introductory lessons to familiarize yourself with the platform.",
+      "category": "general"
+    },
+    {
+      "id": 3,
+      "question": "How are the lessons structured?",
+      "answer": "Each lesson is designed with a clear learning objective and typically includes a combination of text-based content, interactive examples, video demonstrations, and practice exercises. Lessons are organized into modules that build upon each other to ensure a coherent learning experience.",
+      "category": "courses"
+    },
+    {
+      "id": 4,
+      "question": "Can I track my progress through the courses?",
+      "answer": "Yes, our platform includes a comprehensive progress tracking system. You can see your completion status for each lesson, view your quiz scores, and track your overall progress through each course. This information is available on your personal dashboard.",
+      "category": "courses"
+    },
+    {
+      "id": 5,
+      "question": "How do I access the learning resources?",
+      "answer": "Learning resources are available in the Resources section of the platform. They're categorized by type (documents, videos, exercises, code samples, and external links) for easy navigation. You can also find relevant resources linked directly within each lesson.",
+      "category": "resources"
+    },
+    {
+      "id": 6,
+      "question": "Are there any prerequisites for the courses?",
+      "answer": "Prerequisites vary by course and are clearly indicated on each course description page. Some introductory courses have no prerequisites, while more advanced courses may require completion of foundational modules or specific technical knowledge.",
+      "category": "courses"
+    },
+    {
+      "id": 7,
+      "question": "What should I do if I encounter technical issues?",
+      "answer": "If you encounter technical issues, first try refreshing your browser or clearing your cache. If the problem persists, check our Technical Support section for common solutions. You can also contact our support team via the Help button in the footer of the platform.",
+      "category": "technical"
+    },
+    {
+      "id": 8,
+      "question": "How do I update my account information?",
+      "answer": "You can update your account information by navigating to your Profile page, accessible from the dropdown menu in the header. There you can edit your personal details, change your password, and manage your notification preferences.",
+      "category": "account"
+    },
+    {
+      "id": 9,
+      "question": "Can I download resources for offline use?",
+      "answer": "Yes, many of our resources are available for download, including PDFs, exercise files, and code samples. Downloadable resources are marked with a download icon. Video content is generally streaming-only but may be available for download in certain courses.",
+      "category": "resources"
+    },
+    {
+      "id": 10,
+      "question": "How do I view my scheduled classes?",
+      "answer": "Your scheduled classes can be viewed in the Schedule section of the platform. This shows your upcoming live sessions, submission deadlines, and any other time-sensitive activities. You can also sync this calendar with your personal calendar applications.",
+      "category": "courses"
+    },
+    {
+      "id": 11,
+      "question": "Is the platform accessible on mobile devices?",
+      "answer": "Yes, our platform is fully responsive and works on smartphones and tablets. While all features are accessible on mobile devices, we recommend using a desktop or laptop for complex coding exercises and projects for the best experience.",
+      "category": "technical"
+    },
+    {
+      "id": 12,
+      "question": "How do I submit assignments?",
+      "answer": "Assignments can be submitted through the assignment submission portal within each lesson. Depending on the assignment type, you may upload files, submit code snippets, or complete interactive exercises directly on the platform.",
+      "category": "courses"
+    },
+    {
+      "id": 13,
+      "question": "Can I interact with instructors and other students?",
+      "answer": "Yes, our platform includes discussion forums for each course where you can interact with instructors and fellow students. Some courses also feature live Q&A sessions, collaborative projects, and peer review opportunities.",
+      "category": "general"
+    },
+    {
+      "id": 14,
+      "question": "What browser is recommended for using the platform?",
+      "answer": "We recommend using the latest versions of Chrome, Firefox, Safari, or Edge for the optimal experience. Our platform utilizes modern web technologies, and using an updated browser ensures all features work correctly.",
+      "category": "technical"
+    },
+    {
+      "id": 15,
+      "question": "How can I reset my password?",
+      "answer": "If you've forgotten your password, click the 'Forgot Password' link on the login page. You'll be prompted to enter your email address, and we'll send you instructions to reset your password. For security reasons, password reset links expire after 24 hours.",
+      "category": "account"
+    }
+  ]
+} 

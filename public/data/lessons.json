@@ -1,154 +1,526 @@
 [
   {
     "id": 1,
-    "title": "Introduction to Python",
-    "slug": "introduction-to-python",
-    "description": "Get started with Python basics, installation, and running your first code in a Jupyter notebook environment.",
-    "iconName": "IntroIcon",
-    "visible": true,
-    "topics": [
-      "Python Overview",
-      "Setting Up Your Environment",
-      "Jupyter Notebooks",
-      "Basic Syntax",
-      "Running Your First Program"
+    "title": "Introduction to HTML",
+    "description": "Learn the basics of HTML structure and elements",
+    "image": "https://images.unsplash.com/photo-1621839673705-6617adf9e890?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 100,
+    "lastUpdated": "2023-03-01T14:30:00",
+    "module": "Web Development Fundamentals",
+    "duration": 45,
+    "difficulty": "Beginner",
+    "prerequisites": ["None"],
+    "learningObjectives": [
+      "Understand the basic structure of HTML documents",
+      "Create and use various HTML elements",
+      "Apply semantic HTML principles to improve page structure"
     ],
     "content": {
-      "introduction": "🚀 Welcome to your first Python adventure! In this interactive session, we'll dive into Python fundamentals through a comprehensive Jupyter notebook. Get ready to explore data types, control structures, and computational thinking concepts through hands-on exercises and real-world examples.",
-      "sections": [
+      "contentFlow": [
+        "introduction",
+        "section-html-structure",
+        "code-basic-html-structure",
+        "illustration-html-tree",
+        "section-basic-elements",
+        "code-text-elements",
+        "interactive-element-playground",
+        "section-semantic-html",
+        "code-semantic-structure",
+        "illustration-semantic-comparison",
+        "quiz-html-basics",
+        "exercise-create-html-page",
+        "exercise-links-images",
+        "summary",
+        "resources"
+      ],
+      "contentElements": {
+        "introduction": {
+          "type": "text",
+          "title": "Welcome to HTML",
+          "content": "HTML (HyperText Markup Language) is the foundation of all web pages. It's not a programming language but a markup language that tells web browsers how to structure the content you see online. In this lesson, you'll learn the fundamentals of HTML and create your first web pages from scratch.\n\nBy the end of this lesson, you'll understand how HTML documents are structured, how to use various HTML elements, and how semantic HTML improves accessibility and SEO."
+        },
+        "section-html-structure": {
+          "type": "text",
+          "title": "HTML Document Structure",
+          "content": "Every HTML document follows a standard structure that includes a doctype declaration, an html element, head and body sections. The head contains metadata about the document while the body contains the content that is visible to users.\n\nThe basic structure serves as the skeleton for all web pages you'll create. Let's examine each part:"
+        },
+        "code-basic-html-structure": {
+          "type": "code",
+          "language": "html",
+          "title": "Basic HTML Document Structure",
+          "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>My First HTML Page</title>\n</head>\n<body>\n  <h1>Hello, World!</h1>\n  <p>This is my first HTML page.</p>\n</body>\n</html>",
+          "explanation": "This example shows the essential elements of an HTML document:\n- The DOCTYPE declaration tells the browser which version of HTML is being used\n- The <html> element is the container for all HTML content\n- The lang attribute specifies the language\n- The <head> section contains metadata\n- The <meta> tags provide information about character encoding and viewport settings\n- The <title> element sets the page title shown in the browser tab\n- The <body> section contains all visible content\n- The <h1> and <p> elements are examples of content elements"
+        },
+        "illustration-html-tree": {
+          "type": "illustration",
+          "title": "HTML Document Tree Structure",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+          "altText": "A tree diagram showing the hierarchical structure of an HTML document, with html as the root, head and body as main branches, and various elements as nodes",
+          "caption": "HTML documents follow a tree-like structure where elements can contain other elements, creating a hierarchy of parent and child relationships. This nesting structure is fundamental to understanding how HTML works."
+        },
+        "section-basic-elements": {
+          "type": "text",
+          "title": "Basic HTML Elements",
+          "content": "HTML provides a variety of elements to structure and present content. These include headings, paragraphs, lists, links, images, tables, forms, and more. Each element serves a specific purpose and has its own syntax and attributes.\n\nLet's explore some of the most commonly used HTML elements that you'll use in nearly every web page you create:"
+        },
+        "code-text-elements": {
+          "type": "code",
+          "language": "html",
+          "title": "Common HTML Text Elements",
+          "code": "<!-- Headings from most important (h1) to least important (h6) -->\n<h1>Main Page Title</h1>\n<h2>Section Title</h2>\n<h3>Subsection Title</h3>\n\n<!-- Paragraph -->\n<p>This is a paragraph of text. HTML will automatically wrap the text to fit the width of the container.</p>\n\n<!-- Text formatting -->\n<p>This text is <strong>bold</strong> and this is <em>italic</em>.</p>\n\n<!-- Lists -->\n<h3>Unordered List</h3>\n<ul>\n  <li>Item 1</li>\n  <li>Item 2</li>\n  <li>Item 3</li>\n</ul>\n\n<h3>Ordered List</h3>\n<ol>\n  <li>First step</li>\n  <li>Second step</li>\n  <li>Third step</li>\n</ol>\n\n<!-- Links -->\n<p>Visit <a href=\"https://www.example.com\">Example.com</a> for more information.</p>\n\n<!-- Images -->\n<img src=\"example-image.jpg\" alt=\"Description of the image\" width=\"300\" height=\"200\">",
+          "explanation": "These examples demonstrate common HTML elements:\n- Headings (h1-h6) establish a hierarchical structure\n- Paragraphs (p) contain blocks of text\n- Strong and em provide emphasis (bold and italic styling)\n- Lists organize content in bullet points (ul) or numbered steps (ol)\n- Links (a) connect to other pages with the href attribute\n- Images (img) display pictures with src, alt, width, and height attributes"
+        },
+        "interactive-element-playground": {
+          "type": "interactive",
+          "title": "HTML Element Playground",
+          "description": "Try modifying the HTML code below to see how different elements and attributes affect the output.",
+          "initialCode": "<div class=\"container\">\n  <h1>My Web Page</h1>\n  <p>Edit this code to experiment with different HTML elements.</p>\n  <!-- Try adding your own elements here -->\n</div>",
+          "height": 400,
+          "instructions": "1. Try adding a list (ul or ol)\n2. Add an image (use a placeholder URL like 'https://via.placeholder.com/150')\n3. Create a link to your favorite website\n4. Add another heading level (h2, h3)\n5. Experiment with text formatting (strong, em, small, etc.)"
+        },
+        "section-semantic-html": {
+          "type": "text",
+          "title": "Semantic HTML",
+          "content": "Semantic HTML uses elements that convey meaning about the structure and content of a web page, rather than just how it looks. By using semantic elements like <header>, <nav>, <main>, <section>, <article>, and <footer>, you make your HTML more accessible to screen readers, easier for search engines to understand, and simpler to style with CSS.\n\nCompare these two approaches to creating a simple web page structure:"
+        },
+        "code-semantic-structure": {
+          "type": "code",
+          "language": "html",
+          "title": "Non-Semantic vs Semantic HTML",
+          "code": "<!-- Non-semantic approach using generic divs -->\n<div class=\"header\">\n  <h1>Website Title</h1>\n  <div class=\"navigation\">\n    <ul>\n      <li><a href=\"#\">Home</a></li>\n      <li><a href=\"#\">About</a></li>\n      <li><a href=\"#\">Contact</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"content\">\n  <div class=\"article\">\n    <h2>Article Title</h2>\n    <p>Article content goes here...</p>\n  </div>\n  <div class=\"sidebar\">\n    <h3>Related Links</h3>\n    <ul>\n      <li><a href=\"#\">Link 1</a></li>\n      <li><a href=\"#\">Link 2</a></li>\n    </ul>\n  </div>\n</div>\n<div class=\"footer\">\n  <p>&copy; 2023 My Website</p>\n</div>\n\n<!-- Semantic approach using meaningful elements -->\n<header>\n  <h1>Website Title</h1>\n  <nav>\n    <ul>\n      <li><a href=\"#\">Home</a></li>\n      <li><a href=\"#\">About</a></li>\n      <li><a href=\"#\">Contact</a></li>\n    </ul>\n  </nav>\n</header>\n<main>\n  <article>\n    <h2>Article Title</h2>\n    <p>Article content goes here...</p>\n  </article>\n  <aside>\n    <h3>Related Links</h3>\n    <ul>\n      <li><a href=\"#\">Link 1</a></li>\n      <li><a href=\"#\">Link 2</a></li>\n    </ul>\n  </aside>\n</main>\n<footer>\n  <p>&copy; 2023 My Website</p>\n</footer>",
+          "explanation": "The semantic version:\n- Replaces generic <div> elements with semantic elements like <header>, <nav>, <main>, etc.\n- Provides clear structure that assistive technologies can interpret\n- Makes the code more readable and maintainable\n- Helps search engines understand the page structure for better SEO\n- Requires less reliance on class names to convey meaning"
+        },
+        "illustration-semantic-comparison": {
+          "type": "illustration",
+          "title": "Semantic vs Non-Semantic HTML",
+          "image": "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
+          "altText": "Side-by-side comparison of webpage structures using semantic HTML vs. non-semantic HTML",
+          "caption": "While both approaches might look identical in the browser, semantic HTML provides clear structural meaning that improves accessibility and SEO."
+        },
+        "quiz-html-basics": {
+          "type": "quiz",
+          "title": "Test Your HTML Knowledge",
+          "questions": [
+            {
+              "question": "Which HTML element is used to define the main heading of a document?",
+              "options": ["<header>", "<h1>", "<heading>", "<main>"],
+              "correctAnswer": "<h1>",
+              "explanation": "The <h1> element defines the most important heading on a page. A page should generally have only one <h1> element."
+            },
+            {
+              "question": "Which attribute is required in the <img> tag?",
+              "options": ["src", "alt", "width", "height"],
+              "correctAnswer": "src",
+              "explanation": "The src attribute specifies the path to the image file and is required. While alt is not technically required, it should always be included for accessibility."
+            },
+            {
+              "question": "Which element represents a semantic section of a webpage?",
+              "options": ["<div>", "<span>", "<section>", "<content>"],
+              "correctAnswer": "<section>",
+              "explanation": "<section> is a semantic element that represents a standalone section of content within a document."
+            }
+          ]
+        },
+        "exercise-create-html-page": {
+          "type": "exercise",
+          "title": "Create a Basic HTML Page",
+          "instructions": "Create a simple HTML page with the following elements:\n1. A proper HTML5 document structure\n2. A page title of 'About Me'\n3. A main heading with your name (or any name)\n4. A paragraph about yourself (or fictional information)\n5. A subheading titled 'My Hobbies'\n6. An unordered list with at least three hobbies\n7. A second subheading titled 'My Favorite Websites'\n8. An ordered list with at least three websites as links\n\nYou can use any text editor to create this file, save it as 'about.html', and open it in a browser to view the result.",
+          "startingCode": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title></title>\n</head>\n<body>\n  <!-- Add your content here -->\n  \n</body>\n</html>",
+          "solution": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>About Me</title>\n</head>\n<body>\n  <h1>John Doe</h1>\n  <p>I'm a web development student learning HTML and CSS. I enjoy creating websites and learning new technologies.</p>\n  \n  <h2>My Hobbies</h2>\n  <ul>\n    <li>Reading</li>\n    <li>Photography</li>\n    <li>Hiking</li>\n  </ul>\n  \n  <h2>My Favorite Websites</h2>\n  <ol>\n    <li><a href=\"https://www.mdn.com\">MDN Web Docs</a></li>\n    <li><a href=\"https://www.freecodecamp.org\">freeCodeCamp</a></li>\n    <li><a href=\"https://www.w3schools.com\">W3Schools</a></li>\n  </ol>\n</body>\n</html>"
+        },
+        "exercise-links-images": {
+          "type": "exercise",
+          "title": "Add Links and Images",
+          "instructions": "Enhance your 'About Me' page by adding:\n1. A profile image (you can use a placeholder image)\n2. A link to your email (using mailto:)\n3. A list of social media profiles (real or fictional)\n4. Add a semantic footer with copyright information\n\nMake sure to include appropriate alt text for your image and organize the content semantically.",
+          "startingCode": "<!-- Build on your previous exercise or use this template: -->\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>About Me</title>\n</head>\n<body>\n  <h1>John Doe</h1>\n  <p>I'm a web development student learning HTML and CSS.</p>\n  \n  <!-- Add profile image here -->\n  \n  <!-- Add contact links here -->\n  \n  <!-- Add social media links here -->\n  \n  <!-- Add footer here -->\n  \n</body>\n</html>",
+          "solution": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>About Me</title>\n</head>\n<body>\n  <header>\n    <h1>John Doe</h1>\n    <img src=\"https://via.placeholder.com/150\" alt=\"Profile photo of John Doe\" width=\"150\" height=\"150\">\n  </header>\n  \n  <main>\n    <section>\n      <p>I'm a web development student learning HTML and CSS. I enjoy creating websites and learning new technologies.</p>\n    \n      <h2>My Hobbies</h2>\n      <ul>\n        <li>Reading</li>\n        <li>Photography</li>\n        <li>Hiking</li>\n      </ul>\n    </section>\n    \n    <section>\n      <h2>Contact Me</h2>\n      <p>Email: <a href=\"mailto:john@example.com\">john@example.com</a></p>\n      \n      <h3>Social Media</h3>\n      <ul>\n        <li><a href=\"https://twitter.com/example\">Twitter</a></li>\n        <li><a href=\"https://linkedin.com/in/example\">LinkedIn</a></li>\n        <li><a href=\"https://github.com/example\">GitHub</a></li>\n      </ul>\n    </section>\n  </main>\n  \n  <footer>\n    <p>&copy; 2023 John Doe. All rights reserved.</p>\n  </footer>\n</body>\n</html>"
+        },
+        "summary": {
+          "type": "text",
+          "title": "Summary",
+          "content": "In this lesson, you've learned the fundamentals of HTML, including:\n\n- The basic structure of an HTML document with doctype, head, and body sections\n- Common HTML elements for text, links, images, and lists\n- The importance of semantic HTML for accessibility and SEO\n- How to create a complete webpage with proper structure\n\nThese skills form the foundation of web development and will be essential as you progress to more advanced topics like CSS for styling and JavaScript for interactivity. Remember that well-structured HTML makes your websites more accessible, easier to maintain, and better for search engine optimization."
+        },
+        "resources": {
+          "type": "resources",
+          "title": "Additional Resources",
+          "links": [
+            {
+              "title": "MDN Web Docs - HTML",
+              "url": "https://developer.mozilla.org/en-US/docs/Web/HTML",
+              "description": "Comprehensive reference for HTML elements, attributes, and best practices"
+            },
+            {
+              "title": "W3Schools HTML Tutorial",
+              "url": "https://www.w3schools.com/html/",
+              "description": "Interactive tutorials with examples and exercises"
+            },
+            {
+              "title": "HTML5 Doctor",
+              "url": "http://html5doctor.com/",
+              "description": "Detailed articles about semantic HTML5 elements"
+            },
+            {
+              "title": "Can I Use",
+              "url": "https://caniuse.com/",
+              "description": "Browser compatibility tables for HTML5 features"
+            }
+          ],
+          "downloads": [
+            {
+              "title": "HTML Cheat Sheet",
+              "url": "/downloads/html-cheatsheet.pdf",
+              "description": "Quick reference guide for common HTML elements and attributes"
+            },
+            {
+              "title": "HTML5 Template",
+              "url": "/downloads/html5-template.html",
+              "description": "Starter template for new HTML5 projects"
+            }
+          ]
+        }
+      },
+      "exercises": [
         {
-          "title": "📥 Download Your Notebook",
-          "content": "To begin this exciting journey, you'll need to download and open the Jupyter notebook that contains all your learning materials. The notebook is packed with code examples, exercises, and clear explanations.\n\n**Download the notebook using this command:**\n\n```bash\n# Open your terminal and run:\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/master/public/data/python_fundamentals.ipynb\n\n# Or download directly from your browser using this URL:\nhttps://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/master/public/data/python_fundamentals.ipynb\n```\n\n> 💡 **Pro Tip**: After downloading, open the notebook in Jupyter Notebook or JupyterLab to start your interactive learning experience!"
+          "title": "Create a Basic HTML Page",
+          "description": "Create a simple HTML page with a title, headings, paragraphs, and a list."
         },
         {
-          "title": "📚 What You'll Learn",
-          "content": "This comprehensive notebook includes:\n\n✨ **Core Concepts**\n- Fundamental Python data types\n- Essential control structures\n- Function creation and usage\n\n🔨 **Practical Work**\n- Two engaging group exercises\n- Complete solution walkthroughs\n- Interactive coding challenges\n\n🤔 **Deep Learning**\n- Thought-provoking reflection questions\n- Real-world applications\n- Best practices and tips"
+          "title": "Add Links and Images",
+          "description": "Enhance your HTML page by adding links to other websites and including images."
         }
       ],
-      "case_studies": [
+      "resources": [
         {
-          "title": "Ariane 5 Disaster",
-          "year": 1996,
-          "description": "During its maiden flight, the Ariane 5 rocket self-destructed just 37 seconds after launch. The failure was caused by a data type conversion error: a 64-bit floating-point number (used to calculate the rocket's horizontal bias) was improperly converted into a 16-bit signed integer. This overflow led to a cascade of failures that resulted in the loss of the vehicle and cost hundreds of millions of dollars.",
-          "data_type_issue": "Conversion from 64-bit float to 16-bit signed integer leading to an overflow error.",
-          "source": "Bugsnag case study on Ariane 5 disaster"
+          "title": "MDN Web Docs - HTML",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/HTML"
         },
         {
-          "title": "Fannie Mae Spreadsheet Error",
-          "year": 2003,
-          "description": "A formatting error in a Microsoft Excel spreadsheet contributed to a $1 billion mistake by Fannie Mae. The error stemmed from improper handling of data types, which led to significant numerical inaccuracies in financial calculations.",
-          "data_type_issue": "Improper formatting and data type handling in spreadsheets, leading to numerical errors.",
-          "source": "The Guardian: Microsoft Excel's bloopers reel and related articles"
-        },
-        {
-          "title": "Tensor Shape Faults in Deep Learning Systems",
-          "year": 2021,
-          "description": "In production deep learning systems, tensor shape mismatches have led to system crashes and degraded model performance. Faults occur when expected tensor dimensions (often 64-bit floats) are implicitly cast or resized to lower-precision representations (e.g., 32-bit or 16-bit), causing subtle errors to accumulate and sometimes resulting in catastrophic failures.",
-          "data_type_issue": "Mismatches in tensor data types and shapes (e.g., from 64-bit to 32-bit), leading to runtime errors.",
-          "source": "An Empirical Study on Tensor Shape Faults in Deep Learning Systems (Wu et al., 2021)"
-        },
-        {
-          "title": "ONNX Model Converter Failures",
-          "year": 2023,
-          "description": "Deep learning model converters, used to translate models between different frameworks, have encountered failures due to incorrect handling of data types. For instance, a model originally trained using 64-bit floating-point precision may be converted to use 32-bit floats in ONNX, reducing numerical precision and causing semantic errors in downstream computations.",
-          "data_type_issue": "Errors in converting data types (from 64-bit to 32-bit floating-point) during model conversion.",
-          "source": "Analysis of Failures and Risks in Deep Learning Model Converters: A Case Study in the ONNX Ecosystem (Jajal et al., 2023)"
+          "title": "W3Schools HTML Tutorial",
+          "url": "https://www.w3schools.com/html/"
         }
-      ],
-      "summary": "🎯 Your journey into Python programming starts here! This carefully crafted notebook will guide you through fundamental concepts with practical, hands-on exercises. Remember to experiment with the code and challenge yourself before checking the solutions. Happy coding! 🎉"
+      ]
     }
   },
   {
     "id": 2,
-    "title": "Data Types and Variables",
-    "slug": "data-types-and-variables",
-    "description": "Learn about Python's core data types, variables, and how to manipulate different kinds of data.",
-    "iconName": "DataTypesIcon",
-    "visible": false,
-    "topics": [
-      "Numbers and Math Operations",
-      "Strings and Text Manipulation",
-      "Lists and Collections",
-      "Dictionaries",
-      "Type Conversion"
-    ],
+    "title": "CSS Layouts and Flexbox",
+    "description": "Master modern CSS layout techniques",
+    "image": "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 60,
+    "lastUpdated": "2023-03-09T10:15:00",
+    "module": "Web Development Fundamentals",
+    "duration": 60,
     "content": {
-      "introduction": "Understanding data types and variables is fundamental to programming in Python. This lesson covers the main data types you'll use in cognitive science research and data analysis."
+      "sections": [
+        {
+          "title": "CSS Box Model",
+          "content": "The CSS box model consists of content, padding, border, and margin. Understanding this model is fundamental for layout work."
+        },
+        {
+          "title": "Flexbox Layout",
+          "content": "Flexbox is a one-dimensional layout method for arranging items in rows or columns. It provides space distribution and alignment capabilities."
+        },
+        {
+          "title": "Responsive Design",
+          "content": "Responsive design ensures that web pages look good on all devices by using techniques like media queries and flexible grid layouts."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Build a Navbar with Flexbox",
+          "description": "Create a responsive navigation bar using Flexbox."
+        },
+        {
+          "title": "Design a Card Layout",
+          "description": "Implement a grid of cards that adapts to different screen sizes."
+        }
+      ],
+      "resources": [
+        {
+          "title": "MDN Web Docs - Flexbox",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout"
+        },
+        {
+          "title": "CSS-Tricks Guide to Flexbox",
+          "url": "https://css-tricks.com/snippets/css/a-guide-to-flexbox/"
+        }
+      ]
     }
   },
   {
     "id": 3,
-    "title": "Control Flow",
-    "slug": "control-flow",
-    "description": "Master control structures like conditionals and loops to create dynamic and responsive programs.",
-    "iconName": "ControlFlowIcon",
-    "visible": false,
-    "topics": [
-      "Conditional Statements",
-      "For Loops",
-      "While Loops",
-      "List Comprehensions",
-      "Handling Exceptions"
-    ]
+    "title": "JavaScript Fundamentals",
+    "description": "Core concepts of JavaScript programming",
+    "image": "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 30,
+    "lastUpdated": "2023-03-08T16:45:00",
+    "module": "Web Development Fundamentals",
+    "duration": 75,
+    "content": {
+      "sections": [
+        {
+          "title": "JavaScript Basics",
+          "content": "JavaScript is a programming language that adds interactivity to your website. It runs on the browser and can manipulate the DOM."
+        },
+        {
+          "title": "Variables and Data Types",
+          "content": "JavaScript has several data types including strings, numbers, booleans, objects, and arrays."
+        },
+        {
+          "title": "Functions and Control Flow",
+          "content": "Functions are blocks of reusable code. Control flow includes if statements, loops, and switch statements."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Interactive Form Validation",
+          "description": "Create a form with JavaScript validation for fields like email and password."
+        },
+        {
+          "title": "Simple Calculator",
+          "description": "Build a calculator that can perform basic arithmetic operations."
+        }
+      ],
+      "resources": [
+        {
+          "title": "MDN Web Docs - JavaScript",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+        },
+        {
+          "title": "JavaScript.info",
+          "url": "https://javascript.info/"
+        }
+      ]
+    }
   },
   {
     "id": 4,
-    "title": "Functions and Modules",
-    "slug": "functions-and-modules",
-    "description": "Create reusable code with functions and organize your programs using Python modules.",
-    "iconName": "FunctionsIcon",
-    "visible": false,
-    "topics": [
-      "Defining Functions",
-      "Parameters and Return Values",
-      "Lambda Functions",
-      "Importing Modules",
-      "Python Standard Library"
-    ]
+    "title": "Introduction to React",
+    "description": "Building user interfaces with React",
+    "image": "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 0,
+    "lastUpdated": "2023-03-07T09:20:00",
+    "module": "Front-End Frameworks",
+    "duration": 90,
+    "content": {
+      "sections": [
+        {
+          "title": "React Basics",
+          "content": "React is a JavaScript library for building user interfaces. It allows you to compose complex UIs from small, isolated pieces of code called components."
+        },
+        {
+          "title": "Components and Props",
+          "content": "React components are reusable UI pieces. Props are used to pass data between components."
+        },
+        {
+          "title": "State and Lifecycle",
+          "content": "State is internal data that affects a component's rendering. Lifecycle methods provide hooks to execute code at specific points in a component's life."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Create a Todo List",
+          "description": "Build a simple todo list application with React components."
+        },
+        {
+          "title": "Fetch and Display Data",
+          "description": "Create a component that fetches data from an API and displays it."
+        }
+      ],
+      "resources": [
+        {
+          "title": "React Official Documentation",
+          "url": "https://reactjs.org/docs/getting-started.html"
+        },
+        {
+          "title": "React Tutorial",
+          "url": "https://react.dev/learn"
+        }
+      ]
+    }
   },
   {
     "id": 5,
-    "title": "Data Analysis with Pandas",
-    "slug": "data-analysis-with-pandas",
-    "description": "Analyze and manipulate data effectively using the powerful Pandas library for data science.",
-    "iconName": "PandasIcon",
-    "visible": false,
-    "topics": [
-      "Introduction to Pandas",
-      "DataFrames and Series",
-      "Data Loading and Inspection",
-      "Data Cleaning",
-      "Data Aggregation and Grouping"
-    ]
+    "title": "Introduction to Backend Development",
+    "description": "Server-side programming with Node.js",
+    "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 0,
+    "lastUpdated": "2023-03-05T11:30:00",
+    "module": "Backend Development",
+    "duration": 90,
+    "content": {
+      "sections": [
+        {
+          "title": "Server-Side Programming",
+          "content": "Server-side programming refers to the code that runs on the server rather than the client (browser)."
+        },
+        {
+          "title": "Node.js Basics",
+          "content": "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine, allowing JavaScript to run on the server."
+        },
+        {
+          "title": "Express Framework",
+          "content": "Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Create a Simple API",
+          "description": "Build a RESTful API with Node.js and Express."
+        },
+        {
+          "title": "Connect to a Database",
+          "description": "Implement database connectivity with MongoDB or SQL."
+        }
+      ],
+      "resources": [
+        {
+          "title": "Node.js Documentation",
+          "url": "https://nodejs.org/en/docs/"
+        },
+        {
+          "title": "Express.js Documentation",
+          "url": "https://expressjs.com/"
+        }
+      ]
+    }
   },
   {
     "id": 6,
-    "title": "Data Visualization",
-    "slug": "data-visualization",
-    "description": "Create informative and compelling visualizations using matplotlib, seaborn, and other Python libraries.",
-    "iconName": "VisualizationIcon",
-    "visible": false,
-    "topics": [
-      "Plotting with Matplotlib",
-      "Statistical Visualization with Seaborn",
-      "Interactive Plots",
-      "Customizing Visualizations",
-      "Visualization Best Practices"
-    ]
+    "title": "Database Design Principles",
+    "description": "Fundamentals of relational and NoSQL databases",
+    "image": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 0,
+    "lastUpdated": "2023-03-03T15:45:00",
+    "module": "Backend Development",
+    "duration": 60,
+    "content": {
+      "sections": [
+        {
+          "title": "Relational Databases",
+          "content": "Relational databases store data in tables with relationships between them. SQL is used to query and manipulate this data."
+        },
+        {
+          "title": "NoSQL Databases",
+          "content": "NoSQL databases provide flexible schemas for storing data, often used for large-scale and distributed applications."
+        },
+        {
+          "title": "Database Design Patterns",
+          "content": "Good database design includes normalization, indexing, and efficient query patterns."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Design a Database Schema",
+          "description": "Create an entity-relationship diagram for an e-commerce application."
+        },
+        {
+          "title": "Implement CRUD Operations",
+          "description": "Write code to Create, Read, Update, and Delete data in a database."
+        }
+      ],
+      "resources": [
+        {
+          "title": "PostgreSQL Documentation",
+          "url": "https://www.postgresql.org/docs/"
+        },
+        {
+          "title": "MongoDB Documentation",
+          "url": "https://docs.mongodb.com/"
+        }
+      ]
+    }
   },
   {
     "id": 7,
-    "title": "Machine Learning Basics",
-    "slug": "machine-learning-basics",
-    "description": "Get introduced to fundamental machine learning concepts and implement simple ML models with scikit-learn.",
-    "iconName": "MachineLearningIcon",
-    "visible": false,
-    "topics": [
-      "Machine Learning Overview",
-      "Supervised vs. Unsupervised Learning",
-      "Training and Testing Data",
-      "Basic Classification Models",
-      "Model Evaluation"
-    ]
+    "title": "Mobile App Development with React Native",
+    "description": "Cross-platform mobile development",
+    "image": "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 0,
+    "lastUpdated": "2023-03-02T13:20:00",
+    "module": "Mobile Development",
+    "duration": 120,
+    "content": {
+      "sections": [
+        {
+          "title": "React Native Fundamentals",
+          "content": "React Native allows you to build mobile apps using only JavaScript, while accessing the same UI building blocks as regular iOS and Android apps."
+        },
+        {
+          "title": "Mobile UI Components",
+          "content": "React Native provides platform-specific versions of components that work similarly to their web counterparts."
+        },
+        {
+          "title": "Native Device Features",
+          "content": "Access to device capabilities like camera, location, and storage through React Native's APIs and community packages."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Build a Weather App",
+          "description": "Create a mobile app that fetches and displays weather data based on the user's location."
+        },
+        {
+          "title": "Implement Navigation",
+          "description": "Add multi-screen navigation to your mobile application."
+        }
+      ],
+      "resources": [
+        {
+          "title": "React Native Documentation",
+          "url": "https://reactnative.dev/docs/getting-started"
+        },
+        {
+          "title": "Expo Documentation",
+          "url": "https://docs.expo.dev/"
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "title": "JavaScript DOM Manipulation",
+    "description": "Interacting with web page elements using JavaScript",
+    "image": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+    "progress": 0,
+    "lastUpdated": "2023-03-01T10:15:00",
+    "module": "Web Development Fundamentals",
+    "duration": 45,
+    "content": {
+      "sections": [
+        {
+          "title": "DOM Basics",
+          "content": "The Document Object Model (DOM) is a programming interface for web documents. It represents the page so that programs can change the document structure, style, and content."
+        },
+        {
+          "title": "Selecting Elements",
+          "content": "JavaScript provides methods like getElementById, querySelector, and querySelectorAll to select DOM elements."
+        },
+        {
+          "title": "Modifying the DOM",
+          "content": "After selecting elements, you can change their content, attributes, and styles, and add or remove elements from the page."
+        }
+      ],
+      "exercises": [
+        {
+          "title": "Interactive Gallery",
+          "description": "Create an image gallery with thumbnails that show the full image when clicked."
+        },
+        {
+          "title": "Dynamic Content Loading",
+          "description": "Build a page that loads and displays content dynamically when a button is clicked."
+        }
+      ],
+      "resources": [
+        {
+          "title": "MDN Web Docs - DOM",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model"
+        },
+        {
+          "title": "JavaScript DOM Manipulation Course",
+          "url": "https://www.udemy.com/course/javascript-dom-manipulation/"
+        }
+      ]
+    }
   }
 ] 

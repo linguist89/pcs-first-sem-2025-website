@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "type": "info",
+    "message": "Welcome to the new learning platform! We've updated the interface for a better learning experience.",
+    "date": "2023-03-01"
+  },
+  {
+    "id": 2,
+    "type": "warning",
+    "message": "Scheduled maintenance this weekend - The platform will be offline from 2-4 AM EST on Saturday.",
+    "date": "2023-03-05"
+  },
+  {
+    "id": 3,
+    "type": "success",
+    "message": "New courses added! Check out our latest programming and design courses in the catalog.",
+    "date": "2023-03-10"
+  },
+  {
+    "id": 4,
+    "type": "error",
+    "message": "The quiz submission for Module 3 is experiencing technical issues. We're working on a fix.",
+    "date": "2023-03-12"
+  }
+] 

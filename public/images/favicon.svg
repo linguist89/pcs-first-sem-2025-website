@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <title>Education Favicon</title>
+  <g fill="none" fill-rule="evenodd">
+    <!-- Graduation Cap Base (Diamond) -->
+    <path d="M16,4 L3,12 L16,20 L29,12 L16,4 Z" fill="#2563EB" />
+    
+    <!-- Graduation Cap Top Surface -->
+    <path d="M16,6 L6,12 L16,18 L26,12 L16,6 Z" fill="#F9FAFB" />
+    
+    <!-- Tassel -->
+    <path d="M16,20 L16,26 L18,26 L18,20 L16,20 Z" fill="#F59E0B" />
+    
+    <!-- Mortarboard -->
+    <path d="M9,13 L9,18 L23,18 L23,13 L16,17 L9,13 Z" fill="#2563EB" />
+    
+    <!-- Mortarboard Top -->
+    <path d="M9,13 L23,13 L16,11 L9,13 Z" fill="#1E40AF" />
+  </g>
+</svg> 

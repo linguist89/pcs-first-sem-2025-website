@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="50px" viewBox="0 0 200 50" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <title>Education Course Logo</title>
+  <g fill="none" fill-rule="evenodd">
+    <!-- Book -->
+    <path d="M25,10 L55,10 C57.7614,10 60,12.2386 60,15 L60,40 C60,42.7614 57.7614,45 55,45 L25,45 C22.2386,45 20,42.7614 20,40 L20,15 C20,12.2386 22.2386,10 25,10 Z" fill="#2563EB" />
+    <!-- Book Pages -->
+    <path d="M25,12 L55,12 C56.6569,12 58,13.3431 58,15 L58,40 C58,41.6569 56.6569,43 55,43 L25,43 C23.3431,43 22,41.6569 22,40 L22,15 C22,13.3431 23.3431,12 25,12 Z" fill="#F9FAFB" />
+    <!-- Book Binding -->
+    <path d="M22,15 C22,13.3431 23.3431,12 25,12 L25,43 C23.3431,43 22,41.6569 22,40 L22,15 Z" fill="#F59E0B" />
+    <!-- Pencil -->
+    <path d="M65,15 L75,5 L80,10 L70,20 L65,15 Z" fill="#4B5563" />
+    <path d="M75,5 L80,10 L77.5,12.5 L72.5,7.5 L75,5 Z" fill="#F59E0B" />
+    <path d="M65,15 L70,20 L67.5,22.5 L62.5,17.5 L65,15 Z" fill="#E5E7EB" />
+    <!-- Text -->
+    <text font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#111827">
+      <tspan x="85" y="30">EdTech Course</tspan>
+    </text>
+  </g>
+</svg> 

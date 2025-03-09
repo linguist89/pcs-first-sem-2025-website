@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Introduction to Web Development",
+    "description": "Learn the fundamentals of HTML, CSS, and JavaScript",
+    "date": "2023-03-15T10:00:00",
+    "duration": 90,
+    "location": "Virtual",
+    "instructor": "Dr. Sarah Johnson",
+    "link": "https://meeting-link.example.com/web-dev-intro"
+  },
+  {
+    "id": 2,
+    "title": "Advanced Data Structures",
+    "description": "Deep dive into trees, graphs, and algorithms",
+    "date": "2023-03-16T14:30:00",
+    "duration": 120,
+    "location": "Room 203",
+    "instructor": "Prof. Michael Chen",
+    "link": null
+  },
+  {
+    "id": 3,
+    "title": "UX Design Principles",
+    "description": "Understanding user-centered design methods",
+    "date": "2023-03-17T09:00:00",
+    "duration": 90,
+    "location": "Virtual",
+    "instructor": "Alex Rivera",
+    "link": "https://meeting-link.example.com/ux-design"
+  },
+  {
+    "id": 4,
+    "title": "Mobile App Development",
+    "description": "Building native and cross-platform applications",
+    "date": "2023-03-18T13:00:00",
+    "duration": 120,
+    "location": "Lab 101",
+    "instructor": "Dr. Emily Williams",
+    "link": null
+  },
+  {
+    "id": 5,
+    "title": "Introduction to Machine Learning",
+    "description": "Foundations of ML algorithms and applications",
+    "date": "2023-03-19T11:00:00",
+    "duration": 120,
+    "location": "Virtual",
+    "instructor": "Dr. James Wilson",
+    "link": "https://meeting-link.example.com/ml-intro"
+  },
+  {
+    "id": 6,
+    "title": "Database Design & SQL",
+    "description": "Relational database principles and SQL queries",
+    "date": "2023-03-20T15:00:00",
+    "duration": 90,
+    "location": "Room 105",
+    "instructor": "Maria Garcia",
+    "link": null
+  }
+] 

@@ -1,30 +1,46 @@
-import { Montserrat, Fira_Code } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { UserProvider } from "@/context/UserContext";
+import { CourseProvider } from "@/context/CourseContext";
+import Providers from "@/components/layout/Providers";
 
-const montserrat = Montserrat({
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  variable: "--font-montserrat",
-  display: "swap",
 });
 
-const firaCode = Fira_Code({
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  variable: "--font-fira-code",
-  display: "swap",
 });
 
 export const metadata = {
-  title: "Python for Cognitive Science",
-  description: "Learn Python programming for Cognitive Science and Machine Learning",
+  title: "EdTech Course - Interactive Learning Platform",
+  description: "A comprehensive educational platform for in-class teaching and interactive learning",
   icons: {
     icon: [
       {
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
-      }
+        url: "/images/favicon.svg",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/images/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+      {
+        url: "/images/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
     ],
+    apple: {
+      url: "/images/apple-touch-icon.png",
+      sizes: "180x180",
+    },
   },
 };
 
@@ -32,13 +48,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${montserrat.variable} ${firaCode.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col antialiased`}
       >
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Header />
+          <div className="flex-grow">{children}</div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

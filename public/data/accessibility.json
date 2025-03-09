@@ -1,0 +1,55 @@
+{
+  "title": "Accessibility Statement",
+  "lastUpdated": "2024-03-15",
+  "introduction": "EdTech Course is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone, and applying the relevant accessibility standards.",
+  "sections": [
+    {
+      "title": "1. Our Commitment",
+      "content": "EdTech Course is committed to making our website accessible to all users, including those with disabilities. We aim to comply with the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards."
+    },
+    {
+      "title": "2. Accessibility Features",
+      "content": "Our platform includes features to enhance accessibility, including keyboard navigation, screen reader compatibility, text resizing, color contrast, and alternative text for images."
+    },
+    {
+      "title": "3. Keyboard Navigation",
+      "content": "All interactive elements on our website are accessible via keyboard. We use logical tab ordering and visible focus indicators to assist users who navigate by keyboard."
+    },
+    {
+      "title": "4. Screen Reader Compatibility",
+      "content": "We implement proper semantic HTML and ARIA landmarks to ensure our content is accessible to screen reader users. We test our platform with popular screen readers including NVDA, JAWS, and VoiceOver."
+    },
+    {
+      "title": "5. Text Resizing",
+      "content": "Our website is designed to support text resizing up to 200% without loss of content or functionality. We use relative units (em, rem) for font sizes to ensure text scales appropriately."
+    },
+    {
+      "title": "6. Color and Contrast",
+      "content": "We strive to maintain a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text, as recommended by WCAG 2.1 AA standards. Color is not used as the only means of conveying information."
+    },
+    {
+      "title": "7. Alternative Text",
+      "content": "We provide alternative text for all non-decorative images and meaningful visual elements. This ensures that users who cannot see images can still understand the content."
+    },
+    {
+      "title": "8. Video and Audio Content",
+      "content": "Educational videos include closed captions, and when applicable, audio descriptions. Transcripts are provided for audio-only content."
+    },
+    {
+      "title": "9. Forms and Interactive Elements",
+      "content": "All form fields and interactive elements have proper labels, instructions, and error messages. Error messages are clearly identified and provide guidance on how to resolve issues."
+    },
+    {
+      "title": "10. Ongoing Improvements",
+      "content": "We regularly assess our website for accessibility issues and work to address any barriers identified. Our development team receives training on accessibility best practices."
+    },
+    {
+      "title": "11. Feedback",
+      "content": "We welcome your feedback on the accessibility of EdTech Course. If you encounter accessibility barriers on our site, please contact us at accessibility@edtechcourse.com."
+    },
+    {
+      "title": "12. Accessibility Resources",
+      "content": "For additional information about accessibility and accommodations, we recommend visiting the Web Accessibility Initiative (WAI) website at www.w3.org/WAI/."
+    }
+  ]
+} 

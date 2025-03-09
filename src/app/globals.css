@@ -2,330 +2,159 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "./reset.css";
-@import url('https://fonts.googleapis.com/css2?family=Yellowtail&display=swap');
-
 :root {
-  /* Modern Color System - Primary (60%) */
-  --color-primary: #4361ee; /* Bold indigo blue */
-  --color-primary-light: #738eff;
-  --color-primary-dark: #2a3eb1;
-  --color-primary-rgb: 67, 97, 238;
+  /* Base colors - Using a more vibrant blue and warmer secondary color */
+  --primary-color: #3563e9;        /* Vibrant blue - 60% */
+  --secondary-color: #546e7a;      /* Blue-gray - 30% */
+  --accent-color: #ff6b35;         /* Coral orange - 10% */
   
-  /* Secondary Colors (30%) */
-  --color-secondary: #fb5607; /* Vibrant orange */
-  --color-secondary-light: #ff7a38;
-  --color-secondary-dark: #c43d00;
-  --color-secondary-rgb: 251, 86, 7;
+  /* Neutrals - Less stark white, more subtle tones */
+  --neutral-light: #f0f4f8;
+  --neutral-dark: #263238;
   
-  /* Accent Colors (10%) */
-  --color-accent: #3a0ca3; /* Deep purple */
-  --color-accent-light: #5a3fca;
-  --color-accent-dark: #2a0679;
-  --color-accent-rgb: 58, 12, 163;
+  /* Text colors - Higher contrast for better readability */
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --text-inverse: #f8fafc;
   
-  /* Neutral Colors */
-  --neutral-light: #f8f9fc;
-  --neutral-mid: #e0e7ff;
-  --neutral-dark: #172144;
+  /* Background colors - Softer backgrounds with subtle tinting */
+  --background-primary: #f8fafc;
+  --background-secondary: #edf2f7;
+  --background-accent: #e6f0ff;
   
-  /* Text Colors */
-  --text-primary: #172144; /* Dark navy */
-  --text-secondary: #4f5e8c; /* Muted blue-gray */
-  --text-inverse: #ffffff;
+  /* Borders - Subtle separation */
+  --border-light: #e2e8f0;
+  --border-dark: #a0aec0;
   
-  /* Background Colors */
-  --background-primary: #ffffff;
-  --background-secondary: #f8f9fc;
-  --background-accent: #e0e7ff;
+  /* Semantic colors - More vibrant feedback colors */
+  --success-color: #0ca678;
+  --error-color: #e53e3e;
+  --warning-color: #f59f00;
+  --info-color: #3182ce;
   
-  /* Border Colors */
-  --border-light: #e0e7ff;
-  --border-dark: #4f5e8c;
+  /* Shadows - Softer shadows for depth */
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-dark: rgba(0, 0, 0, 0.1);
   
-  /* Semantic Colors */
-  --success-color: #06d6a0; /* Teal */
-  --error-color: #ef476f; /* Raspberry */
-  --warning-color: #ffd166; /* Golden yellow */
-  --info-color: #118ab2; /* Teal blue */
-  
-  /* Shadows */
-  --shadow-light: 0 4px 20px rgba(67, 97, 238, 0.1); 
-  --shadow-dark: 0 8px 30px rgba(67, 97, 238, 0.2);
-  
-  /* Elevation Levels */
-  --elevation-1: 0 2px 10px rgba(23, 33, 68, 0.08);
-  --elevation-2: 0 4px 20px rgba(23, 33, 68, 0.12);
-  --elevation-3: 0 8px 30px rgba(23, 33, 68, 0.16);
-  --elevation-4: 0 12px 40px rgba(23, 33, 68, 0.2);
-  --elevation-5: 0 16px 50px rgba(23, 33, 68, 0.24);
-  
-  /* Transitions */
-  --transition-speed: 0.3s;
-  --transition-easing: cubic-bezier(0.4, 0, 0.2, 1);
-  
-  /* Spacing */
-  --spacing-unit: 8px;
-  
-  /* Base Font */
-  --font-sans: var(--font-montserrat);
-  --font-mono: var(--font-fira-code);
+  /* System colors (for backward compatibility) */
+  --background: var(--background-primary);
+  --foreground: var(--text-primary);
 }
 
-/* Dark theme colors */
-.dark-theme {
-  --color-primary: #738eff; /* Lighter indigo blue */
-  --color-primary-light: #a4b5ff;
-  --color-primary-dark: #4361ee;
-  --color-primary-rgb: 115, 142, 255;
+[data-theme='dark'] {
+  /* Base colors - Brighter versions for dark mode */
+  --primary-color: #4f7eff;        /* Brighter blue - 60% */
+  --secondary-color: #78909c;      /* Lighter blue-gray - 30% */
+  --accent-color: #ff8a65;         /* Lighter coral - 10% */
   
-  --color-secondary: #ff7a38; /* Brighter orange */
-  --color-secondary-light: #ffab78;
-  --color-secondary-dark: #fb5607;
-  --color-secondary-rgb: 255, 122, 56;
+  /* Neutrals */
+  --neutral-light: #37474f;
+  --neutral-dark: #eceff1;
   
-  --color-accent: #5a3fca; /* Brighter purple */
-  --color-accent-light: #7c64de;
-  --color-accent-dark: #3a0ca3;
-  --color-accent-rgb: 90, 63, 202;
+  /* Text colors */
+  --text-primary: #f7fafc;
+  --text-secondary: #cbd5e0;
+  --text-inverse: #1a202c;
   
-  --neutral-light: #293563;
-  --neutral-mid: #1d274d;
-  --neutral-dark: #0f1a38;
+  /* Background colors - Richer, less flat backgrounds */
+  --background-primary: #1a202c;
+  --background-secondary: #2d3748;
+  --background-accent: #2a4365;
   
-  --text-primary: #ffffff;
-  --text-secondary: #b0bcef;
-  --text-inverse: #172144;
+  /* Borders */
+  --border-light: #4a5568;
+  --border-dark: #a0aec0;
   
-  --background-primary: #0f1a38;
-  --background-secondary: #1d274d;
-  --background-accent: #293563;
+  /* Shadows - Stronger shadows for contrast */
+  --shadow-light: rgba(0, 0, 0, 0.3);
+  --shadow-dark: rgba(0, 0, 0, 0.5);
   
-  --border-light: #293563;
-  --border-dark: #4f5e8c;
-  
-  --shadow-light: 0 4px 20px rgba(10, 15, 35, 0.4);
-  --shadow-dark: 0 8px 30px rgba(10, 15, 35, 0.6);
+  /* System colors (for backward compatibility) */
+  --background: var(--background-primary);
+  --foreground: var(--text-primary);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not(.dark-theme) {
-    --color-primary: #738eff; /* Lighter indigo blue */
-    --color-primary-light: #a4b5ff;
-    --color-primary-dark: #4361ee;
-    --color-primary-rgb: 115, 142, 255;
+  :root:not([data-theme='light']) {
+    /* Base colors - Brighter versions for dark mode */
+    --primary-color: #4f7eff;        /* Brighter blue - 60% */
+    --secondary-color: #78909c;      /* Lighter blue-gray - 30% */
+    --accent-color: #ff8a65;         /* Lighter coral - 10% */
     
-    --color-secondary: #ff7a38; /* Brighter orange */
-    --color-secondary-light: #ffab78;
-    --color-secondary-dark: #fb5607;
-    --color-secondary-rgb: 255, 122, 56;
+    /* Neutrals */
+    --neutral-light: #37474f;
+    --neutral-dark: #eceff1;
     
-    --color-accent: #5a3fca; /* Brighter purple */
-    --color-accent-light: #7c64de;
-    --color-accent-dark: #3a0ca3;
-    --color-accent-rgb: 90, 63, 202;
+    /* Text colors */
+    --text-primary: #f7fafc;
+    --text-secondary: #cbd5e0;
+    --text-inverse: #1a202c;
     
-    --neutral-light: #293563;
-    --neutral-mid: #1d274d;
-    --neutral-dark: #0f1a38;
+    /* Background colors - Richer, less flat backgrounds */
+    --background-primary: #1a202c;
+    --background-secondary: #2d3748;
+    --background-accent: #2a4365;
     
-    --text-primary: #ffffff;
-    --text-secondary: #b0bcef;
-    --text-inverse: #172144;
+    /* Borders */
+    --border-light: #4a5568;
+    --border-dark: #a0aec0;
     
-    --background-primary: #0f1a38;
-    --background-secondary: #1d274d;
-    --background-accent: #293563;
+    /* Shadows - Stronger shadows for contrast */
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-dark: rgba(0, 0, 0, 0.5);
     
-    --border-light: #293563;
-    --border-dark: #4f5e8c;
-    
-    --shadow-light: 0 4px 20px rgba(10, 15, 35, 0.4);
-    --shadow-dark: 0 8px 30px rgba(10, 15, 35, 0.6);
+    /* System colors (for backward compatibility) */
+    --background: var(--background-primary);
+    --foreground: var(--text-primary);
   }
 }
 
 body {
   color: var(--text-primary);
-  background: linear-gradient(to bottom right, 
-              var(--background-primary), 
-              color-mix(in srgb, var(--background-primary), var(--color-primary) 5%),
-              var(--background-primary));
-  min-height: 100vh;
-  font-family: var(--font-sans);
-  transition: color var(--transition-speed) var(--transition-easing),
-              background var(--transition-speed) var(--transition-easing);
+  background: var(--background-primary);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Improved Typography */
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.2;
-  font-weight: 700;
-  margin-bottom: 0.5em;
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
 }
 
-h1 {
-  font-size: 2.5rem;
-  letter-spacing: -0.025em;
+/* Additional color utility classes for more varied backgrounds */
+.bg-gradient-primary {
+  background-image: linear-gradient(135deg, #3563e9, #4f7eff 70%);
 }
 
-h2 {
-  font-size: 2rem;
-  letter-spacing: -0.025em;
+.bg-gradient-accent {
+  background-image: linear-gradient(135deg, var(--accent-color), color-mix(in srgb, var(--accent-color) 70%, var(--primary-color)));
 }
 
-h3 {
-  font-size: 1.5rem;
-}
-
-p {
-  margin-bottom: 1.5em;
-}
-
-/* Enhanced Material Design-inspired utility classes */
-.card {
-  background-color: var(--background-primary);
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: var(--elevation-1);
-  transition: all var(--transition-speed) var(--transition-easing);
-}
-
-.card:hover {
-  box-shadow: var(--elevation-2);
-  transform: translateY(-2px);
-}
-
-.surface {
-  background-color: var(--background-primary);
-  border-radius: 8px;
-  padding: var(--spacing-unit);
-  transition: background-color var(--transition-speed) var(--transition-easing);
-}
-
-/* Improved button styles */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  transition: all var(--transition-speed) var(--transition-easing);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-primary {
-  background-color: var(--color-primary);
-  color: white;
-}
-
-.btn-primary:hover {
-  background-color: var(--color-primary-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-light);
-}
-
-.btn-secondary {
-  background-color: var(--color-secondary);
-  color: white;
-}
-
-.btn-secondary:hover {
-  background-color: var(--color-secondary-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-light);
-}
-
-/* Ripple effect */
-.ripple {
-  position: relative;
-  overflow: hidden;
-}
-
-.ripple::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  background-image: radial-gradient(circle, #ffffff33 10%, transparent 10.01%);
-  background-repeat: no-repeat;
-  background-position: 50%;
-  transform: scale(10, 10);
-  opacity: 0;
-  transition: transform 0.4s, opacity 0.5s;
-}
-
-.ripple:active::after {
-  transform: scale(0, 0);
-  opacity: 0.3;
-  transition: 0s;
-}
-
-/* Glass morphism */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.dark-theme .glass {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Course Card Enhancements */
-.course-progress-bar {
-  height: 6px;
-  border-radius: 10px;
-  overflow: hidden;
+.bg-pattern-light {
   background-color: var(--background-secondary);
+  background-image: radial-gradient(var(--border-light) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.course-progress-fill {
-  height: 100%;
-  background: linear-gradient(to right, var(--color-primary), var(--color-secondary));
-  border-radius: 10px;
-  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Utility classes for animations */
-.hover-float {
-  transition: transform 0.3s ease;
-}
-.hover-float:hover {
-  transform: translateY(-8px);
-}
-
-.hover-scale {
-  transition: transform 0.3s ease;
-}
-.hover-scale:hover {
-  transform: scale(1.05);
-}
-
-/* Utility classes for text gradient and animations */
 .text-gradient {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  display: inline-block;
-  position: relative;
+  background-image: linear-gradient(90deg, var(--primary-color), var(--accent-color));
 }
 
-/* Custom grid pattern background */
-.bg-grid-pattern {
-  background-image: linear-gradient(to right, rgba(67, 97, 238, 0.1) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(67, 97, 238, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
+@keyframes modalFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.font-yellowtail {
-  font-family: 'Yellowtail', cursive;
+.animate-modalFade {
+  animation: modalFade 0.3s ease-out forwards;
 }

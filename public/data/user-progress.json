@@ -1,0 +1,151 @@
+{
+  "userId": 1,
+  "username": "student_demo",
+  "displayName": "Demo Student",
+  "email": "contact@spsdigitaltech.com",
+  "profileImage": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=256&q=80",
+  "overallProgress": 35,
+  "completedModules": 2,
+  "totalModules": 8,
+  "completedLessons": 7,
+  "totalLessons": 24,
+  "nextLesson": {
+    "id": 8,
+    "title": "JavaScript DOM Manipulation",
+    "module": "Web Development Fundamentals",
+    "estimatedTime": 45
+  },
+  "achievements": [
+    {
+      "id": 1,
+      "title": "First Step",
+      "description": "Completed your first lesson",
+      "icon": "🚀",
+      "earned": true,
+      "date": "2023-02-15"
+    },
+    {
+      "id": 2,
+      "title": "Consistent Learner",
+      "description": "Completed at least one lesson for 5 consecutive days",
+      "icon": "🔥",
+      "earned": true,
+      "date": "2023-02-20"
+    },
+    {
+      "id": 3,
+      "title": "Module Master",
+      "description": "Completed an entire module",
+      "icon": "🏆",
+      "earned": true,
+      "date": "2023-03-01"
+    },
+    {
+      "id": 4,
+      "title": "Quiz Whiz",
+      "description": "Scored 90% or higher on 3 quizzes",
+      "icon": "🧠",
+      "earned": false,
+      "date": null
+    }
+  ],
+  "lessonProgress": [
+    {
+      "lessonId": 1,
+      "progress": 100,
+      "completed": true,
+      "lastAccessed": "2023-02-15T10:30:00",
+      "timeSpent": 50,
+      "quiz": {
+        "score": 85,
+        "completed": true
+      }
+    },
+    {
+      "lessonId": 2,
+      "progress": 60,
+      "completed": false,
+      "lastAccessed": "2023-03-10T14:45:00",
+      "timeSpent": 35,
+      "quiz": {
+        "score": null,
+        "completed": false
+      }
+    },
+    {
+      "lessonId": 3,
+      "progress": 30,
+      "completed": false,
+      "lastAccessed": "2023-03-08T16:20:00",
+      "timeSpent": 25,
+      "quiz": {
+        "score": null,
+        "completed": false
+      }
+    },
+    {
+      "lessonId": 4,
+      "progress": 0,
+      "completed": false,
+      "lastAccessed": null,
+      "timeSpent": 0,
+      "quiz": {
+        "score": null,
+        "completed": false
+      }
+    }
+  ],
+  "moduleProgress": [
+    {
+      "moduleId": 1,
+      "moduleName": "Web Development Fundamentals",
+      "progress": 60,
+      "lessonsCompleted": 3,
+      "totalLessons": 5
+    },
+    {
+      "moduleId": 2,
+      "moduleName": "Front-End Frameworks",
+      "progress": 0,
+      "lessonsCompleted": 0,
+      "totalLessons": 4
+    },
+    {
+      "moduleId": 3,
+      "moduleName": "Backend Development",
+      "progress": 0,
+      "lessonsCompleted": 0,
+      "totalLessons": 5
+    },
+    {
+      "moduleId": 4,
+      "moduleName": "Mobile Development",
+      "progress": 0,
+      "lessonsCompleted": 0,
+      "totalLessons": 3
+    }
+  ],
+  "recentActivity": [
+    {
+      "type": "lesson_progress",
+      "lessonId": 3,
+      "lessonTitle": "JavaScript Fundamentals",
+      "timestamp": "2023-03-08T16:20:00",
+      "details": "Made progress on JavaScript Fundamentals lesson"
+    },
+    {
+      "type": "quiz_completed",
+      "lessonId": 2,
+      "lessonTitle": "CSS Layouts and Flexbox",
+      "timestamp": "2023-03-08T15:10:00",
+      "details": "Scored 75% on CSS Layouts quiz"
+    },
+    {
+      "type": "lesson_completed",
+      "lessonId": 1,
+      "lessonTitle": "Introduction to HTML",
+      "timestamp": "2023-02-15T11:45:00",
+      "details": "Completed Introduction to HTML lesson"
+    }
+  ]
+} 

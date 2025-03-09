@@ -1,0 +1,142 @@
+{
+  "categories": [
+    { "id": "all", "name": "All Resources" },
+    { "id": "documents", "name": "Documents", "icon": "📄" },
+    { "id": "videos", "name": "Videos", "icon": "🎬" },
+    { "id": "exercises", "name": "Exercises", "icon": "✏️" },
+    { "id": "code-samples", "name": "Code Samples", "icon": "💻" },
+    { "id": "external", "name": "External Links", "icon": "🔗" }
+  ],
+  "resources": [
+    {
+      "id": 1,
+      "title": "HTML Structure Guide",
+      "description": "Comprehensive guide to HTML document structure and semantic elements",
+      "category": "documents",
+      "type": "PDF",
+      "size": "2.4 MB",
+      "date": "2023-02-15",
+      "thumbnail": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 2,
+      "title": "CSS Flexbox Tutorial",
+      "description": "Complete tutorial on using CSS flexbox for modern layouts",
+      "category": "videos",
+      "type": "Video",
+      "duration": "45:12",
+      "date": "2023-03-10",
+      "thumbnail": "https://images.unsplash.com/photo-1523437113738-bbd3cc89fb19?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 3,
+      "title": "JavaScript Fundamentals Workbook",
+      "description": "Practice exercises covering core JavaScript concepts",
+      "category": "exercises",
+      "type": "DOCX",
+      "size": "1.8 MB",
+      "date": "2023-01-25",
+      "thumbnail": "https://images.unsplash.com/photo-1587620962725-abab7fe55159?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 4,
+      "title": "React State Management",
+      "description": "Example code for different state management approaches in React",
+      "category": "code-samples",
+      "type": "ZIP",
+      "size": "3.2 MB",
+      "date": "2023-04-05",
+      "thumbnail": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 5,
+      "title": "MDN Web Documentation",
+      "description": "Comprehensive reference for web technologies",
+      "category": "external",
+      "type": "Website",
+      "date": "2023-05-01",
+      "thumbnail": "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "https://developer.mozilla.org/"
+    },
+    {
+      "id": 6,
+      "title": "Web Accessibility Guidelines",
+      "description": "WCAG 2.1 guidelines and implementation strategies",
+      "category": "documents",
+      "type": "PDF",
+      "size": "4.1 MB",
+      "date": "2023-03-22",
+      "thumbnail": "https://images.unsplash.com/photo-1615406260303-1b3a82e4e3a8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 7,
+      "title": "CSS Grid Masterclass",
+      "description": "In-depth video course on mastering CSS Grid layouts",
+      "category": "videos",
+      "type": "Video",
+      "duration": "1:22:45",
+      "date": "2023-02-28",
+      "thumbnail": "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 8,
+      "title": "Node.js API Development",
+      "description": "Sample code for building RESTful APIs with Node.js and Express",
+      "category": "code-samples",
+      "type": "ZIP",
+      "size": "2.7 MB",
+      "date": "2023-04-12",
+      "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 9,
+      "title": "JavaScript Testing Fundamentals",
+      "description": "Practice exercises for testing JavaScript applications",
+      "category": "exercises",
+      "type": "PDF",
+      "size": "3.5 MB",
+      "date": "2023-03-05",
+      "thumbnail": "https://images.unsplash.com/photo-1566837945700-30057527ade0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 10,
+      "title": "Frontend Masters",
+      "description": "In-depth courses on JavaScript, React, and web development",
+      "category": "external",
+      "type": "Website",
+      "date": "2023-05-10",
+      "thumbnail": "https://images.unsplash.com/photo-1593720213428-28a5b9e94613?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "https://frontendmasters.com/"
+    },
+    {
+      "id": 11,
+      "title": "React Hooks Cheatsheet",
+      "description": "Quick reference guide for React hooks with examples",
+      "category": "documents",
+      "type": "PDF",
+      "size": "1.2 MB",
+      "date": "2023-04-18",
+      "thumbnail": "https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    },
+    {
+      "id": 12,
+      "title": "Database Design Principles",
+      "description": "Video tutorial on relational database design",
+      "category": "videos",
+      "type": "Video",
+      "duration": "58:30",
+      "date": "2023-03-15",
+      "thumbnail": "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80",
+      "url": "#"
+    }
+  ]
+} 
