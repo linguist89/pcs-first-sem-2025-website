@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="bg-bg-primary border-t border-border-light pt-12 pb-6">
       <div className="container mx-auto px-4">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           {/* Column 1: About */}
           <div>
             <h3 className="text-lg font-semibold mb-4 text-text-primary">About EdTech Course</h3>
@@ -76,28 +76,6 @@ const Footer = () => {
                 <span className="text-text-secondary">+1 (555) 123-4567</span>
               </li>
             </ul>
-          </div>
-          
-          {/* Column 4: Newsletter */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-text-primary">Stay Updated</h3>
-            <p className="text-text-secondary mb-4">
-              Subscribe to our newsletter for the latest course updates and educational resources.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-2">
-              <input 
-                type="email" 
-                placeholder="Your email address" 
-                className="px-4 py-2 rounded-md border border-border-light bg-bg-primary focus:outline-none focus:ring-2 focus:ring-primary"
-                required
-              />
-              <button 
-                type="submit" 
-                className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
           </div>
         </div>
         
