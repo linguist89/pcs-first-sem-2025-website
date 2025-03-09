@@ -22,10 +22,10 @@ const Hero = () => {
           {/* Text Content */}
           <div className="w-full lg:w-1/2">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Interactive Learning for the Digital Classroom
+              Python for Cognitive Science
             </h1>
             <p className="text-lg text-white mb-8">
-              Explore our comprehensive course platform designed to enhance in-class teaching and provide students with an engaging learning experience.
+              Learn functional programming in Python with applications in cognitive science, data analysis, and machine learning, designed specifically for students exploring the intersection of computation and the mind.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -40,16 +40,16 @@ const Hero = () => {
             {/* Stats */}
             <div className="flex flex-wrap gap-8 mt-12">
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-white">25+</span>
-                <span className="text-white">Courses</span>
+                <span className="text-3xl font-bold text-white">3+</span>
+                <span className="text-white">Modules</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-white">1000+</span>
-                <span className="text-white">Students</span>
+                <span className="text-3xl font-bold text-white">12+</span>
+                <span className="text-white">Exercises</span>
               </div>
               <div className="flex flex-col">
-                <span className="text-3xl font-bold text-white">50+</span>
-                <span className="text-white">Instructors</span>
+                <span className="text-3xl font-bold text-white">5+</span>
+                <span className="text-white">Projects</span>
               </div>
             </div>
           </div>
@@ -58,8 +58,8 @@ const Hero = () => {
           <div className="w-full lg:w-1/2">
             <div className="relative aspect-video overflow-hidden rounded-lg shadow-lg transform rotate-1 hover:rotate-0 transition-transform duration-300">
               <Image 
-                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" 
-                alt="Students collaborating in a digital classroom environment" 
+                src="https://images.unsplash.com/photo-1580894732444-8ecded7900cd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" 
+                alt="Cognitive science student programming in Python" 
                 width={800} 
                 height={450}
                 className="object-cover"
@@ -69,7 +69,7 @@ const Hero = () => {
               <div className="absolute bottom-4 right-4 bg-bg-primary p-3 rounded-md shadow-md">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-accent-color rounded-full animate-pulse"></div>
-                  <p className="text-sm font-medium text-text-primary">Live Classes Available</p>
+                  <p className="text-sm font-medium text-text-primary">First Semester 2025</p>
                 </div>
               </div>
             </div>

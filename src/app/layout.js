@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "EdTech Course - Interactive Learning Platform",
-  description: "A comprehensive educational platform for in-class teaching and interactive learning",
+  title: "Python for Cognitive Science - First Semester 2025",
+  description: "Learn functional programming in Python with applications in cognitive science, data analysis, and machine learning",
   icons: {
     icon: [
       {
