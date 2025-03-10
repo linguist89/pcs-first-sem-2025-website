@@ -1,279 +1,359 @@
 ---
 id: 1
-title: "Introduction to Python for Cognitive Science"
-description: "Learn the fundamentals of Python with applications in cognitive science"
+title: "Python Functions Explained Through Coffee Shop Analogies"
+description: "Learn how to create and use Python functions by simulating coffee shop operations"
 image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80"
-module: "Functional Programming Fundamentals"
+module: "Python Fundamentals"
 duration: 60
 difficulty: "Beginner"
 lastUpdated: "2025-08-15T10:00:00"
 progress: 0
-prerequisites: ["None"]
+prerequisites: ["Basic understanding of programming concepts", "Python installed"]
 learningObjectives:
-  - "Understand the Python programming environment"
-  - "Learn basic Python syntax and data types"
-  - "Apply functional programming concepts in Python"
-  - "Recognize how Python is used in cognitive science research"
+  - "Understand how to define and call functions in Python"
+  - "Learn about parameters, arguments, and return values"
+  - "Implement functions that work together in a system"
+  - "Identify and fix common mistakes with Python functions"
 ---
 
-<img src="https://r2cdn.perplexity.ai/pplx-full-logo-primary-dark%402x.png" class="logo" width="120"/>
+# Python Functions Explained Through Coffee Shop Operations
 
-# 
+**Learning Objective**: Understand how to create and use functions in Python by simulating a coffee shop workflow.
 
 ---
 
-# Teaching Python Functions for Machine Learning Preparation: A Lesson Plan for Cognitive Science Students
+## 1. What Are Functions? (The Coffee Machine Blueprint)
 
-Key findings: This lesson plan introduces Python functions through direct ML-relevant examples, progressing from basic syntax to collaborative coding exercises. The structure emphasizes practical application in Jupyter notebooks, with group activities designed to mirror real-world ML workflows. Concepts are grounded in educational best practices from computer science pedagogy, while exercises draw from proven function training materials.
+A function is a reusable set of instructions that performs a specific task. Think of it like a coffee machine:
 
-## 1. Introduction to Functions in Machine Learning Context
+```python  
+# Function definition (machine blueprint)  
+def brew_coffee(coffee_type):  
+    """Brews a specific coffee drink"""  
+    print(f"Grinding beans for {coffee_type}")  
+    print(f"Brewing {coffee_type}...")  
+    return f"Your {coffee_type} is ready!"  
 
-### 1.1 Why Functions Matter for ML
-
-Functions form the building blocks of machine learning pipelines, enabling:
-
-- Reproducible data preprocessing
-- Modular model architecture design
-- Efficient hyperparameter tuning
-
-Cognitive scientists benefit from function mastery when implementing experimental paradigms and analyzing behavioral data. A typical ML workflow involves chaining multiple functions for data loading, feature engineering, and model evaluation.
-
-### 1.2 Basic Function Syntax
-
-Python functions follow this template:
-
-```python
-def normalize_data(values):  # Function definition
-    """Scale numerical values between 0-1"""  # Docstring
-    scaled = [(x - min(values))/(max(values)-min(values)) for x in values]
-    return scaled  # Return statement
+# Using the function (placing an order)  
+order_result = brew_coffee("latte")  
+print(order_result)  
 ```
 
-Key components:
+**Key Concepts**:
 
-1. `def` keyword initiates function declaration
-2. Parentheses contain parameters (values in this case)
-3. Colon and indentation define the function body
-4. `return` sends processed data back to caller
+- **`def`**: Defines the function (like installing a coffee machine)
+- **Parameters**: Input slots (`coffee_type` = drink selection)
+- **Function Body**: Actions to perform (grinding, brewing steps)
+- **`return`**: Final output (serving the drink)
 
-## 2. Core Function Concepts with ML Examples
+**Why This Matters**:
+Functions help avoid repeating code. Just like a coffee machine standardizes drink preparation, functions standardize common tasks.
 
-### 2.1 Parameters vs Arguments
+---
 
-Parameters are placeholders in function definitions, while arguments are actual values passed during calls:
+## 2. Parameters vs. Arguments: Custom Orders
 
-```python
-def accuracy(y_true, y_pred):  # Parameters
-    correct = sum(1 for t,p in zip(y_true,y_pred) if t == p)
-    return correct/len(y_true)
+**Parameters** are variables listed in the function definition. **Arguments** are actual values passed during a function call.
 
-acc = accuracy([0,1,1], [1,1,1])  # Arguments
-print(f"Model accuracy: {acc:.1%}")  
+```python  
+def take_order(drink, size, milk_type="whole"):  
+    """Processes a coffee order with customizations"""  
+    price = 3.00  
+    if size == "large":  
+        price += 1.50  
+    if milk_type != "whole":  
+        price += 0.50  
+    return f"{size} {drink} with {milk_type} milk: ${price}"  
+
+# Using different arguments  
+print(take_order("cappuccino", "medium"))             # Uses default milk  
+print(take_order("latte", "large", "almond"))         # Custom milk  
 ```
 
-Machine learning libraries like scikit-learn use this pattern extensively in their API design.
+**Key Differences**:
 
-### 2.2 Return Values and Variable Scope
+- **Parameters**: `drink`, `size`, `milk_type` (defined in function)
+- **Arguments**: `"latte"`, `"large"`, `"almond"` (actual values passed)
 
-Functions encapsulate logic while maintaining namespace separation:
+**Default Values**:
+`milk_type="whole"` lets customers skip specifying milk unless they want alternatives.
 
-```python
-def feature_means(X):
-    means = []
-    for col in X.T:  # Transpose for column iteration
-        means.append(sum(col)/len(col))
-    return means  # Only this value exits the function
+---
 
-data = [[1,2], [3,4], [5,6]]
-print(means)  # NameError - exists only inside function
-print(feature_means(data))  # Correct access via return
+## 3. Return Values: Serving the Finished Product
+
+The `return` statement sends data back from the function. Without it, functions don't provide usable results.
+
+```python  
+def calculate_serving_time(orders):  
+    """Calculates total wait time"""  
+    return orders * 2.5  # 2.5 minutes per order  
+
+# Compare these two approaches:  
+def bad_service(orders):  
+    print(f"Wait time: {orders * 2.5} minutes")  
+
+good_result = calculate_serving_time(3)  # Returns 7.5  
+bad_result = bad_service(3)              # Returns None  
+
+print(f"Good result: {good_result}")  
+print(f"Bad result: {bad_result} (useless!)")  
 ```
 
-This scope isolation prevents variable collisions in complex ML workflows.
+**Critical Insight**:
 
-## 3. Code-Along Exercises
+- Use `return` to get *usable data* from functions
+- `print()` only *displays* information – it doesn't return data for later use
 
-### 3.1 Exercise 1: Data Preprocessing Function
+---
 
-Create a function to handle missing values:
+## Code-Along Exercises
 
-```python
-def handle_missing(data, strategy='mean'):
-    """Replace NaN values using specified strategy"""
-    import numpy as np
-    if strategy == 'mean':
-        fill_value = np.nanmean(data)
-    elif strategy == 'median':
-        fill_value = np.nanmedian(data)
-    return np.nan_to_num(data, nan=fill_value)
+### Exercise 1: Price Calculator
+
+```python  
+def calculate_price(base_price, size):  
+    """Calculates final price based on size"""  
+    size_multiplier = {  
+        "small": 1.0,  
+        "medium": 1.3,  
+        "large": 1.6  
+    }  
+    return base_price * size_multiplier[size]  
+
+# Test the function  
+print(f"Medium coffee: ${calculate_price(3.00, 'medium'):.2f}")  
+print(f"Large coffee: ${calculate_price(3.00, 'large'):.2f}")  
 ```
 
-**Implementation Steps**:
 
-1. Define function with data and strategy parameters
-2. Calculate appropriate fill value based on strategy
-3. Use NumPy's nan_to_num for efficient replacement
+### Exercise 2: Order Validator
 
-### 3.2 Exercise 2: Model Evaluation Function
+```python  
+def is_valid_order(drink, size):  
+    """Checks if the order is possible"""  
+    valid_drinks = ["espresso", "latte", "cappuccino"]  
+    valid_sizes = ["small", "medium", "large"]  
+    return drink in valid_drinks and size in valid_sizes  
 
-Implement a multi-metric evaluator:
-
-```python
-def evaluate_model(y_true, y_pred):
-    from sklearn.metrics import accuracy_score, f1_score
-    return {
-        'accuracy': accuracy_score(y_true, y_pred),
-        'f1': f1_score(y_true, y_pred, average='macro')
-    }
+# Test cases  
+print(is_valid_order("mocha", "large"))  # False (invalid drink)  
+print(is_valid_order("latte", "tall"))   # False (invalid size)  
+print(is_valid_order("espresso", "small"))  # True  
 ```
 
-Test with sample predictions:
+---
 
-```python
-results = evaluate_model([0,1,0], [1,1,0])
-print(results)  # {'accuracy': 0.666..., 'f1': 0.555...}
+## Group Work: Complete Order System
+
+```python  
+order_log = []  # Tracks all orders  
+
+def process_order(customer, drink, size):  
+    """Handles full order workflow"""  
+    if not is_valid_order(drink, size):  
+        return "Invalid order - please check menu"  
+    order_details = {  
+        "customer": customer,  
+        "drink": drink,  
+        "size": size  
+    }  
+    order_log.append(order_details)  
+    return f"{customer}'s {size} {drink} entered into system!"  
+
+# Team Tasks  
+# 1. Process these orders:  
+print(process_order("Maria", "latte", "medium"))  
+print(process_order("Luca", "frappuccino", "large"))  # Invalid  
+
+# 2. Display order log:  
+print("\nOrder History:")  
+for order in order_log:  
+    print(f"{order['customer']}: {order['size']} {order['drink']}")  
 ```
 
-This mirrors ML library design patterns.
+**What You'll Learn**:
 
-## 4. Group Work Activities
+1. How functions work together
+2. Using return values to control workflow
+3. Storing data in lists for later use
 
-### 4.1 Collaborative Function Design
+---
 
-**Task**: Implement a KNN classifier from scratch in groups:
+## Common Mistakes \& Fixes
 
-```python
-def knn_predict(X_train, y_train, X_test, k=3):
-    predictions = []
-    for test_point in X_test:
-        # Calculate distances
-        distances = [np.linalg.norm(test_point - x) for x in X_train]
-        # Get indices of k nearest neighbors
-        knn_indices = np.argsort(distances)[:k]
-        # Get labels of nearest neighbors
-        knn_labels = [y_train[i] for i in knn_indices]
-        # Return most common label
-        predictions.append(max(set(knn_labels), key=knn_labels.count))
-    return predictions
+### Mistake 1: Forgetting Parentheses
+
+```python  
+def make_espresso  
+    # Missing colon and parentheses  
+    print("Making espresso...")  
+
+# Fixed version  
+def make_espresso():  
+    print("Making espresso...")  
 ```
 
-Groups must:
 
-1. Implement distance calculation
-2. Handle edge cases (tie votes, empty inputs)
-3. Test with sample iris dataset
+### Mistake 2: Ignoring Return Values
 
-### 4.2 Function Debugging Challenge
+```python  
+def get_bean_count():  
+    beans = 15  
 
-Debug a faulty ML function:
+# This returns None!  
+bean_amount = get_bean_count()  
 
-```python
-def normalize_features(X):  # Buggy version
-    for col in X:
-        col = (col - col.mean()) / col.std()
-    return X
+# Fixed version  
+def get_bean_count():  
+    return 15  
 ```
 
-**Issues to Identify**:
 
-1. Modifying loop variable doesn't affect original array
-2. Missing axis parameter in mean/std calculations
-3. No handling of zero division
+### Mistake 3: Parameter Mismatch
 
-## 5. Advanced Function Concepts for ML
+```python  
+def serve_drink(drink, size):  
+    print(f"Serving {size} {drink}")  
 
-### 5.1 Lambda Functions for Quick Transformations
+serve_drink("large")  # Missing argument!  
 
-Create on-the-fly feature mappers:
-
-```python
-log_transform = lambda x: np.log1p(x)
-squared_features = list(map(lambda x: x**2, raw_data))
+# Fixed version  
+serve_drink("latte", "large")  
 ```
 
-Used in sklearn preprocessing pipelines.
+---
 
-### 5.2 Decorators for Model Timing
+## Advanced Concept: Tracking Prep Times
 
-Add timing to existing functions:
+```python  
+def process_order_v2(customer, drink, size):  
+    """Advanced version with prep tracking"""  
+    prep_times = {  
+        "espresso": 2.0,  
+        "latte": 3.5,  
+        "cappuccino": 4.0  
+    }  
+    order_details = {  
+        "customer": customer,  
+        "prep_time": prep_times[drink] * (1.5 if size == "large" else 1)  
+    }  
+    return order_details  
 
-```python
-def timer_decorator(func):
-    import time
-    def wrapper(*args, **kwargs):
-        start = time.time()
-        result = func(*args, **kwargs)
-        print(f"{func.__name__} took {time.time()-start:.2f}s")
-        return result
-    return wrapper
-
-@timer_decorator
-def train_model(X, y):
-    # Training logic
-    return model
+# Example usage  
+order = process_order_v2("Sophia", "latte", "large")  
+print(f"Prep time: {order['prep_time']} minutes")  
 ```
 
-Essential for performance profiling in ML.
+---
 
-## 6. Jupyter Notebook Best Practices
+## Open-Ended Coding Challenges
 
-### 6.1 Function Organization in Notebooks
+### Challenge 1: Coffee Shop Inventory System
 
-Create reusable function cells:
+**Task**: Create a system that tracks coffee bean inventory as drinks are ordered.
 
+**Requirements**:
+- Create functions to:
+  - Add new coffee beans to inventory
+  - Remove beans when drinks are made (different drinks use different amounts)
+  - Alert when inventory is low
+- Implement at least one default parameter
+- Use return values to track current inventory levels
+
+**Example starter code**:
 ```python
-# Cell 1: Data loading functions
-def load_csv(path):
-    import pandas as pd
-    return pd.read_csv(path)
+# You'll need to expand this significantly
+inventory = {"arabica": 500, "robusta": 350, "decaf": 200}  # grams
 
-# Cell 2: Visualization functions
-def plot_distribution(data):
-    import matplotlib.pyplot as plt
-    plt.hist(data)
-    plt.show()
+def make_coffee(coffee_type, size):
+    # How much coffee does this drink use?
+    # How should inventory be updated?
+    # What should happen if inventory is too low?
+    pass
 ```
 
-Import across notebooks using `%run -i utilities.py`.
+### Challenge 2: Barista Efficiency Simulator
 
-### 6.2 Documentation with Docstrings
+**Task**: Model a cafe with multiple baristas and customer orders.
 
-ML-grade function documentation:
+**Requirements**:
+- Create a function to assign orders to baristas based on their current workload
+- Track how long each barista takes to complete orders
+- Calculate and return statistics like average wait time
+- Use nested functions and/or function composition
+- Implement a way to handle rush hour (many orders at once)
 
+**Example starter code**:
 ```python
-def compute_gradients(X, y, theta):
-    """
-    Compute gradients for linear regression
-    
-    Parameters:
-    X (ndarray): Design matrix of shape (m,n)
-    y (ndarray): Target vector of shape (m,)
-    theta (ndarray): Parameter vector of shape (n,)
-    
-    Returns:
-    ndarray: Gradient vector of shape (n,)
-    """
-    m = len(y)
-    return (1/m) * X.T @ (X @ theta - y)
+baristas = {
+    "Alex": {"orders": [], "speed_factor": 1.0},
+    "Jamie": {"orders": [], "speed_factor": 1.2},
+    "Casey": {"orders": [], "speed_factor": 0.9}
+}
+
+def assign_order(drink, size, customer_name):
+    # Which barista should make this drink?
+    # How do you track current workload?
+    pass
+
+def simulate_cafe_day(order_list):
+    # Process a full day of orders
+    # Calculate efficiency metrics
+    pass
 ```
 
-Supports automatic documentation generation.
+### Challenge 3: Coffee Shop Business Analytics
 
-## Conclusion
+**Task**: Create a comprehensive reporting system that analyzes the coffee shop's performance.
 
-This lesson plan bridges foundational Python functions with machine learning applications through:
+**Requirements**:
+- Implement functions that:
+  - Analyze sales data to find the most popular drinks and sizes
+  - Calculate revenue and profit (different drinks have different costs and prices)
+  - Identify peak ordering times
+  - Generate a summary report
+- Process data using function composition (the output of one function becomes input to another)
+- Include data visualization instructions (textual description of what charts to create)
+- Use at least one function with a variable number of arguments
 
-1. Direct ML-relevant examples in data processing and model evaluation
-2. Collaborative coding exercises mirroring real-world development
-3. Jupyter-specific workflow optimization techniques
+**Example starter code**:
+```python
+daily_orders = [
+    {"time": "08:24", "drink": "espresso", "size": "small", "price": 2.50, "cost": 0.90},
+    {"time": "08:35", "drink": "latte", "size": "large", "price": 4.50, "cost": 1.80},
+    # ... many more orders
+]
 
-Next steps for students should include:
+def analyze_popular_items(orders, *categories):
+    # Find the most frequently ordered items
+    # categories might be "drink", "size", or both
+    pass
 
-- Implementing function-based ML pipelines from scratch
-- Exploring decorators for advanced ML monitoring
-- Participating in code review sessions for function quality
+def calculate_financials(orders):
+    # Calculate total revenue, costs, profit
+    pass
 
-The presented materials draw on established Python pedagogy while focusing on practical ML implementation needs. Functions serve as the critical building block for progressing to neural networks and deep learning architectures.
+def generate_report(orders, include_profits=True, include_popular=True):
+    # Create a comprehensive report
+    # Call other analytical functions as needed
+    pass
+```
 
-<div style="text-align: center">⁂</div>
+---
+
+## Key Takeaways
+
+1. **Functions Are Recipes**:
+    - Define steps once (`def`), reuse with different inputs
+    - Like standardizing how you make lattes vs cappuccinos
+2. **Parameters Customize Behavior**:
+    - Act like order customization options
+    - Default values simplify common cases
+3. **Return Values Are Essential**:
+    - Provide actual data for later use
+    - Without returns, functions just perform actions without results
+
+---
+
 

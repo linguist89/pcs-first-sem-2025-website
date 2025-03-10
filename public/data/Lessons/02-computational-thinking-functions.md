@@ -247,13 +247,147 @@ print(chunk_phone_number("049 555 1234"))  # 049-555-1234
 | Abstraction | Shopping list creation | Focusing on key study variables |
 | Algorithms | Party planning | Standardized testing protocols |
 
+## Open-Ended Exercises
+
+### Exercise 1: Attention Experiment Analysis
+
+*Computational Thinking Connection: Decomposition, Pattern Recognition*
+
+**Task:** Design a function to analyze reaction time data from a hypothetical attention experiment.
+
+```python
+# Example starter code - expand upon this!
+def analyze_attention_experiment(subject_data):
+    """
+    Analyze reaction time data from an attention experiment.
+    subject_data: Dictionary with keys = trial numbers, values = reaction times in ms
+    """
+    # Your algorithm here!
+    pass  # Remove this and add your code
+
+# Sample data to work with
+sample_data = {
+    'Subject1': {'trial1': 245, 'trial2': 302, 'trial3': 198, 'trial4': 287, 'trial5': 251},
+    'Subject2': {'trial1': 301, 'trial2': 315, 'trial3': 270, 'trial4': 265, 'trial5': 280}
+}
+```
+
+**Questions to Guide Your Solution:**
+1. How would you calculate each subject's average reaction time?
+2. What algorithm could identify the fastest and slowest trials for each subject?
+3. How might you detect outliers in the data (extremely fast/slow responses)?
+4. How would you compare performance between subjects?
+5. Can you connect your approach to real cognitive science research methods?
+
 ---
 
-## Next Steps & Homework
+### Exercise 2: Memory Chunking Simulator
 
-1. **Personal Audit:** Run the phone analyzer with your real screen times
-2. **Code Modification:** Add error handling if someone enters letters in the phone number
-3. **Prep for ML:** Notice how we cleaned data (phone numbers) before processing - this is exactly what you'll do with brain scan data!
+*Computational Thinking Connection: Abstraction, Algorithms*
 
-**Remember:** Every complex system (including the brain!) can be understood through computational thinking. You're now thinking like both a cognitive scientist and programmer!
+**What is Chunking?** Chunking is how our brains group individual pieces of information into meaningful units to remember them better. For example, we remember phone numbers as chunks (123-456-7890) rather than ten separate digits.
+
+**Task:** Create a function that demonstrates how chunking improves our ability to remember information.
+
+```python
+def memory_chunking_simulator(items):
+    """
+    Simulate how humans group information into chunks for better recall.
+    
+    Parameters:
+    - items: List of individual items to remember (digits, words, etc.)
+    
+    Returns:
+    - A string showing how the items might be chunked for better memory
+    """
+    # STEP 1: Determine a reasonable chunk size (typically 3-4 items)
+    chunk_size = 3
+    
+    # STEP 2: Group the items into chunks
+    chunked_result = []
+    for i in range(0, len(items), chunk_size):
+        # Get a slice of items for this chunk
+        chunk = items[i:i + chunk_size]
+        
+        # Add this chunk to our results
+        chunked_result.append(chunk)
+    
+    # STEP 3: Format the chunked items for display
+    # YOUR CODE HERE: Transform chunked_result into a readable format
+    # Hint: You might want to join items within each chunk, then separate chunks with dashes
+    
+    return "Show chunked result here"  # Replace with your formatted output
+
+# Test with these examples:
+phone_digits = [4, 0, 7, 5, 5, 5, 1, 2, 3, 4]
+random_letters = ['F', 'B', 'I', 'C', 'I', 'A', 'N', 'S', 'A']
+```
+
+**Questions to Explore:**
+1. How does the chunking size affect memory? Try different chunk sizes.
+2. How would you format the output to clearly show the chunks?
+3. Could you create a simple memory quiz function that tests if chunking improves recall?
+4. For the random letters, can you detect any meaningful patterns (like FBI, CIA, NSA) and chunk accordingly?
+
+---
+
+### Exercise 3: Simple Decision-Making Model
+
+*Computational Thinking Connection: Decomposition, Algorithms*
+
+**Real-World Context:** When deciding between options (like "study," "party," or "sleep"), our brains weigh different factors like immediate enjoyment, long-term benefits, and social value.
+
+**Task:** Create a function that simulates this decision-making process using simple weighted factors.
+
+```python
+def simple_decision_maker(options):
+    """
+    A basic model of how people make decisions between options.
+    
+    Parameters:
+    - options: Dictionary where keys are options and values are dictionaries of scores
+               Example: {"Study": {"enjoyment": 2, "future_benefit": 9}, ...}
+    
+    Returns:
+    - The recommended option based on the highest total score
+    """
+    # Pre-defined weights for different factors (how much we care about each)
+    weights = {
+        "enjoyment": 0.4,       # How fun it is (40% importance)
+        "future_benefit": 0.6    # How useful for the future (60% importance)
+    }
+    
+    best_option = None
+    best_score = 0
+    
+    print("Decision Analysis:")
+    
+    # YOUR CODE HERE:
+    # 1. For each option, calculate a weighted score
+    # 2. Print the breakdown of points for each option
+    # 3. Return the option with the highest score
+    
+    return best_option
+
+# Example data to test your function
+life_choices = {
+    "Study for exam": {"enjoyment": 3, "future_benefit": 9},
+    "Go to party": {"enjoyment": 8, "future_benefit": 2},
+    "Get extra sleep": {"enjoyment": 7, "future_benefit": 6}
+}
+
+recommendation = simple_decision_maker(life_choices)
+print(f"\nRecommended choice: {recommendation}")
+```
+
+**Questions to Explore:**
+1. How does changing the weights affect the recommended decision?
+2. Could you add a "social pressure" factor to the model?
+3. How might you simulate different personality types by using different weights?
+4. How could you visualize the scores for each option (e.g., with text-based bars)?
+5. How does this simple model compare to how you actually make decisions?
+
+---
+
+
 
