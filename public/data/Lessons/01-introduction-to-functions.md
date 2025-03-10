@@ -97,7 +97,7 @@ good_result = calculate_serving_time(3)  # Returns 7.5
 bad_result = bad_service(3)              # Returns None  
 
 print(f"Good result: {good_result}")  
-print(f"Bad result: {bad_result} (useless!)")  
+print(f"Bad result: {bad_result}")  
 ```
 
 **Critical Insight**:
