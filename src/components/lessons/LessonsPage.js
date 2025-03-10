@@ -7,8 +7,6 @@ import Image from 'next/image';
 const LessonsPage = () => {
   const [lessons, setLessons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [modules, setModules] = useState([]);
-  const [selectedModule, setSelectedModule] = useState(null);
   
   useEffect(() => {
     fetchLessons();
@@ -21,16 +19,6 @@ const LessonsPage = () => {
       const data = await response.json();
       
       setLessons(data);
-      
-      // Extract unique modules
-      const uniqueModules = [...new Set(data.map(lesson => lesson.module))];
-      setModules(uniqueModules);
-      
-      // Set default selected module
-      if (uniqueModules.length > 0) {
-        setSelectedModule(uniqueModules[0]);
-      }
-      
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching lessons:', error);
@@ -38,46 +26,11 @@ const LessonsPage = () => {
     }
   };
   
-  // Filter lessons by selected module
-  const filteredLessons = selectedModule
-    ? lessons.filter(lesson => lesson.module === selectedModule)
-    : lessons;
-  
   return (
     <main className="py-8">
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-text-primary mb-2">Lessons</h1>
         <p className="text-text-secondary mb-8">Browse our course content and begin your learning journey</p>
-        
-        {/* Module Selection */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedModule(null)}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                selectedModule === null
-                  ? 'bg-primary text-white'
-                  : 'bg-bg-secondary text-text-primary hover:bg-bg-accent'
-              }`}
-            >
-              All Modules
-            </button>
-            
-            {modules.map((module, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedModule(module)}
-                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                  selectedModule === module
-                    ? 'bg-primary text-white'
-                    : 'bg-bg-secondary text-text-primary hover:bg-bg-accent'
-                }`}
-              >
-                {module}
-              </button>
-            ))}
-          </div>
-        </div>
         
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -87,7 +40,7 @@ const LessonsPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredLessons.map((lesson) => (
+            {lessons.map((lesson) => (
               <Link
                 key={lesson.id}
                 href={`/lessons/${lesson.id}`}
@@ -154,9 +107,9 @@ const LessonsPage = () => {
           </div>
         )}
         
-        {filteredLessons.length === 0 && !isLoading && (
+        {lessons.length === 0 && !isLoading && (
           <div className="text-center py-12">
-            <p className="text-text-secondary">No lessons found. Please select a different module.</p>
+            <p className="text-text-secondary">No lessons found.</p>
           </div>
         )}
       </div>

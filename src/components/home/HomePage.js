@@ -1,11 +1,11 @@
 import Hero from './Hero';
-import QuickLinks from './QuickLinks';
+import PurposeAndGoals from './PurposeAndGoals';
 
 const HomePage = () => {
   return (
     <main>
       <Hero />
-      <QuickLinks />
+      <PurposeAndGoals />
     </main>
   );
 };

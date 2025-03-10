@@ -50,7 +50,7 @@ data = pd.DataFrame({
     'participant_id': range(1, 101),
     'age': np.random.normal(35, 12, 100).astype(int),
     'education_years': np.random.normal(16, 3, 100).astype(int),
-    'gender': np.random.choice(['male', 'female', 'non-binary'], 100),
+    'gender': np.random.choice(['male', 'female'], 100),
     'condition': np.random.choice(['control', 'experimental'], 100),
     'reaction_time_ms': np.random.normal(450, 80, 100),
     'accuracy': np.random.normal(0.75, 0.15, 100),
