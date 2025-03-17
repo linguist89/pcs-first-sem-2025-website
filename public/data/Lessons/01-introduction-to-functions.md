@@ -11,6 +11,46 @@ topics:
 difficulty: Beginner to Advanced
 ---
 
+## Warm-up code-a-long
+
+1.  **Reading from a file and splitting data:**
+    ```python
+    # Open a file and read its contents
+    with open('warmup.txt', 'w') as f:
+        f.write("1, 2, 3, 4, 5")
+    with open('warmup.txt', 'r') as file:
+        data_string = file.read()
+    # Split the string into a list of numbers
+    data_list = data_string.split(", ")
+    print(data_list)
+    ```
+2.  **Filtering numeric values:**
+    ```python
+    data = ["1", "a", "2", "b", "3"]
+    numeric_data = []
+    for item in data:
+        if item.isdigit():
+            numeric_data.append(int(item))
+    print(numeric_data)
+    ```
+3.  **Calculating average and standard deviation:**
+    ```python
+    import math
+
+    numbers = [1, 2, 3, 4, 5]
+    average = sum(numbers) / len(numbers)
+    variance = sum([(x - average)**2 for x in numbers]) / len(numbers)
+    std_dev = math.sqrt(variance)
+    print(f"Average: {average}, Standard Deviation: {std_dev}")
+    ```
+4.  **Creating a dictionary:**
+    ```python
+    data = {"name": "Alice", "age": 30, "city": "New York"}
+    print(data["name"])
+    data["job"] = "Engineer"
+    print(data)
+    ```
+
 # Scenario
 Sarah, the team lead, approached Mark with a file in hand. "Mark, we've got this eye-tracking data," she said, placing the file on his desk. "It's a bit of a mess, but we need to figure out how long users are looking at different parts of our interface. We're hoping to find patterns – like, what's catching their attention? Can you clean this up and give us some basic stats? We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes." She added, "Let's start simple and build up from there."
 
@@ -102,43 +142,3 @@ def gaze_analysis_stats(filename):
 result = gaze_analysis_stats('eye_tracking_data.txt')
 print(result) # Output: {'valid_count': 36, 'average': 547.22, 'std_dev': 141.5}
 ```
-
-## Warm-up code-a-long
-
-1.  **Reading from a file and splitting data:**
-    ```python
-    # Open a file and read its contents
-    with open('warmup.txt', 'w') as f:
-        f.write("1, 2, 3, 4, 5")
-    with open('warmup.txt', 'r') as file:
-        data_string = file.read()
-    # Split the string into a list of numbers
-    data_list = data_string.split(", ")
-    print(data_list)
-    ```
-2.  **Filtering numeric values:**
-    ```python
-    data = ["1", "a", "2", "b", "3"]
-    numeric_data = []
-    for item in data:
-        if item.isdigit():
-            numeric_data.append(int(item))
-    print(numeric_data)
-    ```
-3.  **Calculating average and standard deviation:**
-    ```python
-    import math
-
-    numbers = [1, 2, 3, 4, 5]
-    average = sum(numbers) / len(numbers)
-    variance = sum([(x - average)**2 for x in numbers]) / len(numbers)
-    std_dev = math.sqrt(variance)
-    print(f"Average: {average}, Standard Deviation: {std_dev}")
-    ```
-4.  **Creating a dictionary:**
-    ```python
-    data = {"name": "Alice", "age": 30, "city": "New York"}
-    print(data["name"])
-    data["job"] = "Engineer"
-    print(data)
-    ```
