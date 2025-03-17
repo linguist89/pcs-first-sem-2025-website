@@ -4,51 +4,72 @@ import { useEffect } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-// Full Screen Code Overlay component
-const FullScreenCode = ({ isOpen, onClose, code, language, title }) => {
-  if (!isOpen) return null;
-
-  // Close on ESC key
+const FullScreenCode = ({ code, language, onClose }) => {
+  // Handle escape key to close
   useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') onClose();
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
     };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  // Prevent scrolling of background content
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
-    <div className="fixed inset-0 z-50 bg-bg-primary bg-opacity-95 overflow-y-auto">
-      <div className="max-w-6xl mx-auto p-4 h-full flex flex-col">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-text-primary">{title}</h2>
-          <button 
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 p-4">
+      <div className="relative w-full max-w-5xl h-[90vh] bg-[#1E1E1E] rounded-lg overflow-hidden flex flex-col">
+        {/* Header with language and close button */}
+        <div className="flex justify-between items-center bg-gray-800 px-4 py-2">
+          <div className="text-white font-mono">
+            {language ? language.charAt(0).toUpperCase() + language.slice(1) : 'Code'}
+          </div>
+          <button
             onClick={onClose}
-            className="p-2 text-text-secondary hover:text-primary transition-colors"
-            aria-label="Close fullscreen"
+            className="text-white hover:text-gray-300 focus:outline-none"
+            aria-label="Close fullscreen code view"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
-        <div className="flex-grow rounded-lg overflow-hidden">
-          <SyntaxHighlighter 
-            language={language} 
+        
+        {/* Code content */}
+        <div className="flex-1 overflow-auto">
+          <SyntaxHighlighter
+            language={language}
             style={tomorrow}
             showLineNumbers={true}
-            wrapLines={false}
-            customStyle={{ 
-              margin: 0, 
-              borderRadius: '0.5rem',
-              overflowX: 'auto',
+            customStyle={{
+              margin: 0,
               padding: '1.5rem',
               height: '100%',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              backgroundColor: '#1E1E1E'
             }}
           >
             {code}
           </SyntaxHighlighter>
+        </div>
+        
+        {/* Footer with copy button */}
+        <div className="bg-gray-800 px-4 py-2 flex justify-end">
+          <button
+            onClick={() => navigator.clipboard.writeText(code)}
+            className="text-white bg-primary hover:bg-primary-dark px-3 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            Copy Code
+          </button>
         </div>
       </div>
     </div>

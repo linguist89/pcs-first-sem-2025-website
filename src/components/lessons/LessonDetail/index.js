@@ -13,7 +13,40 @@ import SidebarContent from './SidebarContent';
 import Collapsible from './Collapsible';
 import MarkdownRenderer from './MarkdownRenderer';
 
+const DifficultyBadge = ({ level }) => {
+  const colors = {
+    'Beginner': {
+      bg: 'bg-green-100',
+      text: 'text-green-800',
+      border: 'border-green-200'
+    },
+    'Intermediate': {
+      bg: 'bg-yellow-100',
+      text: 'text-yellow-800',
+      border: 'border-yellow-200'
+    },
+    'Advanced': {
+      bg: 'bg-red-100',
+      text: 'text-red-800',
+      border: 'border-red-200'
+    }
+  };
+  
+  const style = colors[level] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+  
+  return (
+    <span className={`${style.bg} ${style.text} ${style.border} rounded-full px-3 py-1 text-sm font-medium border`}>
+      {level}
+    </span>
+  );
+};
+
 const LessonDetail = ({ lessonId }) => {
+  // If no lessonId is provided, return early without rendering or fetching
+  if (!lessonId) {
+    return null;
+  }
+
   const [lesson, setLesson] = useState(null);
   const [content, setContent] = useState('');
   const [sections, setSections] = useState([]);
@@ -24,7 +57,9 @@ const LessonDetail = ({ lessonId }) => {
   const contentRef = useRef(null);
   
   useEffect(() => {
-    fetchLesson();
+    if (lessonId) {
+      fetchLesson();
+    }
   }, [lessonId]);
   
   const fetchLesson = async () => {
@@ -34,10 +69,17 @@ const LessonDetail = ({ lessonId }) => {
       const response = await fetch(`/api/lessons/${lessonId}`);
       
       if (!response.ok) {
-        throw new Error('Failed to fetch lesson');
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        throw new Error(errorData.error || 'Failed to fetch lesson');
       }
       
       const data = await response.json();
+      
+      // Check if we got a valid lesson
+      if (!data.lesson) {
+        throw new Error('Invalid lesson data received');
+      }
       
       setLesson(data.lesson);
       
@@ -56,6 +98,22 @@ const LessonDetail = ({ lessonId }) => {
     }
   };
   
+  const scrollToSection = (index) => {
+    setActiveIndex(index);
+    const section = sections[index];
+    
+    if (section && contentRef.current) {
+      const element = contentRef.current.querySelector(`#${section.id}`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  };
+  
+  const toggleSidebar = () => {
+    setShowSidebar(!showSidebar);
+  };
+  
   if (isLoading) {
     return (
       <div className="max-w-6xl mx-auto p-4 md:p-6 lg:p-8">
@@ -71,210 +129,121 @@ const LessonDetail = ({ lessonId }) => {
     );
   }
   
-  return (
-    <div className="max-w-6xl mx-auto">
-      <CustomStyle />
-      
-      {/* Mobile Header (fixed at top) */}
-      <div className="sticky top-0 z-10 lg:hidden bg-bg-primary border-b border-border-light p-4">
-        <div className="flex justify-between items-center">
-          <button 
-            onClick={() => setShowSidebar(true)}
-            className="p-2 -ml-2 text-text-secondary hover:text-primary transition-colors"
-            aria-label="Show sidebar"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          
-          <div className="text-text-primary font-semibold truncate">
-            {lesson?.title}
-          </div>
-          
-          <button 
-            onClick={() => setShowMetadata(!showMetadata)}
-            className="p-2 -mr-2 text-text-secondary hover:text-primary transition-colors"
-            aria-label="Toggle lesson info"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </button>
-        </div>
-        
-        {/* Mobile metadata panel (slides down when toggled) */}
-        <div className={`overflow-hidden transition-all duration-300 ${showMetadata ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
-          {lesson && (
-            <div className="p-4 bg-bg-secondary rounded-lg">
-              <h1 className="font-bold text-text-primary text-xl mb-2">{lesson.title}</h1>
-              <div className="text-sm text-text-secondary mb-2">{lesson.description}</div>
-              
-              <div className="grid grid-cols-2 gap-2 text-xs text-text-secondary mt-3">
-                <div>
-                  <div className="font-semibold">Difficulty</div>
-                  <div>{lesson.difficulty}</div>
-                </div>
-                <div>
-                  <div className="font-semibold">Est. Time</div>
-                  <div>{lesson.duration}</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+  if (!lesson) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="text-2xl font-bold mb-4">Lesson Not Found</h1>
+        <p className="mb-6">The lesson you're looking for could not be found.</p>
+        <Link href="/lessons" className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-colors">
+          Back to Lessons
+        </Link>
       </div>
-      
-      {/* Mobile sidebar (slides in from left) */}
-      <div 
-        className={`fixed inset-0 z-20 lg:hidden transition-opacity duration-300 ${
-          showSidebar ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+    );
+  }
+  
+  return (
+    <div className="min-h-screen bg-bg-primary">
+      {/* Mobile navigation toggle */}
+      <button
+        onClick={toggleSidebar}
+        className="fixed bottom-6 right-6 z-30 p-3 bg-primary text-white rounded-full shadow-lg md:hidden hover:bg-primary-dark transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          {showSidebar ? (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          ) : (
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          )}
+        </svg>
+      </button>
+  
+      {/* Mobile Sidebar (hidden on medium screens and above) */}
+      <div
+        className={`fixed inset-0 bg-black bg-opacity-50 z-20 transition-opacity duration-300 md:hidden ${
+          showSidebar ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={toggleSidebar}
+      ></div>
+  
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white z-30 shadow-xl transform transition-transform duration-300 ease-in-out md:hidden ${
+          showSidebar ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div 
-          className="absolute inset-0 bg-bg-primary bg-opacity-80"
-          onClick={() => setShowSidebar(false)}
-        ></div>
-        
-        <div 
-          className={`absolute left-0 top-0 bottom-0 w-72 bg-bg-primary shadow-xl transition-transform duration-300 transform ${
-            showSidebar ? 'translate-x-0' : '-translate-x-full'
-          } p-4 overflow-y-auto z-30`}
-        >
-          <SidebarContent 
-            sections={sections}
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            lesson={lesson}
-            setShowSidebar={setShowSidebar}
-          />
+        <div className="p-4 border-b">
+          <h2 className="text-lg font-bold text-primary">Lesson {lessonId}</h2>
+          <h3 className="text-gray-600">{lesson.title}</h3>
         </div>
+        <SidebarContent sections={sections} activeIndex={activeIndex} onSectionClick={scrollToSection} />
       </div>
-      
-      {/* Main content layout (sidebar + content) */}
-      <div className="flex flex-col lg:flex-row">
-        {/* Desktop sidebar (fixed on left) */}
-        <div className="hidden lg:block lg:w-64 p-6 border-r border-border-light h-screen sticky top-0 overflow-y-auto z-10">
-          <SidebarContent 
-            sections={sections}
-            activeIndex={activeIndex}
-            setActiveIndex={setActiveIndex}
-            lesson={lesson}
-            setShowSidebar={setShowSidebar}
-          />
-        </div>
-        
-        {/* Main content area */}
-        <div className="flex-1 p-4 lg:p-8 overflow-hidden" ref={contentRef}>
-          {/* Desktop lesson metadata */}
-          <div className="hidden lg:block mb-8">
-            <Link href="/lessons" className="text-primary hover:underline inline-flex items-center mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to lessons
-            </Link>
-            
-            {lesson && (
-              <>
-                <h1 className="text-3xl font-bold text-text-primary mb-2">{lesson.title}</h1>
-                <p className="text-text-secondary mb-4">{lesson.description}</p>
-                
-                <div className="flex flex-wrap gap-4 text-sm">
-                  <div className="bg-bg-secondary px-3 py-1 rounded-full text-text-secondary">
-                    <span className="font-medium">Difficulty:</span> {lesson.difficulty}
-                  </div>
-                  <div className="bg-bg-secondary px-3 py-1 rounded-full text-text-secondary">
-                    <span className="font-medium">Est. Time:</span> {lesson.duration}
-                  </div>
-                </div>
-              </>
-            )}
+  
+      {/* Main content area */}
+      <div className="flex flex-col md:flex-row max-w-7xl mx-auto">
+        {/* Desktop sidebar (hidden on small screens) */}
+        <div className="hidden md:block md:w-1/4 lg:w-1/5 h-screen sticky top-0 p-4 bg-white border-r">
+          <div className="mb-4">
+            <h2 className="text-lg font-bold text-primary">Lesson {lessonId}</h2>
+            <h3 className="text-gray-600">{lesson.title}</h3>
           </div>
-          
-          {/* Current section content */}
-          {sections.length > 0 && (
-            <div className="custom-markdown mt-4 overflow-hidden">
-              {activeIndex === 0 ? (
-                // First section intro content
-                <div className="text-text-secondary mb-8 overflow-x-auto">
-                  <h2 className="text-2xl font-bold text-text-primary mb-4">{sections[activeIndex].title}</h2>
-                  <div className="prose prose-sm max-w-none">
-                    <MarkdownRenderer content={sections[activeIndex].content} />
-                  </div>
-                </div>
-              ) : (
-                // Other section content with ContentRenderer
-                <ContentRenderer 
-                  contentKey={activeIndex.toString()}
-                  contentElements={sections}
-                />
+          <SidebarContent sections={sections} activeIndex={activeIndex} onSectionClick={scrollToSection} />
+        </div>
+  
+        {/* Main lesson content */}
+        <main 
+          ref={contentRef} 
+          className="flex-1 p-4 md:p-8 overflow-auto"
+        >
+          <div className="prose prose-lg max-w-none mb-12">
+            <header className="mb-8">
+              <div className="mb-2 text-gray-500 flex items-center">
+                <span className="mr-2">Lesson {lessonId}</span>
+                {lesson.difficulty && <DifficultyBadge level={lesson.difficulty} />}
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold mb-4 text-text-primary">{lesson.title}</h1>
+              {lesson.description && (
+                <p className="text-lg text-text-secondary">{lesson.description}</p>
+              )}
+            </header>
+
+            {/* Render the lesson content */}
+            <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+              <MarkdownRenderer content={content} />
+            </div>
+
+            {/* Navigation links */}
+            <div className="flex flex-col sm:flex-row justify-between mt-12 space-y-4 sm:space-y-0">
+              {lesson.prevLesson && (
+                <Link 
+                  href={`/lessons/${lesson.prevLesson}`}
+                  className="bg-white border border-primary text-primary px-6 py-3 rounded-md hover:bg-primary hover:text-white transition-colors flex items-center"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Previous Lesson
+                </Link>
+              )}
+              
+              {lesson.nextLesson && (
+                <Link 
+                  href={`/lessons/${lesson.nextLesson}`}
+                  className="bg-primary text-white px-6 py-3 rounded-md hover:bg-primary-dark transition-colors flex items-center"
+                >
+                  Next Lesson
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
               )}
             </div>
-          )}
-          
-          {/* Navigation buttons */}
-          <div className="mt-12 flex justify-between items-center">
-            <button
-              disabled={activeIndex === 0}
-              onClick={() => {
-                if (activeIndex > 0) {
-                  setActiveIndex(activeIndex - 1);
-                  contentRef.current?.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-              className={`flex items-center px-4 py-2 rounded-md ${
-                activeIndex === 0
-                  ? 'text-text-secondary bg-bg-secondary/50 cursor-not-allowed'
-                  : 'text-white bg-primary hover:bg-primary-dark'
-              } transition-colors`}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Previous
-            </button>
-            
-            <div className="text-sm text-text-secondary hidden md:block">
-              <span className="font-medium">{activeIndex + 1}</span> of {sections.length}
-            </div>
-            
-            <button
-              disabled={activeIndex === sections.length - 1}
-              onClick={() => {
-                if (activeIndex < sections.length - 1) {
-                  setActiveIndex(activeIndex + 1);
-                  contentRef.current?.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-              className={`flex items-center px-4 py-2 rounded-md ${
-                activeIndex === sections.length - 1
-                  ? 'text-text-secondary bg-bg-secondary/50 cursor-not-allowed'
-                  : 'text-white bg-primary hover:bg-primary-dark'
-              } transition-colors`}
-            >
-              Next
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
           </div>
-          
-          {/* Next Lesson CTA - Only shown at the end */}
-          {activeIndex === sections.length - 1 && (
-            <div className="bg-bg-accent rounded-lg p-6 text-center">
-              <h3 className="text-lg font-semibold text-text-primary mb-2">
-                Ready to Move On?
-              </h3>
-              <p className="text-text-secondary mb-4">
-                You've completed this lesson! Ready for the next one?
-              </p>
-              <button className="px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary-dark transition-colors">
-                Continue to Next Lesson
-              </button>
-            </div>
-          )}
-        </div>
+        </main>
       </div>
     </div>
   );

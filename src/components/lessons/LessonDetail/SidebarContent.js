@@ -1,49 +1,70 @@
 'use client';
 
-const SidebarContent = ({ sections, activeIndex, setActiveIndex, lesson, setShowSidebar }) => (
-  <>
-    <div className="flex items-center justify-between mb-4 lg:mb-6">
-      <h3 className="font-bold text-text-primary text-lg">Lesson Content</h3>
-      <button 
-        onClick={() => setShowSidebar(false)}
-        className="lg:hidden p-2 text-text-secondary hover:text-primary transition-colors"
-        aria-label="Close sidebar"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
-    
-    {lesson && (
-      <div className="mb-4 p-4 bg-bg-secondary rounded-lg">
-        <h1 className="font-bold text-text-primary text-xl mb-2">{lesson.title}</h1>
-        <div className="text-sm text-text-secondary">{lesson.description}</div>
-      </div>
-    )}
-    
-    <nav className="mt-2 space-y-1">
-      {sections.map((section, index) => (
-        <button
-          key={index}
-          onClick={() => {
-            setActiveIndex(index);
-            setShowSidebar(false);
-          }}
-          className={`w-full text-left p-3 rounded-md flex items-center transition-colors ${
-            activeIndex === index
-              ? 'bg-primary text-white font-medium'
-              : 'hover:bg-bg-secondary text-text-secondary'
-          }`}
-        >
-          <div className="mr-3 flex-shrink-0 flex items-center justify-center w-6 h-6 rounded-full border border-current text-xs">
-            {index + 1}
+import { Fragment } from 'react';
+
+const SidebarContent = ({ sections, activeIndex, onSectionClick }) => {
+  // Function to determine if a section is an H1 (main section) or H2/H3 (subsection)
+  const isSectionMainHeader = (section) => {
+    return section.level === 1;
+  };
+
+  // Group sections into an array of { main, subsections }
+  const groupedSections = sections.reduce((acc, section, index) => {
+    if (isSectionMainHeader(section)) {
+      // Start a new group for main sections
+      acc.push({
+        main: section,
+        mainIndex: index,
+        subsections: []
+      });
+    } else if (acc.length > 0) {
+      // Add subsection to the last main section
+      acc[acc.length - 1].subsections.push({
+        section,
+        index
+      });
+    }
+    return acc;
+  }, []);
+
+  return (
+    <nav className="sidebar-content mt-4">
+      {groupedSections.map((group, groupIndex) => (
+        <Fragment key={`group-${groupIndex}`}>
+          {/* Main section (usually H1) */}
+          <button
+            className={`w-full text-left py-2 px-3 rounded-md mb-2 font-medium transition-colors flex items-center ${
+              activeIndex === group.mainIndex
+                ? 'bg-primary text-white'
+                : 'hover:bg-gray-100 text-text-primary'
+            }`}
+            onClick={() => onSectionClick(group.mainIndex)}
+          >
+            <span className="truncate">{group.main.title}</span>
+          </button>
+
+          {/* Subsections (H2 and H3) */}
+          <div className="ml-3 mb-4 border-l border-gray-200 pl-3 space-y-1">
+            {group.subsections.map(({ section, index }) => (
+              <button
+                key={`section-${index}`}
+                className={`w-full text-left py-1.5 px-2 rounded text-sm transition-colors ${
+                  activeIndex === index
+                    ? 'bg-primary bg-opacity-10 text-primary font-medium'
+                    : 'hover:bg-gray-100 text-text-secondary'
+                }`}
+                onClick={() => onSectionClick(index)}
+              >
+                <span className="truncate">
+                  {section.level === 3 ? '• ' : ''}{section.title}
+                </span>
+              </button>
+            ))}
           </div>
-          {section.title}
-        </button>
+        </Fragment>
       ))}
     </nav>
-  </>
-);
+  );
+};
 
 export default SidebarContent; 

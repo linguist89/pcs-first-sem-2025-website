@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Image from 'next/image';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -14,12 +15,17 @@ const MarkdownComponents = {
   // Custom wrapper component
   wrapper: ({ children }) => <>{children}</>,
   
-  // Override h2 tag to handle section headers
+  // Override h1 tag for main headers (like "Scenario")
+  h1: ({node, ...props}) => (
+    <h1 className="text-2xl font-bold text-text-primary mb-4 mt-8 border-b pb-2 border-primary" {...props} />
+  ),
+  
+  // Override h2 tag to handle section headers (like "Objectives")
   h2: ({node, ...props}) => (
     <h2 className="text-xl font-bold text-text-primary mb-4 mt-8" {...props} />
   ),
   
-  // Override h3 tag
+  // Override h3 tag for subsections (like difficulty levels)
   h3: ({node, ...props}) => (
     <h3 className="text-lg font-bold text-text-primary mb-3 mt-6" {...props} />
   ),
@@ -58,170 +64,197 @@ const MarkdownComponents = {
     );
   },
   
-  // Force paragraphs in list items to be inline
+  // Override paragraph to handle special formatting
   p: ({node, children, ...props}) => {
-    // Check if parent is a list item
-    const isInListItem = 
-      node.position?.parent?.type === 'listItem' || 
-      node.parentNode?.tagName === 'li';
-    
-    if (isInListItem) {
-      return <>{children}</>;
+    // Check if this paragraph contains highlighted text (with [n ...])
+    const text = String(children);
+    if (text.includes('[') && text.includes(']')) {
+      // Process the highlighted text - replace [n text] with highlighted spans
+      const processedText = React.Children.map(children, child => {
+        if (typeof child !== 'string') return child;
+        
+        // Create parts using regex to find [n text] patterns
+        const parts = [];
+        let lastIndex = 0;
+        const regex = /\[(\d+) ([^\]]+)\]/g;
+        let match;
+        
+        while ((match = regex.exec(child)) !== null) {
+          // Add text before the match
+          if (match.index > lastIndex) {
+            parts.push(child.substring(lastIndex, match.index));
+          }
+          
+          // Add the highlighted part with number
+          const number = match[1];
+          const highlightedText = match[2];
+          parts.push(
+            <span key={match.index} className="relative group cursor-pointer">
+              <span className="inline-block bg-primary bg-opacity-20 text-text-primary rounded px-1 py-0.5">
+                {highlightedText}
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">
+                  {number}
+                </span>
+              </span>
+            </span>
+          );
+          
+          lastIndex = match.index + match[0].length;
+        }
+        
+        // Add any remaining text
+        if (lastIndex < child.length) {
+          parts.push(child.substring(lastIndex));
+        }
+        
+        return parts;
+      });
+      
+      return <p className="my-4" {...props}>{processedText}</p>;
     }
     
-    return <p className="mb-4 text-text-secondary" {...props}>{children}</p>;
+    // Regular paragraph
+    return <p className="my-4" {...props}>{children}</p>;
   },
   
-  // Override lists with proper styling
+  // Override lists
   ul: ({node, ...props}) => (
-    <ul className="list-disc pl-6 mb-4 text-text-secondary" {...props} />
+    <ul className="list-disc pl-6 my-4 space-y-2" {...props} />
   ),
   
   ol: ({node, ...props}) => (
-    <ol className="list-decimal pl-6 mb-4 text-text-secondary" {...props} />
+    <ol className="list-decimal pl-6 my-4 space-y-2" {...props} />
   ),
   
-  // Override code blocks with better detection of inline vs block code
-  code: ({node, inline, className, children, ...props}) => {
-    const match = /language-(\w+)/.exec(className || '');
-    const language = match ? match[1] : '';
-    const [isFullScreen, setIsFullScreen] = useState(false);
+  // Override list items to handle questions, hints, and answers
+  li: ({node, children, ...props}) => {
+    const text = String(children);
     
-    // More precise detection for inline code
-    // Only treat code as inline when:
-    // 1. It's explicitly marked as inline by react-markdown
-    // 2. OR it's a short string with no language specified
-    const content = String(children || '');
-    const hasLanguageClass = className && className.includes('language-');
-    const isInlineCode = inline || 
-                         (!hasLanguageClass && 
-                          content.length < 50 && 
-                          !content.includes('\n'));
-
-    // Check if content appears to be HTML/XML tags that need special handling
-    const containsHTMLTags = content.match(/^<[a-zA-Z][^>]*>$/);
-    
-    if (isInlineCode) {
-      // Common inline code styles with better contrast
-      const inlineCodeStyles = {
-        display: 'inline',
-        fontFamily: 'monospace',
-        backgroundColor: 'var(--bg-accent, rgba(0, 100, 200, 0.1))',
-        color: 'var(--text-primary, inherit)',
-        padding: '0.1rem 0.3rem',
-        borderRadius: '0.25rem',
-        fontSize: '0.875rem',
-        verticalAlign: 'baseline',
-        whiteSpace: 'normal',
-        border: '1px solid var(--border-light, rgba(0, 100, 200, 0.2))'
-      };
+    // Check if this is a question/hint/answer item
+    if (text.startsWith('**Question:**') || 
+        text.startsWith('**Hint:**') || 
+        text.startsWith('**Answer:**') ||
+        text.startsWith('**Related:**')) {
       
-      // For HTML tags in inline code, we need to ensure they display as text
-      if (containsHTMLTags) {
-        const escapedContent = content
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-        
-        return (
-          <code 
-            className="inline-code"
-            style={inlineCodeStyles}
-            dangerouslySetInnerHTML={{ __html: escapedContent }}
-          />
-        );
+      let backgroundColor = 'bg-gray-100';
+      let borderColor = 'border-gray-300';
+      let icon = null;
+      
+      if (text.startsWith('**Question:**')) {
+        backgroundColor = 'bg-blue-50';
+        borderColor = 'border-blue-200';
+        icon = '❓';
+      } else if (text.startsWith('**Hint:**')) {
+        backgroundColor = 'bg-yellow-50';
+        borderColor = 'border-yellow-200';
+        icon = '💡';
+      } else if (text.startsWith('**Answer:**')) {
+        backgroundColor = 'bg-green-50';
+        borderColor = 'border-green-200';
+        icon = '✅';
+      } else if (text.startsWith('**Related:**')) {
+        backgroundColor = 'bg-purple-50';
+        borderColor = 'border-purple-200';
+        icon = '🔄';
       }
       
-      // Standard inline code
       return (
-        <code 
-          className="inline-code"
-          style={inlineCodeStyles}
-          {...props}
-        >
+        <li className={`my-2 ${backgroundColor} border-l-4 ${borderColor} p-3 rounded-r`} {...props}>
+          <div className="flex items-start">
+            <span className="mr-2 text-lg">{icon}</span>
+            <span>{children}</span>
+          </div>
+        </li>
+      );
+    }
+    
+    return <li className="my-1" {...props}>{children}</li>;
+  },
+  
+  // Override blockquote for important notes
+  blockquote: ({node, ...props}) => (
+    <blockquote className="border-l-4 border-primary pl-4 italic my-6 text-text-secondary" {...props} />
+  ),
+  
+  // Override strong for better emphasis
+  strong: ({node, ...props}) => (
+    <strong className="font-bold text-text-primary" {...props} />
+  ),
+  
+  // Override code blocks to render syntax highlighting
+  code: ({node, inline, className, children, ...props}) => {
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const match = /language-(\w+)/.exec(className || '');
+    const language = match ? match[1] : '';
+    
+    if (inline) {
+      return (
+        <code className="bg-code-bg text-code-text px-1 py-0.5 rounded" {...props}>
           {children}
         </code>
       );
     }
     
-    // For actual code blocks (with language or multiple lines), use syntax highlighter
+    // Toggle fullscreen mode
+    const toggleFullScreen = () => {
+      setIsFullScreen(!isFullScreen);
+    };
+    
+    // Handle different code content
+    const codeContent = String(children).replace(/\n$/, '');
+    
     return (
-      <div className="mb-6 relative overflow-hidden">
-        <div className="rounded-lg overflow-hidden">
+      <>
+        {isFullScreen && (
+          <FullScreenCode 
+            code={codeContent} 
+            language={language}
+            onClose={toggleFullScreen}
+          />
+        )}
+        <div className="relative">
+          <div className="absolute right-2 top-2 flex space-x-2">
+            <button
+              onClick={toggleFullScreen}
+              className="bg-primary text-white p-1 rounded text-xs hover:bg-primary-dark transition-colors"
+              aria-label="View code in full screen"
+            >
+              Expand
+            </button>
+          </div>
           <SyntaxHighlighter
             language={language}
             style={tomorrow}
-            showLineNumbers={true}
-            wrapLongLines={true}
+            className="rounded-md !my-4"
             customStyle={{
-              margin: 0, 
-              borderRadius: '0.5rem',
-              overflowX: 'auto',
               padding: '1rem',
-              maxWidth: '100%'
+              borderRadius: '0.375rem',
+              fontSize: '0.95rem',
+              marginTop: '1rem',
+              marginBottom: '1rem',
+              backgroundColor: '#1E1E1E'
             }}
             {...props}
           >
-            {content}
+            {codeContent}
           </SyntaxHighlighter>
-          
-          <div className="absolute top-2 right-2 flex space-x-2">
-            {/* Fullscreen button */}
-            <button 
-              onClick={() => setIsFullScreen(true)}
-              className="bg-bg-primary p-1.5 rounded-md text-text-secondary hover:text-primary transition-colors"
-              aria-label="View code in fullscreen"
-              title="View code in fullscreen"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-              </svg>
-            </button>
-            
-            {/* Copy code button */}
-            <button 
-              onClick={() => {
-                navigator.clipboard.writeText(content);
-                // You could add a toast notification here
-              }}
-              className="bg-bg-primary p-1.5 rounded-md text-text-secondary hover:text-primary transition-colors"
-              aria-label="Copy code to clipboard"
-              title="Copy code to clipboard"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-              </svg>
-            </button>
-          </div>
         </div>
-        
-        {/* Fullscreen overlay */}
-        <FullScreenCode 
-          isOpen={isFullScreen} 
-          onClose={() => setIsFullScreen(false)}
-          code={content}
-          language={language}
-          title={language.charAt(0).toUpperCase() + language.slice(1) || 'Code'}
-        />
-      </div>
+      </>
     );
   },
 };
 
-// Component to render markdown with styling
+// Main MarkdownRenderer component
 const MarkdownRenderer = ({ content }) => {
   return (
-    <div className="custom-markdown overflow-hidden">
-      <ReactMarkdown 
-        remarkPlugins={[remarkGfm]} 
-        rehypePlugins={[rehypeRaw]}
-        components={MarkdownComponents}
-        unwrapDisallowed={true}
-        skipHtml={false}
-        className="overflow-x-auto"
-      >
-        {content}
-      </ReactMarkdown>
-    </div>
+    <ReactMarkdown
+      className="prose prose-sm md:prose-base lg:prose-lg prose-slate max-w-none"
+      remarkPlugins={[remarkGfm]}
+      rehypePlugins={[rehypeRaw]}
+      components={MarkdownComponents}
+    >
+      {content}
+    </ReactMarkdown>
   );
 };
 

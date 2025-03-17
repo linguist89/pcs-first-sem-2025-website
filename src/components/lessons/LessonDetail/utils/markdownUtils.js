@@ -1,24 +1,37 @@
 // Extract content sections from markdown
 export function extractSections(markdown) {
-  const headingRegex = /^## (.+)$/gm;
+  // Match H1, H2, and H3 headings
+  const headingRegex = /^(#+) (.+)$/gm;
   const sections = [];
   let match;
   
   while ((match = headingRegex.exec(markdown)) !== null) {
-    // Skip quiz sections
-    if (match[1].toLowerCase().includes('quiz') || 
-        match[1].toLowerCase().includes('test your') || 
-        match[1].toLowerCase().includes('assessment')) {
+    const levelMarkers = match[1]; // Get the # symbols
+    const level = levelMarkers.length; // Count the # to determine heading level (1, 2, or 3)
+    const title = match[2].trim();
+    
+    // Skip quiz sections or specific sections you want to exclude
+    if (title.toLowerCase().includes('quiz') || 
+        title.toLowerCase().includes('test your') || 
+        title.toLowerCase().includes('assessment')) {
       continue;
     }
     
+    // Create a slug/id from the title for anchor links
+    const id = title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '') // Remove special chars
+      .replace(/\s+/g, '-'); // Replace spaces with hyphens
+    
     sections.push({
-      title: match[1],
+      title,
+      level,
+      id,
       offset: match.index
     });
   }
   
-  // Add indexes to each section
+  // Add content to each section
   return sections.map((section, index) => {
     const nextSectionOffset = index < sections.length - 1 ? sections[index + 1].offset : markdown.length;
     
@@ -65,18 +78,26 @@ export function removeQuizSections(markdown) {
   return sections.join('');
 }
 
-// Preprocess markdown content to fix inline code in lists
+// Preprocess markdown content
 export function preprocessMarkdown(markdown) {
   // First remove all quiz sections
   const cleanedMarkdown = removeQuizSections(markdown);
   
+  // Process special highlighted text [n text] - keep as is for the React component to handle
+  
   // Transform markdown to ensure inline code in list items renders properly
-  // This regex matches list items with inline code and makes specific adjustments
-  return cleanedMarkdown.replace(
+  let processedMarkdown = cleanedMarkdown.replace(
     /^(\s*[-*+]|\s*\d+\.)\s+(.+?)(`[^`]+`)(.*)$/gm,
     (match, listMarker, beforeCode, codeBlock, afterCode) => {
       // Preserve the whole line but with optimized spacing
       return `${listMarker} ${beforeCode}${codeBlock}${afterCode}`;
     }
   );
+  
+  // Convert Scenario highlighted to regular Scenario with highlights
+  if (processedMarkdown.includes('# Scenario highlighted')) {
+    processedMarkdown = processedMarkdown.replace('# Scenario highlighted', '# Scenario');
+  }
+  
+  return processedMarkdown;
 } 

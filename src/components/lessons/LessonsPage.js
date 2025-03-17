@@ -4,9 +4,71 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+const DifficultyBadge = ({ level }) => {
+  const colors = {
+    'Beginner': {
+      bg: 'bg-green-100',
+      text: 'text-green-800',
+      border: 'border-green-200'
+    },
+    'Intermediate': {
+      bg: 'bg-yellow-100',
+      text: 'text-yellow-800',
+      border: 'border-yellow-200'
+    },
+    'Advanced': {
+      bg: 'bg-red-100',
+      text: 'text-red-800',
+      border: 'border-red-200'
+    }
+  };
+  
+  const style = colors[level] || { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-200' };
+  
+  return (
+    <span className={`${style.bg} ${style.text} ${style.border} rounded-full px-3 py-1 text-sm font-medium border`}>
+      {level}
+    </span>
+  );
+};
+
+const LessonCard = ({ lesson }) => {
+  if (!lesson || !lesson.id) {
+    return null;
+  }
+  
+  return (
+    <Link 
+      href={`/lessons/${lesson.id}`}
+      className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+    >
+      <div className="p-6">
+        <div className="flex justify-between items-start mb-3">
+          <span className="inline-block bg-primary text-white text-sm font-bold rounded-full h-8 w-8 flex items-center justify-center">
+            {lesson.id}
+          </span>
+          <DifficultyBadge level={lesson.difficulty} />
+        </div>
+        <h2 className="text-xl font-bold text-text-primary mb-2 line-clamp-2">{lesson.title}</h2>
+        <p className="text-text-secondary mb-4 text-sm line-clamp-3">{lesson.description}</p>
+        <div className="flex justify-between items-center text-sm text-text-secondary">
+          <span className="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {lesson.duration}
+          </span>
+          <span className="text-primary font-medium">View Lesson →</span>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
 const LessonsPage = () => {
   const [lessons, setLessons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [filter, setFilter] = useState('all');
   
   useEffect(() => {
     fetchLessons();
@@ -25,12 +87,70 @@ const LessonsPage = () => {
       setIsLoading(false);
     }
   };
+
+  const filteredLessons = filter === 'all' 
+    ? lessons 
+    : lessons.filter(lesson => lesson.difficulty === filter);
   
   return (
-    <main className="py-8">
+    <div className="min-h-screen bg-bg-primary py-12">
       <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-text-primary mb-2">Lessons</h1>
-        <p className="text-text-secondary mb-8">Browse our course content and begin your learning journey</p>
+        <header className="mb-12 text-center">
+          <h1 className="text-4xl font-bold text-text-primary mb-4">Python Cognitive Science</h1>
+          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+            Learn the fundamentals of Python programming for cognitive science research and data analysis
+          </p>
+        </header>
+        
+        {/* Filter controls */}
+        <div className="mb-8 flex justify-center">
+          <div className="inline-flex rounded-md shadow-sm" role="group">
+            <button
+              type="button"
+              onClick={() => setFilter('all')}
+              className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
+                filter === 'all' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-white text-text-primary hover:bg-gray-100'
+              }`}
+            >
+              All Lessons
+            </button>
+            <button
+              type="button"
+              onClick={() => setFilter('Beginner')}
+              className={`px-4 py-2 text-sm font-medium ${
+                filter === 'Beginner' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-white text-text-primary hover:bg-gray-100'
+              }`}
+            >
+              Beginner
+            </button>
+            <button
+              type="button"
+              onClick={() => setFilter('Intermediate')}
+              className={`px-4 py-2 text-sm font-medium ${
+                filter === 'Intermediate' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-white text-text-primary hover:bg-gray-100'
+              }`}
+            >
+              Intermediate
+            </button>
+            <button
+              type="button"
+              onClick={() => setFilter('Advanced')}
+              className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
+                filter === 'Advanced' 
+                  ? 'bg-primary text-white' 
+                  : 'bg-white text-text-primary hover:bg-gray-100'
+              }`}
+            >
+              Advanced
+            </button>
+          </div>
+        </div>
         
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -39,81 +159,23 @@ const LessonsPage = () => {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {lessons.map((lesson) => (
-              <Link
-                key={lesson.id}
-                href={`/lessons/${lesson.id}`}
-                className="group bg-bg-primary rounded-lg overflow-hidden shadow-light hover:shadow-medium transition-shadow border border-border-light"
-              >
-                {/* Lesson Image */}
-                <div className="relative h-40 w-full overflow-hidden">
-                  <Image
-                    src={lesson.image}
-                    alt={lesson.title}
-                    width={500}
-                    height={300}
-                    className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                  />
-                  
-                  {/* Module Tag */}
-                  <div className="absolute top-2 left-2">
-                    <div className="bg-primary text-white text-xs px-2 py-1 rounded-md">
-                      {lesson.module}
-                    </div>
-                  </div>
-                  
-                  {/* Duration */}
-                  <div className="absolute bottom-2 right-2">
-                    <div className="bg-bg-primary bg-opacity-80 text-text-primary text-xs px-2 py-1 rounded-md flex items-center">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {lesson.duration} min
-                    </div>
-                  </div>
-                </div>
-                
-                {/* Lesson Content */}
-                <div className="p-4">
-                  <h3 className="font-semibold text-text-primary mb-1 group-hover:text-primary transition-colors">
-                    {lesson.title}
-                  </h3>
-                  <p className="text-text-secondary text-sm mb-4 line-clamp-2">
-                    {lesson.description}
-                  </p>
-                  
-                  {/* Progress */}
-                  {lesson.progress > 0 && (
-                    <div className="mt-auto">
-                      <div className="flex justify-between items-center text-xs text-text-secondary mb-1">
-                        <span>{lesson.progress}% complete</span>
-                      </div>
-                      <div className="h-1.5 w-full bg-bg-secondary rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-primary rounded-full"
-                          style={{ width: `${lesson.progress}%` }}
-                          aria-valuenow={lesson.progress}
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                          role="progressbar"
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-        
-        {lessons.length === 0 && !isLoading && (
-          <div className="text-center py-12">
-            <p className="text-text-secondary">No lessons found.</p>
-          </div>
+          <>
+            {filteredLessons.length === 0 ? (
+              <div className="text-center py-12">
+                <h3 className="text-xl font-medium text-text-primary mb-2">No lessons found</h3>
+                <p className="text-text-secondary">Try changing your filter or check back later for new content.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredLessons.map((lesson) => (
+                  <LessonCard key={lesson.id} lesson={lesson} />
+                ))}
+              </div>
+            )}
+          </>
         )}
       </div>
-    </main>
+    </div>
   );
 };
 
