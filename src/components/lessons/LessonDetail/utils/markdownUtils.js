@@ -109,14 +109,19 @@ export function processH3Sections(markdown) {
     
     // Check if this section contains question items and/or code blocks
     const hasQuestions = /^\s*-\s+\*\*(Question|Hint|Answer|Related):\*\*/.test(sectionContent);
-    const hasCodeBlocks = sectionContent.includes('```');
+    // More robust check for code blocks - look for triple backticks
+    const hasCodeBlocks = /```\w*\n[\s\S]*?```/.test(sectionContent);
     
     // Escape any internal quotes in the title to avoid breaking the tag
     const safeTitle = title.replace(/"/g, '&quot;');
     
-    // Ensure the collapsible section is outside of any paragraphs and preserve code blocks
-    // by adding double line breaks before and after
-    processedMarkdown += `\n\n<h3-collapsible title="${safeTitle}" has-questions="${hasQuestions}" has-code="${hasCodeBlocks}">\n${sectionContent}\n</h3-collapsible>\n\n`;
+    // Special handling for Advanced section to ensure code is properly preserved
+    if (title === 'Advanced' || hasCodeBlocks) {
+      processedMarkdown += `\n\n<h3-collapsible title="${safeTitle}" has-questions="${hasQuestions}" has-code="true">\n${sectionContent}\n</h3-collapsible>\n\n`;
+    } else {
+      // Standard handling for other sections
+      processedMarkdown += `\n\n<h3-collapsible title="${safeTitle}" has-questions="${hasQuestions}" has-code="${hasCodeBlocks}">\n${sectionContent}\n</h3-collapsible>\n\n`;
+    }
     
     lastIndex = sectionEnd;
   }

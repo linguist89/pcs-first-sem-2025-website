@@ -665,6 +665,97 @@ const createRehypeFixNesting = () => {
   };
 };
 
+// Custom component for rendering section content safely
+const SafeSectionContent = ({ content, hasCode }) => {
+  // Always use the special rendering approach for sections with code
+  return (
+    <div className="section-content">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={{
+          ...MarkdownComponents,
+          // Use simplified code renderer for code blocks
+          code: ({node, inline, className, children, ...props}) => {
+            if (inline) {
+              return <code className="font-mono bg-[#EEF2FF] text-[#3B82F6] px-2 py-0.5 rounded border border-[#DBEAFE] text-sm" {...props}>{children}</code>;
+            }
+            
+            const match = /language-(\w+)/.exec(className || '');
+            const language = match ? match[1] : '';
+            const codeContent = String(children).replace(/\n$/, '');
+            
+            return (
+              <div className="my-6 code-block-wrapper">
+                <SyntaxHighlighter
+                  language={language}
+                  style={tomorrow}
+                  className="rounded-md"
+                  customStyle={{
+                    padding: '1rem',
+                    borderRadius: '0.375rem',
+                    fontSize: '0.95rem',
+                    backgroundColor: '#1E293B'
+                  }}
+                  {...props}
+                >
+                  {codeContent}
+                </SyntaxHighlighter>
+              </div>
+            );
+          },
+          // Force paragraphs to be divs to prevent nesting issues
+          p: ({node, children, ...props}) => (
+            <div className="my-4 text-[#4B5563]">{children}</div>
+          )
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
+  );
+};
+
+// Custom handling for our h3-collapsible tag
+const H3CollapsibleComponent = ({ node, title, children, ...props }) => {
+  // Get relevant icon for this section
+  const icon = getSectionIcon(title);
+  const hasQuestions = props['has-questions'] === 'true';
+  const hasCode = props['has-code'] === 'true';
+  
+  // Get the content as string
+  const contentStr = String(children).trim();
+  
+  // Determine if we should open by default - Advanced should always be open by default
+  const isOpenByDefault = 
+    title.toLowerCase().includes('beginner') || 
+    title.toLowerCase() === 'advanced' || 
+    title === 'Advanced';
+  
+  // Ensure we detect if this section has code blocks
+  const detectCodeBlocks = /```\w*\n[\s\S]*?```/.test(contentStr);
+  const shouldUseCodeRenderer = hasCode || detectCodeBlocks || title === 'Advanced';
+  
+  return (
+    <div className="mt-6 mb-4">
+      <Collapsible title={
+        <div className="flex items-center">
+          {icon && <span className="mr-2">{icon}</span>}
+          <span className="text-lg font-bold text-[#1F2937]">{title}</span>
+        </div>
+      } defaultOpen={isOpenByDefault}>
+        <div className="pt-2 pl-4 border-l-2 border-[#D1D5DB]">
+          {hasQuestions ? (
+            <QuestionItemsList content={contentStr} />
+          ) : (
+            <SafeSectionContent content={contentStr} hasCode={shouldUseCodeRenderer} />
+          )}
+        </div>
+      </Collapsible>
+    </div>
+  );
+};
+
 const MarkdownRenderer = ({ content }) => {
   // More aggressive preprocessing to prevent invalid nesting
   const preprocessContent = (content) => {
@@ -710,42 +801,8 @@ const MarkdownRenderer = ({ content }) => {
         rehypePlugins={[rehypeRaw, rehypeFixNesting]}
         components={{
           ...MarkdownComponents,
-          // Custom handling for our h3-collapsible tag - rendered outside the normal markdown flow
-          'h3-collapsible': ({ node, title, children, ...props }) => {
-            // Get relevant icon for this section
-            const icon = getSectionIcon(title);
-            const hasQuestions = props['has-questions'] === 'true';
-            
-            // Get the content as string
-            const contentStr = String(children).trim();
-            
-            return (
-              <div className="mt-6 mb-4">
-                <Collapsible title={
-                  <div className="flex items-center">
-                    {icon && <span className="mr-2">{icon}</span>}
-                    <span className="text-lg font-bold text-[#1F2937]">{title}</span>
-                  </div>
-                } defaultOpen={title.toLowerCase().includes('beginner')}>
-                  <div className="pt-2 pl-4 border-l-2 border-[#D1D5DB]">
-                    {hasQuestions ? (
-                      <QuestionItemsList content={contentStr} />
-                    ) : (
-                      <div className="question-content">
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          rehypePlugins={[rehypeRaw, rehypeFixNesting]}
-                          components={MarkdownComponents}
-                        >
-                          {contentStr}
-                        </ReactMarkdown>
-                      </div>
-                    )}
-                  </div>
-                </Collapsible>
-              </div>
-            );
-          },
+          // Custom handling for our h3-collapsible tag
+          'h3-collapsible': H3CollapsibleComponent
         }}
       >
         {processedContent}
