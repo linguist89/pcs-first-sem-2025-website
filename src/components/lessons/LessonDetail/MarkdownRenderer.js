@@ -537,13 +537,6 @@ const MarkdownComponents = {
           className="relative"
         >
           <div className="absolute right-2 top-2 flex space-x-2 z-10">
-            <button
-              onClick={toggleFullScreen}
-              className="bg-[#3B82F6] text-white p-1 rounded text-xs hover:bg-[#2563EB] transition-colors"
-              aria-label="View code in full screen"
-            >
-              Expand
-            </button>
           </div>
           <SyntaxHighlighter
             language={language}
