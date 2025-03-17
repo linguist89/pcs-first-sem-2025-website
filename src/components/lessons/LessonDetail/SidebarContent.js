@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment } from 'react';
+import { motion } from 'framer-motion';
 
 const SidebarContent = ({ sections, activeIndex, onSectionClick }) => {
   // Function to determine if a section is an H1 (main section) or H2/H3 (subsection)
@@ -27,43 +28,72 @@ const SidebarContent = ({ sections, activeIndex, onSectionClick }) => {
     return acc;
   }, []);
 
+  // Animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, x: -20 },
+    show: { opacity: 1, x: 0 }
+  };
+
   return (
-    <nav className="sidebar-content mt-4">
+    <motion.nav 
+      className="sidebar-content mt-4"
+      variants={container}
+      initial="hidden"
+      animate="show"
+    >
       {groupedSections.map((group, groupIndex) => (
         <Fragment key={`group-${groupIndex}`}>
           {/* Main section (usually H1) */}
-          <button
+          <motion.button
+            variants={item}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className={`w-full text-left py-2 px-3 rounded-md mb-2 font-medium transition-colors flex items-center ${
               activeIndex === group.mainIndex
-                ? 'bg-primary text-white'
-                : 'hover:bg-gray-100 text-text-primary'
+                ? 'bg-[#3B82F6] text-white'
+                : 'hover:bg-gray-100 text-[#1F2937]'
             }`}
             onClick={() => onSectionClick(group.mainIndex)}
           >
             <span className="truncate">{group.main.title}</span>
-          </button>
+          </motion.button>
 
           {/* Subsections (H2 and H3) */}
-          <div className="ml-3 mb-4 border-l border-gray-200 pl-3 space-y-1">
+          <motion.div 
+            variants={item}
+            className="ml-3 mb-4 border-l border-gray-200 pl-3 space-y-1"
+          >
             {group.subsections.map(({ section, index }) => (
-              <button
+              <motion.button
                 key={`section-${index}`}
+                whileHover={{ x: 3 }}
+                whileTap={{ scale: 0.98 }}
                 className={`w-full text-left py-1.5 px-2 rounded text-sm transition-colors ${
                   activeIndex === index
-                    ? 'bg-primary bg-opacity-10 text-primary font-medium'
-                    : 'hover:bg-gray-100 text-text-secondary'
+                    ? 'bg-[#3B82F6] bg-opacity-10 text-[#3B82F6] font-medium'
+                    : 'hover:bg-gray-100 text-[#4B5563]'
                 }`}
                 onClick={() => onSectionClick(index)}
               >
                 <span className="truncate">
                   {section.level === 3 ? '• ' : ''}{section.title}
                 </span>
-              </button>
+              </motion.button>
             ))}
-          </div>
+          </motion.div>
         </Fragment>
       ))}
-    </nav>
+    </motion.nav>
   );
 };
 

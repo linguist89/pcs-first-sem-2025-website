@@ -1,5 +1,18 @@
+---
+title: "Introduction to Functions: Data Processing and Analysis"
+topics:
+  - File I/O operations
+  - String parsing and manipulation
+  - Creating and using functions
+  - Data filtering and validation
+  - Basic statistical calculations
+  - List comprehensions
+  - Dictionaries
+difficulty: Beginner to Advanced
+---
+
 # Scenario
-Sarah, the team lead, approached Mark with a file in hand. "Mark, we've got this eye-tracking data," she said, placing the file on his desk. "It's a bit of a mess, but we need to figure out [1 how long users are looking at different parts of our interface]. [2 We're hoping to find patterns] – like, what's catching their attention? Can you clean this up and give us some basic stats? [3 We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes]." She added, "Let's start simple and build up from there."
+Sarah, the team lead, approached Mark with a file in hand. "Mark, we've got this eye-tracking data," she said, placing the file on his desk. "It's a bit of a mess, but we need to figure out how long users are looking at different parts of our interface. We're hoping to find patterns – like, what's catching their attention? Can you clean this up and give us some basic stats? We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes." She added, "Let's start simple and build up from there."
 
 # Scenario highlighted
 Sarah, the team lead, approached Mark with a file in hand. "Mark, we've got this eye-tracking data," she said, placing the file on his desk. "It's a bit of a mess, but we need to figure out [1 how long users are looking at different parts of our interface]. [2 We're hoping to find patterns] – like, what's catching their attention? Can you clean this up and give us some basic stats? [3 We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes]." She added, "Let's start simple and build up from there."

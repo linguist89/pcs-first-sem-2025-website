@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { motion } from 'framer-motion';
 import FullScreenCode from './FullScreenCode';
 
 // Markdown components to handle different markdown elements
@@ -17,35 +18,58 @@ const MarkdownComponents = {
   
   // Override h1 tag for main headers (like "Scenario")
   h1: ({node, ...props}) => (
-    <h1 className="text-2xl font-bold text-text-primary mb-4 mt-8 border-b pb-2 border-primary" {...props} />
+    <motion.h1 
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className="text-2xl font-bold text-[#1F2937] mb-4 mt-8 border-b pb-2 border-[#3B82F6]" 
+      {...props} 
+    />
   ),
   
   // Override h2 tag to handle section headers (like "Objectives")
   h2: ({node, ...props}) => (
-    <h2 className="text-xl font-bold text-text-primary mb-4 mt-8" {...props} />
+    <motion.h2
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="text-xl font-bold text-[#1F2937] mb-4 mt-8" 
+      {...props} 
+    />
   ),
   
   // Override h3 tag for subsections (like difficulty levels)
   h3: ({node, ...props}) => (
-    <h3 className="text-lg font-bold text-text-primary mb-3 mt-6" {...props} />
+    <motion.h3
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.3 }}
+      className="text-lg font-bold text-[#1F2937] mb-3 mt-6" 
+      {...props} 
+    />
   ),
   
   // Override images to prevent nesting issues
   img: ({src, alt, ...props}) => (
-    <span className="block my-6">
+    <motion.span 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="block my-6"
+    >
       <Image
         src={src}
         alt={alt || ''}
         width={1000}
         height={500}
-        className="w-full h-auto object-cover rounded-lg"
+        className="w-full h-auto object-cover rounded-lg shadow-md"
       />
       {alt && (
-        <span className="block text-sm text-text-secondary italic mt-2">
+        <span className="block text-sm text-[#4B5563] italic mt-2">
           {alt}
         </span>
       )}
-    </span>
+    </motion.span>
   ),
   
   // Override links with proper external link handling
@@ -89,14 +113,19 @@ const MarkdownComponents = {
           const number = match[1];
           const highlightedText = match[2];
           parts.push(
-            <span key={match.index} className="relative group cursor-pointer">
-              <span className="inline-block bg-primary bg-opacity-20 text-text-primary rounded px-1 py-0.5">
+            <motion.span 
+              key={match.index} 
+              initial={{ backgroundColor: "#E0F2FE" }}
+              whileHover={{ backgroundColor: "#BFDBFE" }}
+              className="relative group cursor-pointer"
+            >
+              <span className="inline-block bg-[#3B82F6] bg-opacity-10 text-[#1F2937] rounded px-1 py-0.5">
                 {highlightedText}
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#3B82F6] text-white rounded-full flex items-center justify-center text-xs font-bold">
                   {number}
                 </span>
               </span>
-            </span>
+            </motion.span>
           );
           
           lastIndex = match.index + match[0].length;
@@ -110,20 +139,20 @@ const MarkdownComponents = {
         return parts;
       });
       
-      return <p className="my-4" {...props}>{processedText}</p>;
+      return <p className="my-4 text-[#4B5563]" {...props}>{processedText}</p>;
     }
     
     // Regular paragraph
-    return <p className="my-4" {...props}>{children}</p>;
+    return <p className="my-4 text-[#4B5563]" {...props}>{children}</p>;
   },
   
   // Override lists
   ul: ({node, ...props}) => (
-    <ul className="list-disc pl-6 my-4 space-y-2" {...props} />
+    <ul className="list-disc pl-6 my-4 space-y-2 text-[#4B5563]" {...props} />
   ),
   
   ol: ({node, ...props}) => (
-    <ol className="list-decimal pl-6 my-4 space-y-2" {...props} />
+    <ol className="list-decimal pl-6 my-4 space-y-2 text-[#4B5563]" {...props} />
   ),
   
   // Override list items to handle questions, hints, and answers
@@ -141,44 +170,56 @@ const MarkdownComponents = {
       let icon = null;
       
       if (text.startsWith('**Question:**')) {
-        backgroundColor = 'bg-blue-50';
-        borderColor = 'border-blue-200';
+        backgroundColor = 'bg-[#EFF6FF]';
+        borderColor = 'border-[#3B82F6]';
         icon = '❓';
       } else if (text.startsWith('**Hint:**')) {
-        backgroundColor = 'bg-yellow-50';
-        borderColor = 'border-yellow-200';
+        backgroundColor = 'bg-[#FFFBEB]';
+        borderColor = 'border-[#FBBF24]';
         icon = '💡';
       } else if (text.startsWith('**Answer:**')) {
-        backgroundColor = 'bg-green-50';
-        borderColor = 'border-green-200';
+        backgroundColor = 'bg-[#ECFDF5]';
+        borderColor = 'border-[#10B981]';
         icon = '✅';
       } else if (text.startsWith('**Related:**')) {
-        backgroundColor = 'bg-purple-50';
-        borderColor = 'border-purple-200';
+        backgroundColor = 'bg-[#F5F3FF]';
+        borderColor = 'border-[#8B5CF6]';
         icon = '🔄';
       }
       
       return (
-        <li className={`my-2 ${backgroundColor} border-l-4 ${borderColor} p-3 rounded-r`} {...props}>
+        <motion.li 
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`my-2 ${backgroundColor} border-l-4 ${borderColor} p-3 rounded-r shadow-sm`} 
+          {...props}
+        >
           <div className="flex items-start">
             <span className="mr-2 text-lg">{icon}</span>
             <span>{children}</span>
           </div>
-        </li>
+        </motion.li>
       );
     }
     
-    return <li className="my-1" {...props}>{children}</li>;
+    return <li className="my-1 text-[#4B5563]" {...props}>{children}</li>;
   },
   
   // Override blockquote for important notes
   blockquote: ({node, ...props}) => (
-    <blockquote className="border-l-4 border-primary pl-4 italic my-6 text-text-secondary" {...props} />
+    <motion.blockquote 
+      initial={{ opacity: 0, borderLeftWidth: 0 }}
+      animate={{ opacity: 1, borderLeftWidth: 4 }}
+      transition={{ duration: 0.5 }}
+      className="border-l-4 border-[#3B82F6] pl-4 italic my-6 text-[#4B5563] bg-[#F9FAFB] p-3 rounded-r"
+      {...props} 
+    />
   ),
   
   // Override strong for better emphasis
   strong: ({node, ...props}) => (
-    <strong className="font-bold text-text-primary" {...props} />
+    <strong className="font-bold text-[#1F2937]" {...props} />
   ),
   
   // Override code blocks to render syntax highlighting
@@ -189,7 +230,7 @@ const MarkdownComponents = {
     
     if (inline) {
       return (
-        <code className="bg-code-bg text-code-text px-1 py-0.5 rounded" {...props}>
+        <code className="font-mono bg-[#EEF2FF] text-[#3B82F6] px-2 py-0.5 rounded border border-[#DBEAFE] text-sm" {...props}>
           {children}
         </code>
       );
@@ -212,11 +253,16 @@ const MarkdownComponents = {
             onClose={toggleFullScreen}
           />
         )}
-        <div className="relative">
-          <div className="absolute right-2 top-2 flex space-x-2">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative"
+        >
+          <div className="absolute right-2 top-2 flex space-x-2 z-10">
             <button
               onClick={toggleFullScreen}
-              className="bg-primary text-white p-1 rounded text-xs hover:bg-primary-dark transition-colors"
+              className="bg-[#3B82F6] text-white p-1 rounded text-xs hover:bg-[#2563EB] transition-colors"
               aria-label="View code in full screen"
             >
               Expand
@@ -232,13 +278,13 @@ const MarkdownComponents = {
               fontSize: '0.95rem',
               marginTop: '1rem',
               marginBottom: '1rem',
-              backgroundColor: '#1E1E1E'
+              backgroundColor: '#1E293B'
             }}
             {...props}
           >
             {codeContent}
           </SyntaxHighlighter>
-        </div>
+        </motion.div>
       </>
     );
   },
@@ -247,14 +293,20 @@ const MarkdownComponents = {
 // Main MarkdownRenderer component
 const MarkdownRenderer = ({ content }) => {
   return (
-    <ReactMarkdown
-      className="prose prose-sm md:prose-base lg:prose-lg prose-slate max-w-none"
-      remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeRaw]}
-      components={MarkdownComponents}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      {content}
-    </ReactMarkdown>
+      <ReactMarkdown
+        className="prose prose-sm md:prose-base lg:prose-lg prose-slate max-w-none"
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeRaw]}
+        components={MarkdownComponents}
+      >
+        {content}
+      </ReactMarkdown>
+    </motion.div>
   );
 };
 
