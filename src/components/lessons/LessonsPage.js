@@ -98,7 +98,8 @@ const LessonsPage = () => {
       const response = await fetch('/api/lessons');
       const data = await response.json();
       
-      setLessons(data);
+      // Ensure we always have an array of lessons
+      setLessons(Array.isArray(data) ? data : []);
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching lessons:', error);
@@ -106,9 +107,12 @@ const LessonsPage = () => {
     }
   };
 
-  const filteredLessons = filter === 'all' 
-    ? lessons 
-    : lessons.filter(lesson => lesson.difficulty === filter);
+  // Make sure filteredLessons is always an array
+  const filteredLessons = Array.isArray(lessons) 
+    ? (filter === 'all' 
+        ? lessons 
+        : lessons.filter(lesson => lesson.difficulty === filter))
+    : [];
   
   const container = {
     hidden: { opacity: 0 },

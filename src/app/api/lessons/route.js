@@ -1,36 +1,58 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-import { ensureLessonsDirectory, parseLessonFile, getAllLessonFiles } from '@/utils/lessons';
+import { ensureLessonsDirectory, getAllLessonFiles, parseLessonFile } from '@/utils/lessons';
 
+/**
+ * GET lessons endpoint
+ * Returns a list of all available lessons
+ */
 export async function GET() {
   try {
-    // Ensure the lessons directory exists and has content
-    const lessonsDirectory = ensureLessonsDirectory();
+    // Ensure the lessons directory exists
+    const lessonsDirectory = await ensureLessonsDirectory();
     
-    // Get all lesson files (only JSON)
-    const lessonFiles = getAllLessonFiles();
+    // Get all lesson files
+    const lessonFiles = await getAllLessonFiles();
     
-    // If there are still no lesson files (something went wrong), return empty array
-    if (lessonFiles.length === 0) {
+    // Handle case where no lessons are found
+    if (!Array.isArray(lessonFiles) || lessonFiles.length === 0) {
+      console.log('No lesson files found');
       return NextResponse.json([]);
     }
     
-    // Parse each file and extract metadata
-    const lessons = lessonFiles
-      .map(({ file }) => parseLessonFile(file, lessonsDirectory))
-      .filter(Boolean); // Remove any null entries from parsing errors
+    // Parse each lesson file
+    const lessons = [];
+    for (const lessonFile of lessonFiles) {
+      try {
+        const lesson = await parseLessonFile(lessonFile.file, lessonsDirectory);
+        if (lesson) {
+          // Add a unique ID for client rendering
+          lesson.uniqueId = `${lesson.id}-${lesson.format}`;
+          lessons.push(lesson);
+        }
+      } catch (parseError) {
+        console.error(`Error parsing lesson file ${lessonFile.file}:`, parseError);
+        // Continue with other lessons instead of failing the entire request
+      }
+    }
     
-    // Sort by lesson number
+    // Sort lessons by ID
     lessons.sort((a, b) => {
-      const numA = parseInt(a.id);
-      const numB = parseInt(b.id);
-      return numA - numB;
+      // Try to extract numbers from IDs for numerical sorting
+      const aNum = parseInt(a.id, 10);
+      const bNum = parseInt(b.id, 10);
+      
+      // If both are valid numbers, sort numerically
+      if (!isNaN(aNum) && !isNaN(bNum)) {
+        return aNum - bNum;
+      }
+      
+      // Fall back to string comparison
+      return a.id.localeCompare(b.id);
     });
     
     return NextResponse.json(lessons);
   } catch (error) {
-    console.error('Error fetching lessons:', error);
-    return NextResponse.json({ error: 'Failed to load lessons' }, { status: 500 });
+    console.error('Error retrieving lessons:', error);
+    return NextResponse.json({ error: 'Failed to retrieve lessons' }, { status: 500 });
   }
 } 

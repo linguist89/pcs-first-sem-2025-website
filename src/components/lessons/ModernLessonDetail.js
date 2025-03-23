@@ -61,9 +61,20 @@ const ModernLessonDetail = ({ lessonId }) => {
     try {
       const response = await fetch(`/api/lessons/${lessonId}`);
       
+      // Using clone() to create a copy of the response that can be read multiple times
+      const responseForError = response.clone();
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to fetch lesson');
+        let errorMessage = 'Failed to fetch lesson';
+        try {
+          const errorData = await responseForError.json();
+          if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+        } catch (parseError) {
+          console.error('Error parsing error response:', parseError);
+        }
+        throw new Error(errorMessage);
       }
       
       const data = await response.json();
@@ -75,7 +86,7 @@ const ModernLessonDetail = ({ lessonId }) => {
       setLesson(data.lesson);
       
       // Handle different formats
-      if (data.lesson.format === 'json') {
+      if (data.lesson.format === 'json' || data.lesson.format === 'modular') {
         // For JSON format, content is already structured
         setContent(data.content || []);
       } else {

@@ -10,6 +10,7 @@ import {
   MediaBlock,
   Quiz
 } from './content';
+import InteractiveCode from './content/InteractiveCode';
 
 const LessonRenderer = ({ content = [] }) => {
   if (!content || content.length === 0) {
@@ -51,6 +52,9 @@ const renderSection = (section, index) => {
       
     case 'code':
       return <CodeBlock {...props} />;
+      
+    case 'interactiveCode':
+      return <InteractiveCode {...props} />;
       
     case 'exercise':
       return <Exercise {...props} />;

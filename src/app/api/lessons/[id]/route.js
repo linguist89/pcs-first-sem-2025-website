@@ -16,13 +16,13 @@ export async function GET(request, context) {
   
   try {
     // Ensure the lessons directory exists and has content
-    const lessonsDirectory = ensureLessonsDirectory();
+    const lessonsDirectory = await ensureLessonsDirectory();
     
     // Get all lesson files (markdown and JSON)
-    const lessonFiles = getAllLessonFiles();
+    const lessonFiles = await getAllLessonFiles();
     
     // If no lessons exist despite our attempt to create them, return error
-    if (lessonFiles.length === 0) {
+    if (!Array.isArray(lessonFiles) || lessonFiles.length === 0) {
       return NextResponse.json({ error: 'No lessons available' }, { status: 404 });
     }
     
@@ -40,7 +40,7 @@ export async function GET(request, context) {
       // For markdown files, we need to check frontmatter
       // For JSON files, we check the id field
       for (const { file, format } of lessonFiles) {
-        if (format === 'json') {
+        if (format === 'json' || format === 'modular') {
           // For JSON files, read the file and check id
           const fullPath = path.join(lessonsDirectory, file);
           if (fs.existsSync(fullPath)) {
@@ -52,6 +52,7 @@ export async function GET(request, context) {
                 break;
               }
             } catch (err) {
+              console.error(`Error parsing JSON file ${file}:`, err);
               // Skip files with invalid JSON
               continue;
             }
@@ -68,6 +69,7 @@ export async function GET(request, context) {
                 break;
               }
             } catch (err) {
+              console.error(`Error parsing markdown file ${file}:`, err);
               // Skip files with invalid frontmatter
               continue;
             }
@@ -81,37 +83,55 @@ export async function GET(request, context) {
     }
     
     // Parse the lesson file to get metadata and content
-    const lessonData = parseLessonFile(matchedLesson.file, lessonsDirectory, true);
+    const lessonData = await parseLessonFile(matchedLesson.file, lessonsDirectory, true);
     if (!lessonData) {
       return NextResponse.json({ error: 'Failed to parse lesson' }, { status: 500 });
     }
     
     // Get sorted lessons for navigation
-    const sortedLessonFiles = lessonFiles
-      .map(({ file }) => file)
-      .sort((a, b) => {
-        // Extract lesson number from file name
-        const numA = parseInt(path.parse(a).name.split('-')[0]);
-        const numB = parseInt(path.parse(b).name.split('-')[0]);
-        return numA - numB;
+    let sortedLessons = [];
+    try {
+      // Parse all lessons to get their IDs and sort them
+      for (const { file } of lessonFiles) {
+        const lessonInfo = await parseLessonFile(file, lessonsDirectory, false);
+        if (lessonInfo && lessonInfo.id) {
+          sortedLessons.push({
+            file,
+            id: lessonInfo.id
+          });
+        }
+      }
+      
+      // Sort by ID numerically when possible
+      sortedLessons.sort((a, b) => {
+        const numA = parseInt(a.id, 10);
+        const numB = parseInt(b.id, 10);
+        
+        if (!isNaN(numA) && !isNaN(numB)) {
+          return numA - numB;
+        }
+        return a.id.localeCompare(b.id);
       });
+    } catch (error) {
+      console.error('Error sorting lessons:', error);
+      // Continue without navigation if sorting fails
+      sortedLessons = [];
+    }
     
-    const currentIndex = sortedLessonFiles.findIndex(file => file === matchedLesson.file);
+    // Find previous and next lessons
     let prevLesson = null;
     let nextLesson = null;
     
-    if (currentIndex > 0) {
-      // Get the previous lesson's ID
-      const prevFile = sortedLessonFiles[currentIndex - 1];
-      const prevLessonData = parseLessonFile(prevFile, lessonsDirectory);
-      prevLesson = prevLessonData?.id;
-    }
-    
-    if (currentIndex < sortedLessonFiles.length - 1) {
-      // Get the next lesson's ID
-      const nextFile = sortedLessonFiles[currentIndex + 1];
-      const nextLessonData = parseLessonFile(nextFile, lessonsDirectory);
-      nextLesson = nextLessonData?.id;
+    if (sortedLessons.length > 0) {
+      const currentIndex = sortedLessons.findIndex(lesson => lesson.id === lessonData.lesson.id);
+      
+      if (currentIndex > 0) {
+        prevLesson = sortedLessons[currentIndex - 1].id;
+      }
+      
+      if (currentIndex < sortedLessons.length - 1 && currentIndex !== -1) {
+        nextLesson = sortedLessons[currentIndex + 1].id;
+      }
     }
     
     // Add navigation links to lesson data

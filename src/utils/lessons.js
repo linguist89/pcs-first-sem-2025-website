@@ -1,9 +1,43 @@
+'use server';
+
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { loadLessonContent } from './lessonContentLoader';
+
+// Sample lesson content to create if none exists - making this a non-exported constant
+const sampleLessonContent = `---
+title: Introduction to Functions in Python
+description: Learn the basics of defining and using functions in Python
+difficulty: Beginner
+duration: 20 minutes
+---
+
+# Introduction to Functions
+
+Functions are reusable blocks of code that perform a specific task.
+
+## Defining a Function
+
+In Python, you define a function using the \`def\` keyword:
+
+\`\`\`python
+def greet(name):
+    return f"Hello, {name}!"
+\`\`\`
+
+## Calling a Function
+
+Once defined, you can call a function by using its name followed by parentheses:
+
+\`\`\`python
+message = greet("Alice")
+print(message)  # Outputs: Hello, Alice!
+\`\`\`
+`;
 
 // Ensure the lessons directory exists and has at least one lesson
-export function ensureLessonsDirectory() {
+export async function ensureLessonsDirectory() {
   const lessonsDirectory = path.join(process.cwd(), 'public', 'data', 'Lessons');
   
   // Create directories if they don't exist
@@ -32,23 +66,34 @@ export function ensureLessonsDirectory() {
   return lessonsDirectory;
 }
 
-// Get all available lesson files (only JSON)
-export function getAllLessonFiles() {
+// Get all available lesson files
+export async function getAllLessonFiles() {
   const lessonsDirectory = path.join(process.cwd(), 'public', 'data', 'Lessons');
   const jsonDirectory = path.join(lessonsDirectory, 'json');
+  const modulesDirectory = path.join(lessonsDirectory, 'modules');
   
-  // Only get JSON lessons, no markdown
+  // Get JSON lessons
   const jsonLessons = fs.existsSync(jsonDirectory)
     ? fs.readdirSync(jsonDirectory)
       .filter(file => file.endsWith('.json'))
       .map(file => ({ file: `json/${file}`, format: 'json' }))
     : [];
+    
+  // Get modular lessons (lessons with index.json files)
+  const modularLessons = fs.existsSync(modulesDirectory)
+    ? fs.readdirSync(modulesDirectory)
+      .filter(dir => {
+        const indexPath = path.join(modulesDirectory, dir, 'index.json');
+        return fs.existsSync(indexPath) && fs.statSync(path.join(modulesDirectory, dir)).isDirectory();
+      })
+      .map(dir => ({ file: `modules/${dir}/index.json`, format: 'modular' }))
+    : [];
   
-  return jsonLessons;
+  return [...jsonLessons, ...modularLessons];
 }
 
 // Parse lesson file to get metadata
-export function parseLessonFile(file, lessonsDirectory, includeContent = false) {
+export async function parseLessonFile(file, lessonsDirectory, includeContent = false) {
   const fullPath = path.join(lessonsDirectory, file);
   
   // Check if file exists
@@ -57,14 +102,17 @@ export function parseLessonFile(file, lessonsDirectory, includeContent = false) 
     return null;
   }
   
-  // Determine if this is a JSON lesson
-  const isJsonLesson = file.includes('json/') || file.endsWith('.json');
+  // Determine the format based on the file path
+  const isJsonLesson = file.includes('json/') || file.endsWith('.json') && !file.includes('modules/');
+  const isModularLesson = file.includes('modules/') && file.endsWith('index.json');
   
   try {
     if (isJsonLesson) {
-      return parseJsonLesson(fullPath, includeContent);
+      return await parseJsonLesson(fullPath, includeContent);
+    } else if (isModularLesson) {
+      return await parseModularLesson(fullPath, lessonsDirectory, includeContent);
     } else {
-      return parseMarkdownLesson(fullPath, file, includeContent);
+      return await parseMarkdownLesson(fullPath, file, includeContent);
     }
   } catch (err) {
     console.error(`Error parsing lesson file ${file}:`, err);
@@ -72,8 +120,60 @@ export function parseLessonFile(file, lessonsDirectory, includeContent = false) 
   }
 }
 
+// Parse modular lesson with markdown content files
+async function parseModularLesson(filePath, lessonsDirectory, includeContent = false) {
+  const fileContents = fs.readFileSync(filePath, 'utf8');
+  const jsonData = JSON.parse(fileContents);
+  
+  // Get lesson ID and metadata
+  const lessonDir = path.dirname(filePath);
+  const dirName = path.basename(path.dirname(filePath));
+  
+  const lessonNumber = jsonData.id || dirName.split('-')[0];
+  
+  // Extract description if not provided
+  let description = jsonData.description;
+  if (!description) {
+    // Try to find a text section to use as description
+    const textSection = jsonData.content?.find(section => section.type === 'text');
+    if (textSection && textSection.content) {
+      description = textSection.content.substring(0, 150) + '...';
+    } else if (textSection && textSection.contentPath) {
+      // Try to load content from file
+      const contentPath = path.join(lessonDir, textSection.contentPath);
+      if (fs.existsSync(contentPath)) {
+        const { content } = matter(fs.readFileSync(contentPath, 'utf8'));
+        description = content.substring(0, 150) + '...';
+      } else {
+        description = `Lesson ${lessonNumber}`;
+      }
+    } else {
+      description = `Lesson ${lessonNumber}`;
+    }
+  }
+  
+  const lessonData = {
+    id: lessonNumber,
+    slug: dirName,
+    title: jsonData.title || 'Untitled Lesson',
+    description,
+    difficulty: jsonData.difficulty || 'Intermediate',
+    duration: jsonData.duration || '30 minutes',
+    topics: jsonData.topics || [],
+    format: 'modular'
+  };
+  
+  if (includeContent && jsonData.content) {
+    // Load content from referenced markdown files
+    const loadedContent = await loadLessonContent(jsonData.content, lessonDir);
+    return { lesson: lessonData, content: loadedContent };
+  }
+  
+  return lessonData;
+}
+
 // Parse JSON lesson file
-function parseJsonLesson(filePath, includeContent = false) {
+async function parseJsonLesson(filePath, includeContent = false) {
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const jsonData = JSON.parse(fileContents);
   
@@ -108,7 +208,7 @@ function parseJsonLesson(filePath, includeContent = false) {
 }
 
 // Parse markdown lesson file
-function parseMarkdownLesson(filePath, fileName, includeContent = false) {
+async function parseMarkdownLesson(filePath, fileName, includeContent = false) {
   const fileContents = fs.readFileSync(filePath, 'utf8');
   const { data: frontmatter, content } = matter(fileContents);
   
@@ -141,7 +241,7 @@ function parseMarkdownLesson(filePath, fileName, includeContent = false) {
 }
 
 // Convert markdown lesson to JSON format
-export function convertMarkdownToJson(markdownContent, frontmatter) {
+export async function convertMarkdownToJson(markdownContent, frontmatter) {
   // Basic implementation - in a real system you would want more robust parsing
   const sections = [];
   
@@ -219,35 +319,4 @@ export function convertMarkdownToJson(markdownContent, frontmatter) {
   };
   
   return jsonLesson;
-}
-
-// Sample lesson content to create if none exists
-export const sampleLessonContent = `---
-title: Introduction to Functions in Python
-description: Learn the basics of defining and using functions in Python
-difficulty: Beginner
-duration: 20 minutes
----
-
-# Introduction to Functions
-
-Functions are reusable blocks of code that perform a specific task.
-
-## Defining a Function
-
-In Python, you define a function using the \`def\` keyword:
-
-\`\`\`python
-def greet(name):
-    return f"Hello, {name}!"
-\`\`\`
-
-## Calling a Function
-
-Once defined, you can call a function by using its name followed by parentheses:
-
-\`\`\`python
-message = greet("Alice")
-print(message)  # Outputs: Hello, Alice!
-\`\`\`
-`; 
+} 

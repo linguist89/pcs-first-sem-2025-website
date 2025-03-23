@@ -6,6 +6,7 @@ import Exercise from './Exercise';
 import Scenario from './Scenario';
 import MediaBlock from './MediaBlock';
 import Quiz from './Quiz';
+import InteractiveCode from './InteractiveCode';
 
 export {
   TextBlock,
@@ -13,5 +14,6 @@ export {
   Exercise,
   Scenario,
   MediaBlock,
-  Quiz
+  Quiz,
+  InteractiveCode
 }; 

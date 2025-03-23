@@ -45,7 +45,7 @@ export const lessonSchema = {
         "properties": {
           "type": {
             "type": "string",
-            "enum": ["text", "code", "exercise", "scenario", "media", "quiz"],
+            "enum": ["text", "code", "interactiveCode", "exercise", "scenario", "media", "quiz"],
             "description": "Type of content section"
           }
         },
@@ -73,6 +73,24 @@ export const lessonSchema = {
                 "content": { "type": "string" },
                 "caption": { "type": "string" },
                 "showLineNumbers": { "type": "boolean", "default": true }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": { "type": { "enum": ["interactiveCode"] } }
+            },
+            "then": {
+              "required": ["starterCode"],
+              "properties": {
+                "title": { "type": "string" },
+                "description": { "type": "string" },
+                "starterCode": { "type": "string" },
+                "language": { "type": "string", "default": "python" },
+                "solution": { "type": "string" },
+                "caption": { "type": "string" },
+                "showLineNumbers": { "type": "boolean", "default": true },
+                "instructions": { "type": "string" }
               }
             }
           },
@@ -196,6 +214,10 @@ export function validateLesson(lessonData) {
           
         case 'code':
           if (!section.content) errors.push(`Code section ${index} is missing required field: content`);
+          break;
+          
+        case 'interactiveCode':
+          if (!section.starterCode) errors.push(`InteractiveCode section ${index} is missing required field: starterCode`);
           break;
           
         case 'exercise':
