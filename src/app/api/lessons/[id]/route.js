@@ -3,25 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-// Sample lesson content to create if no lessons exist
-const sampleLessonContent = `---
-title: Introduction to Functions
-description: Learn the basics of functions in Python and how to use them effectively
-difficulty: Beginner
-duration: 30 minutes
----
-
-# Scenario
-Sarah, the team lead, approached Mark with a file in hand. "Mark, we've got this eye-tracking data," she said, placing the file on his desk. "It's a bit of a mess, but we need to figure out [1 how long users are looking at different parts of our interface]. [2 We're hoping to find patterns] – like, what's catching their attention? Can you clean this up and give us some basic stats? [3 We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes]." She added, "Let's start simple and build up from there."
-
-## Objective
-Sarah wants Mark to analyze eye-tracking data to understand user attention. To do this, Mark needs to:
-
-1.  **Clean the data:** Remove invalid entries like "NA", "error", and "NaN".
-2.  **Calculate basic statistics:** Find the number of valid data points, the average gaze duration, and the standard deviation of longer gaze durations.
-3.  **Identify patterns:** Determine what parts of the interface are holding user attention.
-`;
-
 // Ensure the lessons directory exists and has at least one lesson
 function ensureLessonsDirectory() {
   const lessonsDirectory = path.join(process.cwd(), 'public', 'data', 'Lessons');
