@@ -1,13 +1,11 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect } from 'react';
-import { fetchLessons, fetchResources } from '@/lib/data';
 import { useUser } from './UserContext';
 
 // Initial course context state
 const initialState = {
   lessons: [],
-  resources: [],
   currentLessonId: null,
   isLoading: true,
   error: null,
@@ -28,7 +26,6 @@ export const useCourse = () => useContext(CourseContext);
 // Course provider component
 export function CourseProvider({ children }) {
   const [lessons, setLessons] = useState([]);
-  const [resources, setResources] = useState([]);
   const [currentLessonId, setCurrentLessonId] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,21 +38,12 @@ export function CourseProvider({ children }) {
       setIsLoading(true);
       
       try {
-        // Fetch lessons and resources in parallel
-        const [lessonsData, resourcesData] = await Promise.all([
-          fetchLessons(),
-          fetchResources()
-        ]);
-        
-        setLessons(lessonsData);
-        setResources(resourcesData);
+        // Lessons are now loaded from markdown files directly in the pages
+        // This context now manages the current lesson state and navigation
         
         // Set current lesson from user progress if authenticated
         if (user?.progress?.currentLesson) {
           setCurrentLessonId(user.progress.currentLesson);
-        } else if (lessonsData.length > 0) {
-          // Default to first lesson
-          setCurrentLessonId(lessonsData[0].id);
         }
       } catch (err) {
         console.error('Error loading course data:', err);
@@ -111,14 +99,24 @@ export function CourseProvider({ children }) {
     return Math.round((user.progress.completedLessons.length / lessons.length) * 100);
   };
   
+  // Set lessons (to be called from pages that load lessons from markdown)
+  const setLessonsData = (lessonsData) => {
+    setLessons(lessonsData);
+    
+    // Set default lesson if needed
+    if (!currentLessonId && lessonsData.length > 0) {
+      setCurrentLessonId(lessonsData[0].id);
+    }
+  };
+  
   // Context value
   const value = {
     lessons,
-    resources,
     currentLessonId,
     isLoading,
     error,
     setCurrentLesson: setCurrentLessonId,
+    setLessons: setLessonsData,
     getNextLesson,
     getPreviousLesson,
     getLessonById,

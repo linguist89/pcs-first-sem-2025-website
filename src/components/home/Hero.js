@@ -27,31 +27,6 @@ const Hero = () => {
             <p className="text-lg text-white mb-8">
               Learn functional programming in Python with applications in cognitive science, data analysis, and machine learning, designed specifically for students exploring the intersection of computation and the mind.
             </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/lessons" className="px-6 py-3 bg-white text-primary font-medium rounded-md hover:bg-white/90 transition-colors text-center shadow-md">
-                Start Learning
-              </Link>
-              <Link href="/resources" className="px-6 py-3 border border-white text-white font-medium rounded-md hover:bg-white hover:bg-opacity-10 transition-colors text-center">
-                Explore Resources
-              </Link>
-            </div>
-            
-            {/* Stats */}
-            <div className="flex flex-wrap gap-8 mt-12">
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold text-white">3+</span>
-                <span className="text-white">Modules</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold text-white">12+</span>
-                <span className="text-white">Exercises</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold text-white">5+</span>
-                <span className="text-white">Projects</span>
-              </div>
-            </div>
           </div>
           
           {/* Hero Image */}

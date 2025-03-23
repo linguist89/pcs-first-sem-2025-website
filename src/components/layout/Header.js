@@ -86,12 +86,6 @@ const Header = () => {
             >
               Lessons
             </Link>
-            <Link 
-              href="/resources" 
-              className="text-text-primary hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors"
-            >
-              Resources
-            </Link>
           </nav>
           
           {/* Right Actions */}
@@ -150,13 +144,6 @@ const Header = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Lessons
-              </Link>
-              <Link 
-                href="/resources" 
-                className="text-text-primary hover:bg-bg-secondary px-3 py-2 rounded-md text-base font-medium transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Resources
               </Link>
             </nav>
           </div>

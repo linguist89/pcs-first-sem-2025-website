@@ -3,20 +3,20 @@ import React from 'react';
 const PurposeAndGoals = () => {
   const goals = [
     {
-      title: 'Python Fundamentals',
-      description: 'Build a solid foundation in Python programming with a focus on concepts relevant to cognitive science research.'
+      title: 'Variables and Datatypes',
+      description: 'Develop a basic understanding of variables and datatypes in Python, creating a foundation for programming.'
     },
     {
-      title: 'Data Analysis Skills',
-      description: 'Learn to process, analyze, and visualize complex datasets using libraries like Pandas, NumPy, and Matplotlib.'
+      title: 'Flow Control',
+      description: 'Learn how to control program execution with conditional statements, loops, and logical operations.'
     },
     {
-      title: 'Machine Learning Applications',
-      description: 'Apply machine learning techniques to cognitive science problems using scikit-learn and TensorFlow/PyTorch.'
+      title: 'Functions',
+      description: 'Understand how to create, use, and optimize functions to write reusable and modular code.'
     },
     {
-      title: 'Research Preparation',
-      description: 'Develop the technical skills needed to conduct computational research in cognitive science.'
+      title: 'Classes',
+      description: 'Master object-oriented programming concepts through Python classes, methods, and inheritance.'
     }
   ];
 
@@ -27,11 +27,6 @@ const PurposeAndGoals = () => {
           <h2 className="text-3xl font-bold text-primary mb-4">Purpose and Goals</h2>
           <p className="text-xl text-text-primary mb-6">
             Preparing Cognitive Science students for machine learning using Python
-          </p>
-          <p className="text-lg text-text-secondary mb-8">
-            This course bridges the gap between cognitive science theory and computational methods,
-            equipping students with the programming skills needed to apply machine learning techniques
-            to cognitive science research questions.
           </p>
         </div>
 
@@ -45,13 +40,6 @@ const PurposeAndGoals = () => {
               <p className="text-text-secondary">{goal.description}</p>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <p className="text-text-secondary italic">
-            "Our mission is to empower cognitive science students with the computational tools 
-            needed to explore the fascinating intersection of human cognition and artificial intelligence."
-          </p>
         </div>
       </div>
     </section>
