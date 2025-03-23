@@ -1,0 +1,132 @@
+{
+  "id": "02",
+  "title": "Memory Recall Experiments: Data Analysis and Comparison",
+  "description": "Learn how to analyze memory recall data by comparing lists and calculating statistics on recall accuracy.",
+  "difficulty": "Intermediate",
+  "duration": "50 minutes",
+  "topics": [
+    "File reading and parsing",
+    "String manipulation and case handling",
+    "Creating and using functions",
+    "List operations and comparisons",
+    "Data analysis and statistics",
+    "Set operations",
+    "Dictionary creation and manipulation"
+  ],
+  "content": [
+    {
+      "type": "text",
+      "title": "Introduction",
+      "content": "In this lesson, you will learn how to analyze memory recall data using Python. We'll work with data from a psychology experiment to determine how accurately participants recalled items from a list."
+    },
+    {
+      "type": "text",
+      "title": "Prerequisites",
+      "content": "Before beginning this lesson, you'll need to download the following data files:"
+    },
+    {
+      "type": "code",
+      "language": "bash",
+      "content": "# Download warmup.txt\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/lesson2-data/warmup.txt\n\n# Download recall_data.txt\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/lesson2-data/recall_data.txt"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up code-a-long",
+      "content": "Let's start with some basic exercises to get familiar with the concepts we'll be using throughout this lesson."
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Reading lists from a file",
+      "content": "# Open a file and read its contents\nwith open('warmup.txt', 'w') as f:\n    f.write(\"red, green, blue\\nyellow, red, purple\")\nwith open('warmup.txt', 'r') as file:\n    lines = file.readlines()\nlist1 = lines[0].strip().split(\", \")\nlist2 = lines[1].strip().split(\", \")\nprint(list1)\nprint(list2)"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Case-insensitive string comparison",
+      "content": "original = [\"Apple\", \"Orange\", \"Banana\"]\nrecalled = [\"apple\", \"orange\", \"Grape\"]\ncorrect_matches = 0\n\nfor item in recalled:\n    if item.lower() in [x.lower() for x in original]:\n        correct_matches += 1\n\nprint(f\"Correct matches: {correct_matches}\")"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Finding items in one list but not another",
+      "content": "list1 = [\"apple\", \"banana\", \"cherry\", \"date\"]\nlist2 = [\"banana\", \"cherry\", \"fig\", \"grape\"]\n\nmissing_items = [item for item in list1 if item not in list2]\nnew_items = [item for item in list2 if item not in list1]\n\nprint(f\"Missing from list2: {missing_items}\")\nprint(f\"New in list2: {new_items}\")"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Creating a dictionary with analysis results",
+      "content": "list1 = [\"apple\", \"banana\", \"cherry\", \"date\"]\nlist2 = [\"banana\", \"cherry\", \"fig\", \"grape\"]\n\nresults = {\n    \"matches\": len([item for item in list2 if item in list1]),\n    \"missing\": [item for item in list1 if item not in list2],\n    \"new\": [item for item in list2 if item not in list1]\n}\n\nprint(results)"
+    },
+    {
+      "type": "scenario",
+      "title": "Analyzing Memory Recall Data",
+      "content": "Professor Chen was conducting a memory experiment with her psychology students. \"Today, we're going to analyze memory recall accuracy,\" she explained to her research assistant, Alex. \"I showed participants a list of fruits and asked them to recall as many as they could. The data's in this file,\" she said, handing over a flash drive. \"We need to determine how accurately they recalled the items, ignoring case sensitivity. I'm particularly interested in which items they consistently forgot and which ones they incorrectly added. Can you write a program to analyze this data and give me some statistics on recall accuracy?\"",
+      "highlightedContent": "Professor Chen was conducting a memory experiment with her psychology students. \"Today, we're going to analyze [1 memory recall accuracy],\" she explained to her research assistant, Alex. \"I showed participants a list of fruits and asked them to recall as many as they could. The data's in this file,\" she said, handing over a flash drive. \"[2 We need to determine how accurately they recalled the items], ignoring case sensitivity. I'm particularly interested in [3 which items they consistently forgot and which ones they incorrectly added]. Can you write a program to analyze this data and give me some statistics on recall accuracy?\"",
+      "objective": "Professor Chen wants Alex to analyze memory recall data to understand recall accuracy. To do this, Alex needs to:\n\n1. **Compare the original and recalled lists:** Determine which items were correctly recalled, ignoring case sensitivity.\n2. **Calculate recall statistics:** Find the number and percentage of correctly recalled items.\n3. **Identify specific patterns:** Determine which items were forgotten and which ones were incorrectly added.\n\nTherefore, the main question is: **How can we analyze the provided memory recall data to determine recall accuracy and identify patterns in what people remember and forget?**"
+    },
+    {
+      "type": "exercise",
+      "title": "Basic Recall Analysis",
+      "instructions": "Load the two lists from `recall_data.txt`. How many items were recalled correctly, ignoring case sensitivity?",
+      "difficulty": "beginner",
+      "starterCode": "# Your code here\n\n# Remember to:\n# 1. Open and read the file\n# 2. Split each line into items\n# 3. Convert all to lowercase\n# 4. Count how many items from the second list are in the first list",
+      "solution": "# Count correctly recalled items\nwith open('recall_data.txt', 'r') as file:\n    lines = file.readlines()\n\n# Get original and recalled lists\noriginal_list = lines[0].strip().split(', ')\nrecalled_list = lines[1].strip().split(', ')\n\n# Convert to lowercase for case-insensitive comparison\noriginal_lower = [item.lower() for item in original_list]\nrecalled_lower = [item.lower() for item in recalled_list]\n\n# Count correct recalls\ncorrect_recalls = 0\nfor item in recalled_lower:\n    if item in original_lower:\n        correct_recalls += 1\n\nprint(f\"Number of correctly recalled items: {correct_recalls}\")\n# Answer: 7"
+    },
+    {
+      "type": "exercise",
+      "title": "Calculating Recall Percentage",
+      "instructions": "Write a Python function `analyze_recall(filename)` that loads the lists from the file, converts all items to lowercase, and returns the percentage of correctly recalled items.",
+      "difficulty": "intermediate",
+      "starterCode": "def analyze_recall(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read the file and get both lists\n    # 2. Convert all items to lowercase\n    # 3. Calculate how many items from the recalled list match the original list\n    # 4. Compute and return the percentage\n    \n    return percentage\n\n# Test your function\nresult = analyze_recall('recall_data.txt')\nprint(f\"Percentage of correctly recalled items: {result}%\")",
+      "solution": "def analyze_recall(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        lines = file.readlines()\n    \n    # Get original and recalled lists\n    original_list = lines[0].strip().split(', ')\n    recalled_list = lines[1].strip().split(', ')\n    \n    # Convert to lowercase for case-insensitive comparison\n    original_lower = [item.lower() for item in original_list]\n    recalled_lower = [item.lower() for item in recalled_list]\n    \n    # Count correct recalls\n    correct_recalls = 0\n    for item in recalled_lower:\n        if item in original_lower:\n            correct_recalls += 1\n    \n    # Calculate percentage\n    percentage = (correct_recalls / len(recalled_list)) * 100\n    return round(percentage, 1)\n\n# Test the function\nresult = analyze_recall('recall_data.txt')\nprint(f\"Percentage of correctly recalled items: {result}%\")\n# Answer: 70.0%"
+    },
+    {
+      "type": "exercise",
+      "title": "Comprehensive Recall Analysis",
+      "instructions": "Load the lists from `recall_data.txt`. Write a Python function `recall_stats(filename)` that returns a dictionary containing: the number of correctly recalled items, the number of incorrectly recalled items, and a list of items that were in the original list but not recalled.",
+      "difficulty": "advanced",
+      "starterCode": "def recall_stats(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read the file and get both lists\n    # 2. Process lists for case-insensitive comparison\n    # 3. Compute statistics:\n    #    - Correctly recalled items\n    #    - Incorrectly recalled items\n    #    - Items missed (in original but not recalled)\n    # 4. Return results in a dictionary\n    \n    return stats\n\n# Test your function\nresults = recall_stats('recall_data.txt')\nprint(results)",
+      "solution": "def recall_stats(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        lines = file.readlines()\n    \n    # Get original and recalled lists\n    original_list = lines[0].strip().split(', ')\n    recalled_list = lines[1].strip().split(', ')\n    \n    # Convert to lowercase for case-insensitive comparison\n    original_lower = [item.lower() for item in original_list]\n    recalled_lower = [item.lower() for item in recalled_list]\n    \n    # Count correct recalls\n    correct_recalls = 0\n    incorrect_recalls = 0\n    \n    for item in recalled_lower:\n        if item in original_lower:\n            correct_recalls += 1\n        else:\n            incorrect_recalls += 1\n    \n    # Find items that were not recalled (missed items)\n    missed_items = []\n    for i, item in enumerate(original_lower):\n        if item not in recalled_lower:\n            # Use the original case for the output\n            missed_items.append(original_list[i])\n    \n    stats = {\n        'correct': correct_recalls,\n        'incorrect': incorrect_recalls,\n        'missing': missed_items\n    }\n    \n    return stats\n\n# Test the function\nresults = recall_stats('recall_data.txt')\nprint(results)\n# Answer: A dictionary similar to: {'correct': 7, 'incorrect': 3, 'missing': ['elderberry', 'honeydew', 'kiwi']}"
+    },
+    {
+      "type": "quiz",
+      "title": "Knowledge Check",
+      "questions": [
+        {
+          "question": "What method would you use to read multiple lines from a file at once in Python?",
+          "options": [
+            "file.read()",
+            "file.readlines()",
+            "file.readline()",
+            "file.readall()"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The `readlines()` method reads all lines from a file and returns them as a list of strings."
+        },
+        {
+          "question": "Which of these expressions correctly finds items that are in list1 but not in list2?",
+          "options": [
+            "[item for item in list1 if item in list2]",
+            "[item for item in list1 if item not in list2]",
+            "[item for item in list2 if item not in list1]",
+            "list1.difference(list2)"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The list comprehension `[item for item in list1 if item not in list2]` iterates through list1 and includes only items that don't appear in list2."
+        },
+        {
+          "question": "What's the purpose of converting strings to lowercase when comparing them?",
+          "options": [
+            "To make the code run faster",
+            "To enable case-insensitive comparison",
+            "To save memory",
+            "To prepare the strings for sorting"
+          ],
+          "correctAnswer": 1,
+          "explanation": "Converting strings to lowercase allows for case-insensitive comparison, meaning 'Apple' and 'apple' will be considered the same string."
+        }
+      ]
+    }
+  ]
+}

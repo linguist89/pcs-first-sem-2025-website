@@ -1,0 +1,132 @@
+{
+  "id": "01",
+  "title": "Introduction to Functions: Data Processing and Analysis",
+  "description": "Learn how to create and use functions for data processing and analysis in Python.",
+  "difficulty": "Beginner",
+  "duration": "45 minutes",
+  "topics": [
+    "File I/O operations",
+    "String parsing and manipulation",
+    "Creating and using functions",
+    "Data filtering and validation",
+    "Basic statistical calculations",
+    "List comprehensions",
+    "Dictionaries"
+  ],
+  "content": [
+    {
+      "type": "text",
+      "title": "Introduction",
+      "content": "In this lesson, you will learn how to process and analyze data using Python functions. We'll work with eye-tracking data to understand user attention patterns."
+    },
+    {
+      "type": "text",
+      "title": "Prerequisites",
+      "content": "Before beginning this lesson, you'll need to download the following data files:"
+    },
+    {
+      "type": "code",
+      "language": "bash",
+      "content": "# Download warmup.txt\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/lesson1-data/warmup.txt\n\n# Download eye_tracking_data.txt\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/lesson1-data/eye_tracking_data.txt"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up code-a-long",
+      "content": "Let's start with some basic exercises to get familiar with the concepts we'll be using throughout this lesson."
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Reading from a file and splitting data",
+      "content": "# Open a file and read its contents\nwith open('warmup.txt', 'w') as f:\n    f.write(\"1, 2, 3, 4, 5\")\nwith open('warmup.txt', 'r') as file:\n    data_string = file.read()\n# Split the string into a list of numbers\ndata_list = data_string.split(\", \")\nprint(data_list)"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Filtering numeric values",
+      "content": "data = [\"1\", \"a\", \"2\", \"b\", \"3\"]\nnumeric_data = []\nfor item in data:\n    if item.isdigit():\n        numeric_data.append(int(item))\nprint(numeric_data)"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Calculating average and standard deviation",
+      "content": "import math\n\nnumbers = [1, 2, 3, 4, 5]\naverage = sum(numbers) / len(numbers)\nvariance = sum([(x - average)**2 for x in numbers]) / len(numbers)\nstd_dev = math.sqrt(variance)\nprint(f\"Average: {average}, Standard Deviation: {std_dev}\")"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Creating a dictionary",
+      "content": "data = {\"name\": \"Alice\", \"age\": 30, \"city\": \"New York\"}\nprint(data[\"name\"])\ndata[\"job\"] = \"Engineer\"\nprint(data)"
+    },
+    {
+      "type": "scenario",
+      "title": "Analyzing Eye-Tracking Data",
+      "content": "Sarah, the team lead, approached Mark with a file in hand. \"Mark, we've got this eye-tracking data,\" she said, placing the file on his desk. \"It's a bit of a mess, but we need to figure out how long users are looking at different parts of our interface. We're hoping to find patterns – like, what's catching their attention? Can you clean this up and give us some basic stats? We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes.\" She added, \"Let's start simple and build up from there.\"",
+      "highlightedContent": "Sarah, the team lead, approached Mark with a file in hand. \"Mark, we've got this eye-tracking data,\" she said, placing the file on his desk. \"It's a bit of a mess, but we need to figure out [1 how long users are looking at different parts of our interface]. [2 We're hoping to find patterns] – like, what's catching their attention? Can you clean this up and give us some basic stats? [3 We need to know the number of valid data points, the average gaze duration, and the variability of longer gazes].\" She added, \"Let's start simple and build up from there.\"",
+      "objective": "Sarah wants Mark to analyze eye-tracking data to understand user attention. To do this, Mark needs to:\n\n1. **Clean the data:** Remove invalid entries like \"NA\", \"error\", and \"NaN\".\n2. **Calculate basic statistics:** Find the number of valid data points, the average gaze duration, and the standard deviation of longer gaze durations.\n3. **Identify patterns:** Determine what parts of the interface are holding user attention.\n\nTherefore, the main question is: **How can we clean and analyze the provided eye-tracking data to understand user attention and identify patterns in gaze duration?**"
+    },
+    {
+      "type": "exercise",
+      "title": "Basic Data Analysis",
+      "instructions": "Load the data from `eye_tracking_data.txt`. How many valid gaze durations (numeric values) are greater than 600 milliseconds?",
+      "difficulty": "beginner",
+      "starterCode": "# Your code here\n\n# Remember to:\n# 1. Open and read the file\n# 2. Split the data\n# 3. Filter out non-numeric values\n# 4. Count values > 600",
+      "solution": "# Count gaze durations > 600ms\nwith open('eye_tracking_data.txt', 'r') as file:\n    data_string = file.read()\n\n# Split by commas\ndata_list = data_string.split(',')\n\n# Clean and convert to numbers\nvalid_durations = []\nfor item in data_list:\n    item = item.strip()\n    if item.isdigit():\n        valid_durations.append(int(item))\n\n# Count values > 600\nlonger_gazes = [d for d in valid_durations if d > 600]\nprint(f\"Number of gaze durations > 600ms: {len(longer_gazes)}\")\n# Answer: 14"
+    },
+    {
+      "type": "exercise",
+      "title": "Creating an Analysis Function",
+      "instructions": "Write a Python function `analyze_gaze_data(filename)` that loads the data, cleans it (handling 'NA', 'nA', 'error', and 'NaN' entries), and returns the percentage of valid gaze durations that are greater than 600 milliseconds.",
+      "difficulty": "intermediate",
+      "starterCode": "def analyze_gaze_data(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read the file\n    # 2. Clean the data (remove NA, nA, error, NaN)\n    # 3. Convert to numbers\n    # 4. Calculate percentage of values > 600ms\n    \n    return percentage\n\n# Test your function\nresult = analyze_gaze_data('eye_tracking_data.txt')\nprint(f\"Percentage of long gazes: {result}%\")",
+      "solution": "def analyze_gaze_data(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        data_string = file.read()\n    \n    # Split by commas\n    data_list = data_string.split(',')\n    \n    # Clean the data\n    valid_durations = []\n    invalid_values = ['NA', 'nA', 'error', 'NaN']\n    \n    for item in data_list:\n        item = item.strip()\n        if item not in invalid_values and item.isdigit():\n            valid_durations.append(int(item))\n    \n    # Count values > 600ms\n    long_gazes = [d for d in valid_durations if d > 600]\n    \n    # Calculate percentage\n    percentage = (len(long_gazes) / len(valid_durations)) * 100\n    return round(percentage, 1)\n\n# Test the function\nresult = analyze_gaze_data('eye_tracking_data.txt')\nprint(f\"Percentage of long gazes: {result}%\")\n# Answer: Approximately 35.0%"
+    },
+    {
+      "type": "exercise",
+      "title": "Advanced Statistics Function",
+      "instructions": "Load the data from `eye_tracking_data.txt`. Write a Python function `gaze_analysis_stats(filename)` that cleans the data and returns a dictionary containing the number of valid gaze durations, the average gaze duration, and the standard deviation of gaze durations greater than 600 milliseconds.",
+      "difficulty": "advanced",
+      "starterCode": "def gaze_analysis_stats(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read and clean the data\n    # 2. Calculate total valid count\n    # 3. Calculate average of all valid data\n    # 4. Calculate standard deviation of gazes > 600ms\n    # 5. Return results in a dictionary\n    \n    return stats\n\n# Test your function\nresults = gaze_analysis_stats('eye_tracking_data.txt')\nprint(results)",
+      "solution": "import math\n\ndef gaze_analysis_stats(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        data_string = file.read()\n    \n    # Split and clean the data\n    data_list = data_string.split(',')\n    invalid_values = ['NA', 'nA', 'error', 'NaN']\n    \n    valid_durations = []\n    for item in data_list:\n        item = item.strip()\n        if item not in invalid_values and item.isdigit():\n            valid_durations.append(int(item))\n    \n    # Calculate statistics\n    valid_count = len(valid_durations)\n    average = sum(valid_durations) / valid_count if valid_count > 0 else 0\n    \n    # Find gazes > 600ms\n    long_gazes = [d for d in valid_durations if d > 600]\n    \n    # Calculate standard deviation of long gazes\n    if len(long_gazes) > 0:\n        long_avg = sum(long_gazes) / len(long_gazes)\n        variance = sum([(x - long_avg)**2 for x in long_gazes]) / len(long_gazes)\n        std_dev = round(math.sqrt(variance), 1)\n    else:\n        std_dev = 0\n    \n    stats = {\n        'valid_count': valid_count,\n        'average': round(average, 2),\n        'std_dev': std_dev\n    }\n    \n    return stats\n\n# Test the function\nresults = gaze_analysis_stats('eye_tracking_data.txt')\nprint(results)\n# Answer: A dictionary similar to: {'valid_count': 36, 'average': 547.22, 'std_dev': 141.5}"
+    },
+    {
+      "type": "quiz",
+      "title": "Knowledge Check",
+      "questions": [
+        {
+          "question": "Which method is used to read the entire contents of a file in Python?",
+          "options": [
+            "file.readlines()",
+            "file.read()",
+            "file.readline()",
+            "file.readall()"
+          ],
+          "correctAnswer": 1,
+          "explanation": "The `read()` method reads the entire contents of a file as a single string."
+        },
+        {
+          "question": "What does the `isdigit()` method check for?",
+          "options": [
+            "If the string contains at least one digit",
+            "If the string contains only digits",
+            "If the string is a valid number",
+            "If the string can be converted to an integer"
+          ],
+          "correctAnswer": 1,
+          "explanation": "`isdigit()` returns True if all characters in the string are digits (0-9) and there is at least one character, otherwise False."
+        },
+        {
+          "question": "Which of the following is NOT a valid way to create a list comprehension?",
+          "options": [
+            "[x for x in range(10)]",
+            "[x for x in range(10) if x % 2 == 0]",
+            "[x if x % 2 == 0 for x in range(10)]",
+            "[x**2 for x in range(10)]"
+          ],
+          "correctAnswer": 2,
+          "explanation": "The correct syntax for a conditional list comprehension is `[expression for item in iterable if condition]`. The condition comes after the for clause, not before it."
+        }
+      ]
+    }
+  ]
+} 
