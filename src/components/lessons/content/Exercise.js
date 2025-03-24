@@ -7,7 +7,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 // For testing only - set to true to enable admin mode without authentication
-const AUTO_ADMIN_MODE = true;
+const AUTO_ADMIN_MODE = false;
 
 const Exercise = ({ 
   title, 
@@ -180,16 +180,6 @@ const Exercise = ({
           <span className={`${difficultyClass} text-sm rounded-full px-3 py-1 font-medium border`}>
             {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
           </span>
-          
-          {effectiveIsAdmin && (
-            <button
-              onClick={() => setShowAdminPanel(!showAdminPanel)}
-              className="px-2 py-1 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors text-xs"
-              title="Admin options"
-            >
-              {showAdminPanel ? 'Hide Admin' : 'Admin'}
-            </button>
-          )}
         </div>
       </div>
       
