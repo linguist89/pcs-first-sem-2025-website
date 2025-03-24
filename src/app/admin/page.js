@@ -3,15 +3,17 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import ConvertToModular from '@/components/admin/ConvertToModular';
+import LessonEditor from '@/components/admin/LessonEditor';
 
 /**
  * Admin page component with various admin tools
  */
 export default function AdminPage() {
-  const [activeTab, setActiveTab] = useState('convert');
+  const [activeTab, setActiveTab] = useState('lessons');
   
   // Tabs configuration
   const tabs = [
+    { id: 'lessons', label: 'Edit Lessons' },
     { id: 'convert', label: 'Convert Lessons' },
     { id: 'manage', label: 'Manage Lessons' },
   ];
@@ -48,7 +50,18 @@ export default function AdminPage() {
       </div>
       
       {/* Tab content */}
-      <div className="mt-6">
+      <div>
+        {activeTab === 'lessons' && (
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Edit Lesson JSON</h2>
+            <p className="text-gray-600 mb-6">
+              This tool allows you to directly edit the JSON of existing lessons. 
+              Make sure to maintain the correct structure as validation errors will be shown.
+            </p>
+            <LessonEditor />
+          </div>
+        )}
+        
         {activeTab === 'convert' && (
           <div>
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Lesson Format Conversion</h2>
