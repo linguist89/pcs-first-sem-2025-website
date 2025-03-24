@@ -295,12 +295,14 @@ const SectionEditor = ({ section, onChange, onRemove, onMoveUp, onMoveDown, inde
                       type="number"
                       min="0"
                       max={(question.options || []).length - 1}
-                      value={question.correctAnswer || 0}
+                      value={question.correctOptionIndex !== undefined ? question.correctOptionIndex : (question.correctAnswer || 0)}
                       onChange={(e) => {
                         const newQuestions = [...(section.questions || [])];
+                        const value = parseInt(e.target.value, 10);
                         newQuestions[qIndex] = { 
                           ...question, 
-                          correctAnswer: parseInt(e.target.value, 10) 
+                          correctOptionIndex: value,
+                          correctAnswer: value  // Set both for backward compatibility
                         };
                         handleChange('questions', newQuestions);
                       }}
@@ -520,31 +522,38 @@ const SectionEditor = ({ section, onChange, onRemove, onMoveUp, onMoveDown, inde
       case 'exercise':
         return (
           <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Title
-              </label>
-              <input
-                type="text"
-                value={section.title || ''}
-                onChange={(e) => handleChange('title', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Difficulty
-              </label>
-              <select
-                value={section.difficulty || 'intermediate'}
-                onChange={(e) => handleChange('difficulty', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
-              >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Exercise Title
+                </label>
+                <input
+                  type="text"
+                  value={section.title || ''}
+                  onChange={(e) => handleChange('title', e.target.value)}
+                  placeholder="Enter exercise title"
+                  className={`w-full px-3 py-2 border ${!section.title ? 'border-red-300 bg-red-50' : 'border-gray-300'} rounded-md`}
+                />
+                {!section.title && (
+                  <p className="text-xs text-red-500 mt-1">
+                    Exercise title is required
+                  </p>
+                )}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Difficulty
+                </label>
+                <select
+                  value={section.difficulty || 'intermediate'}
+                  onChange={(e) => handleChange('difficulty', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+              </div>
             </div>
             
             <div>
@@ -554,9 +563,15 @@ const SectionEditor = ({ section, onChange, onRemove, onMoveUp, onMoveDown, inde
               <textarea
                 value={section.instructions || ''}
                 onChange={(e) => handleChange('instructions', e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className={`w-full px-3 py-2 border ${!section.instructions ? 'border-red-300 bg-red-50' : 'border-gray-300'} rounded-md`}
                 rows={4}
+                placeholder="Enter the exercise instructions"
               />
+              {!section.instructions && (
+                <p className="text-xs text-red-500 mt-1">
+                  Exercise instructions are required
+                </p>
+              )}
             </div>
             
             <div>
@@ -613,6 +628,83 @@ const SectionEditor = ({ section, onChange, onRemove, onMoveUp, onMoveDown, inde
                   </option>
                 ))}
               </select>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Solution
+              </label>
+              <div className="border border-gray-300 rounded-md overflow-hidden">
+                {editorLoaded ? (
+                  <AceEditor
+                    mode={languageToMode[section.language || 'python']}
+                    theme="tomorrow_night"
+                    value={section.solution || ''}
+                    onChange={(value) => handleChange('solution', value)}
+                    name={`exercise-solution-editor-${index}`}
+                    editorProps={{ $blockScrolling: true }}
+                    setOptions={{
+                      enableBasicAutocompletion: true,
+                      enableLiveAutocompletion: true,
+                      enableSnippets: true,
+                      showLineNumbers: true,
+                      tabSize: 2,
+                      useWorker: false,
+                      fontSize: 14,
+                    }}
+                    style={{ width: '100%', height: '200px' }}
+                  />
+                ) : (
+                  <textarea
+                    value={section.solution || ''}
+                    onChange={(e) => handleChange('solution', e.target.value)}
+                    className="w-full px-3 py-2 font-mono text-sm"
+                    rows={8}
+                    style={{ 
+                      lineHeight: '1.5',
+                      tabSize: 2
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+            
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-md">
+              <div className="flex items-center mb-3">
+                <input
+                  type="checkbox"
+                  id={`password-protected-${index}`}
+                  checked={!!section.passwordProtected}
+                  onChange={(e) => handleChange('passwordProtected', e.target.checked)}
+                  className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label htmlFor={`password-protected-${index}`} className="ml-2 block text-sm font-medium text-gray-700">
+                  Password Protected Solution
+                </label>
+              </div>
+              
+              {section.passwordProtected && (
+                <div className="mt-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Solution Password
+                  </label>
+                  <input
+                    type="text"
+                    value={section.solutionPassword || ''}
+                    onChange={(e) => handleChange('solutionPassword', e.target.value)}
+                    placeholder="Enter password for solution"
+                    className={`w-full px-3 py-2 border ${!section.solutionPassword ? 'border-red-300 bg-red-50' : 'border-gray-300'} rounded-md`}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Students will need to enter this password to view the solution.
+                  </p>
+                  {!section.solutionPassword && (
+                    <p className="text-xs text-red-500 mt-1">
+                      A password is required when password protection is enabled. Please enter a password or disable protection.
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         );
@@ -755,8 +847,16 @@ const SectionEditor = ({ section, onChange, onRemove, onMoveUp, onMoveDown, inde
         return (
           <div className="bg-purple-50 border border-purple-200 rounded-md p-4">
             <h3 className="font-medium text-purple-800 mb-2">{section.title || 'Exercise'}</h3>
-            <div className="mb-4">
+            <div className="mb-4 flex items-center space-x-2">
               <span className="px-2 py-0.5 text-xs rounded-full bg-purple-100 text-purple-800">{section.difficulty || 'intermediate'}</span>
+              {section.passwordProtected && (
+                <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  Password Protected
+                </span>
+              )}
             </div>
             <div className="whitespace-pre-wrap mb-3">{section.instructions}</div>
             {section.starterCode && (
@@ -774,6 +874,33 @@ const SectionEditor = ({ section, onChange, onRemove, onMoveUp, onMoveDown, inde
                 >
                   {section.starterCode}
                 </SyntaxHighlighter>
+              </div>
+            )}
+            {section.solution && (
+              <div className="mt-3">
+                <div className="flex items-center mb-2">
+                  <span className="text-sm font-medium text-gray-700 mr-2">Solution:</span>
+                  {section.passwordProtected && (
+                    <span className="text-xs text-blue-700">
+                      Protected with password: {section.solutionPassword || "(not set)"}
+                    </span>
+                  )}
+                </div>
+                <div className="rounded-md overflow-hidden opacity-50">
+                  <SyntaxHighlighter
+                    language={section.language || 'python'}
+                    style={tomorrow}
+                    showLineNumbers={true}
+                    wrapLines={true}
+                    customStyle={{
+                      margin: 0,
+                      borderRadius: '0.375rem',
+                      fontSize: '0.875rem',
+                    }}
+                  >
+                    {section.solution}
+                  </SyntaxHighlighter>
+                </div>
               </div>
             )}
           </div>

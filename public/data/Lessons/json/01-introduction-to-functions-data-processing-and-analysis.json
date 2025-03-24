@@ -1,5 +1,6 @@
 {
   "id": "01",
+  "slug": "01-introduction-to-functions",
   "title": "Introduction to Functions: Data Processing and Analysis",
   "description": "Learn how to create and use functions for data processing and analysis in Python.",
   "difficulty": "Beginner",
@@ -13,6 +14,9 @@
     "List comprehensions",
     "Dictionaries"
   ],
+  "format": "json",
+  "prevLesson": null,
+  "nextLesson": "02",
   "content": [
     {
       "type": "text",
@@ -71,7 +75,10 @@
       "instructions": "Load the data from `eye_tracking_data.txt`. How many valid gaze durations (numeric values) are greater than 600 milliseconds?",
       "difficulty": "beginner",
       "starterCode": "# Your code here\n\n# Remember to:\n# 1. Open and read the file\n# 2. Split the data\n# 3. Filter out non-numeric values\n# 4. Count values > 600",
-      "solution": "# Count gaze durations > 600ms\nwith open('eye_tracking_data.txt', 'r') as file:\n    data_string = file.read()\n\n# Split by commas\ndata_list = data_string.split(',')\n\n# Clean and convert to numbers\nvalid_durations = []\nfor item in data_list:\n    item = item.strip()\n    if item.isdigit():\n        valid_durations.append(int(item))\n\n# Count values > 600\nlonger_gazes = [d for d in valid_durations if d > 600]\nprint(f\"Number of gaze durations > 600ms: {len(longer_gazes)}\")\n# Answer: 14"
+      "solution": "# Count gaze durations > 600ms\nwith open('eye_tracking_data.txt', 'r') as file:\n    data_string = file.read()\n\n# Split by commas\ndata_list = data_string.split(',')\n\n# Clean and convert to numbers\nvalid_durations = []\nfor item in data_list:\n    item = item.strip()\n    if item.isdigit():\n        valid_durations.append(int(item))\n\n# Count values > 600\nlonger_gazes = [d for d in valid_durations if d > 600]\nprint(f\"Number of gaze durations > 600ms: {len(longer_gazes)}\")\n# Answer: 14",
+      "passwordProtected": true,
+      "solutionPassword": "TEST",
+      "language": "python"
     },
     {
       "type": "exercise",
@@ -79,7 +86,8 @@
       "instructions": "Write a Python function `analyze_gaze_data(filename)` that loads the data, cleans it (handling 'NA', 'nA', 'error', and 'NaN' entries), and returns the percentage of valid gaze durations that are greater than 600 milliseconds.",
       "difficulty": "intermediate",
       "starterCode": "def analyze_gaze_data(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read the file\n    # 2. Clean the data (remove NA, nA, error, NaN)\n    # 3. Convert to numbers\n    # 4. Calculate percentage of values > 600ms\n    \n    return percentage\n\n# Test your function\nresult = analyze_gaze_data('eye_tracking_data.txt')\nprint(f\"Percentage of long gazes: {result}%\")",
-      "solution": "def analyze_gaze_data(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        data_string = file.read()\n    \n    # Split by commas\n    data_list = data_string.split(',')\n    \n    # Clean the data\n    valid_durations = []\n    invalid_values = ['NA', 'nA', 'error', 'NaN']\n    \n    for item in data_list:\n        item = item.strip()\n        if item not in invalid_values and item.isdigit():\n            valid_durations.append(int(item))\n    \n    # Count values > 600ms\n    long_gazes = [d for d in valid_durations if d > 600]\n    \n    # Calculate percentage\n    percentage = (len(long_gazes) / len(valid_durations)) * 100\n    return round(percentage, 1)\n\n# Test the function\nresult = analyze_gaze_data('eye_tracking_data.txt')\nprint(f\"Percentage of long gazes: {result}%\")\n# Answer: Approximately 35.0%"
+      "solution": "def analyze_gaze_data(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        data_string = file.read()\n    \n    # Split by commas\n    data_list = data_string.split(',')\n    \n    # Clean the data\n    valid_durations = []\n    invalid_values = ['NA', 'nA', 'error', 'NaN']\n    \n    for item in data_list:\n        item = item.strip()\n        if item not in invalid_values and item.isdigit():\n            valid_durations.append(int(item))\n    \n    # Count values > 600ms\n    long_gazes = [d for d in valid_durations if d > 600]\n    \n    # Calculate percentage\n    percentage = (len(long_gazes) / len(valid_durations)) * 100\n    return round(percentage, 1)\n\n# Test the function\nresult = analyze_gaze_data('eye_tracking_data.txt')\nprint(f\"Percentage of long gazes: {result}%\")\n# Answer: Approximately 35.0%",
+      "language": "python"
     },
     {
       "type": "exercise",
@@ -87,7 +95,8 @@
       "instructions": "Load the data from `eye_tracking_data.txt`. Write a Python function `gaze_analysis_stats(filename)` that cleans the data and returns a dictionary containing the number of valid gaze durations, the average gaze duration, and the standard deviation of gaze durations greater than 600 milliseconds.",
       "difficulty": "advanced",
       "starterCode": "def gaze_analysis_stats(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read and clean the data\n    # 2. Calculate total valid count\n    # 3. Calculate average of all valid data\n    # 4. Calculate standard deviation of gazes > 600ms\n    # 5. Return results in a dictionary\n    \n    return stats\n\n# Test your function\nresults = gaze_analysis_stats('eye_tracking_data.txt')\nprint(results)",
-      "solution": "import math\n\ndef gaze_analysis_stats(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        data_string = file.read()\n    \n    # Split and clean the data\n    data_list = data_string.split(',')\n    invalid_values = ['NA', 'nA', 'error', 'NaN']\n    \n    valid_durations = []\n    for item in data_list:\n        item = item.strip()\n        if item not in invalid_values and item.isdigit():\n            valid_durations.append(int(item))\n    \n    # Calculate statistics\n    valid_count = len(valid_durations)\n    average = sum(valid_durations) / valid_count if valid_count > 0 else 0\n    \n    # Find gazes > 600ms\n    long_gazes = [d for d in valid_durations if d > 600]\n    \n    # Calculate standard deviation of long gazes\n    if len(long_gazes) > 0:\n        long_avg = sum(long_gazes) / len(long_gazes)\n        variance = sum([(x - long_avg)**2 for x in long_gazes]) / len(long_gazes)\n        std_dev = round(math.sqrt(variance), 1)\n    else:\n        std_dev = 0\n    \n    stats = {\n        'valid_count': valid_count,\n        'average': round(average, 2),\n        'std_dev': std_dev\n    }\n    \n    return stats\n\n# Test the function\nresults = gaze_analysis_stats('eye_tracking_data.txt')\nprint(results)\n# Answer: A dictionary similar to: {'valid_count': 36, 'average': 547.22, 'std_dev': 141.5}"
+      "solution": "import math\n\ndef gaze_analysis_stats(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        data_string = file.read()\n    \n    # Split and clean the data\n    data_list = data_string.split(',')\n    invalid_values = ['NA', 'nA', 'error', 'NaN']\n    \n    valid_durations = []\n    for item in data_list:\n        item = item.strip()\n        if item not in invalid_values and item.isdigit():\n            valid_durations.append(int(item))\n    \n    # Calculate statistics\n    valid_count = len(valid_durations)\n    average = sum(valid_durations) / valid_count if valid_count > 0 else 0\n    \n    # Find gazes > 600ms\n    long_gazes = [d for d in valid_durations if d > 600]\n    \n    # Calculate standard deviation of long gazes\n    if len(long_gazes) > 0:\n        long_avg = sum(long_gazes) / len(long_gazes)\n        variance = sum([(x - long_avg)**2 for x in long_gazes]) / len(long_gazes)\n        std_dev = round(math.sqrt(variance), 1)\n    else:\n        std_dev = 0\n    \n    stats = {\n        'valid_count': valid_count,\n        'average': round(average, 2),\n        'std_dev': std_dev\n    }\n    \n    return stats\n\n# Test the function\nresults = gaze_analysis_stats('eye_tracking_data.txt')\nprint(results)\n# Answer: A dictionary similar to: {'valid_count': 36, 'average': 547.22, 'std_dev': 141.5}",
+      "language": "python"
     },
     {
       "type": "quiz",
@@ -102,7 +111,8 @@
             "file.readall()"
           ],
           "correctAnswer": 1,
-          "explanation": "The `read()` method reads the entire contents of a file as a single string."
+          "explanation": "The `read()` method reads the entire contents of a file as a single string.",
+          "correctOptionIndex": 0
         },
         {
           "question": "What does the `isdigit()` method check for?",
@@ -113,7 +123,8 @@
             "If the string can be converted to an integer"
           ],
           "correctAnswer": 1,
-          "explanation": "`isdigit()` returns True if all characters in the string are digits (0-9) and there is at least one character, otherwise False."
+          "explanation": "`isdigit()` returns True if all characters in the string are digits (0-9) and there is at least one character, otherwise False.",
+          "correctOptionIndex": 0
         },
         {
           "question": "Which of the following is NOT a valid way to create a list comprehension?",
@@ -124,9 +135,10 @@
             "[x**2 for x in range(10)]"
           ],
           "correctAnswer": 2,
-          "explanation": "The correct syntax for a conditional list comprehension is `[expression for item in iterable if condition]`. The condition comes after the for clause, not before it."
+          "explanation": "The correct syntax for a conditional list comprehension is `[expression for item in iterable if condition]`. The condition comes after the for clause, not before it.",
+          "correctOptionIndex": 0
         }
       ]
     }
   ]
-} 
+}

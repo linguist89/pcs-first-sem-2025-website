@@ -33,6 +33,9 @@ const StructuredEditor = ({ lessons, onSave }) => {
   useEffect(() => {
     if (!lessonData) return;
     
+    console.log('Validating lesson data:', lessonData);
+    console.log('Current errors:', errors);
+    
     const newErrors = [];
     
     // Check required metadata fields
@@ -69,6 +72,13 @@ const StructuredEditor = ({ lessons, onSave }) => {
         case 'media':
           if (!section.src) newErrors.push(`Section ${index + 1} (Media): Source URL is required`);
           if (!section.mediaType) newErrors.push(`Section ${index + 1} (Media): Media type is required`);
+          break;
+        case 'exercise':
+          if (!section.title) newErrors.push(`Section ${index + 1} (Exercise): Title is required`);
+          if (!section.instructions) newErrors.push(`Section ${index + 1} (Exercise): Instructions are required`);
+          if (!section.language || section.language === '') newErrors.push(`Section ${index + 1} (Exercise): Language is required`);
+          if (section.passwordProtected && !section.solutionPassword) 
+            newErrors.push(`Section ${index + 1} (Exercise): Solution password is required when password protection is enabled`);
           break;
         // Add validation for other section types as needed
       }
@@ -129,6 +139,65 @@ const StructuredEditor = ({ lessons, onSave }) => {
             content: data.content
           };
           
+          // Normalize data formats for compatibility
+          fullData.content = fullData.content.map(section => {
+            // Fix quiz questions that have correctAnswer but no correctOptionIndex
+            if (section.type === 'quiz' && section.questions) {
+              return {
+                ...section,
+                questions: section.questions.map(question => {
+                  if (question.correctAnswer !== undefined && question.correctOptionIndex === undefined) {
+                    return {
+                      ...question,
+                      correctOptionIndex: question.correctAnswer
+                    };
+                  }
+                  return question;
+                })
+              };
+            }
+            
+            // Ensure exercise sections have language set
+            if (section.type === 'exercise' && (!section.language || section.language === '')) {
+              return {
+                ...section,
+                language: 'python'
+              };
+            }
+            
+            return section;
+          });
+          
+          // Get password information for exercises
+          try {
+            const passwordResponse = await fetch('/api/admin/solution-passwords');
+            if (passwordResponse.ok) {
+              const passwordData = await passwordResponse.json();
+              
+              // Update exercise sections with password information
+              if (passwordData.passwords && Object.keys(passwordData.passwords).length > 0) {
+                fullData.content = fullData.content.map(section => {
+                  if (section.type === 'exercise') {
+                    const exerciseId = section.id || section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                    const password = passwordData.passwords[exerciseId];
+                    
+                    if (password) {
+                      return {
+                        ...section,
+                        passwordProtected: true,
+                        solutionPassword: password
+                      };
+                    }
+                  }
+                  return section;
+                });
+              }
+            }
+          } catch (passwordError) {
+            console.error('Error fetching password information:', passwordError);
+            // Continue with lesson loading even if password fetching fails
+          }
+          
           console.log("Lesson data loaded successfully:", fullData.title);
           if (isMounted) {
             setLessonData(fullData);
@@ -168,8 +237,19 @@ const StructuredEditor = ({ lessons, onSave }) => {
   
   // Validate lesson data
   const validateLessonData = (data) => {
+    console.log('Running lesson validation with data:', data);
     const result = validateLesson(data);
+    console.log('Validation result:', result);
     setErrors(result.errors);
+    
+    // Log any validation errors in a more readable format
+    if (result.errors.length > 0) {
+      console.group('Validation Errors:');
+      result.errors.forEach((error, index) => {
+        console.error(`${index + 1}. ${error}`);
+      });
+      console.groupEnd();
+    }
   };
   
   // Handle selecting a lesson
@@ -272,9 +352,14 @@ const StructuredEditor = ({ lessons, onSave }) => {
         newSection.language = 'python';
         break;
       case 'exercise':
-        newSection.title = '';
-        newSection.instructions = '';
+        newSection.title = 'New Exercise';
+        newSection.instructions = 'Instructions for this exercise...';
+        newSection.starterCode = '# Starter code for the exercise';
+        newSection.solution = '# Solution code';
         newSection.difficulty = 'intermediate';
+        newSection.language = 'python';
+        newSection.passwordProtected = false;
+        newSection.solutionPassword = '';
         break;
     }
     
@@ -292,18 +377,76 @@ const StructuredEditor = ({ lessons, onSave }) => {
       setMessage({ type: '', text: '' });
       
       if (errors.length > 0) {
+        console.log('Save prevented due to validation errors:', errors);
         setMessage({
           type: 'error',
           text: `Cannot save: Please fix validation errors first.`
         });
-        return;
+        return false;
       }
       
+      // Additional validation for password-protected exercises
+      const passwordErrors = [];
+      lessonData.content.forEach((section, index) => {
+        if (section.type === 'exercise' && section.passwordProtected && !section.solutionPassword) {
+          passwordErrors.push(`Exercise "${section.title || `#${index + 1}`}" is password protected but has no password set.`);
+        }
+      });
+      
+      if (passwordErrors.length > 0) {
+        console.log('Save prevented due to password validation errors:', passwordErrors);
+        setMessage({
+          type: 'error',
+          text: `Cannot save: ${passwordErrors.join(' ')} Please add passwords for all protected exercises.`
+        });
+        return false;
+      }
+      
+      // Process password-protected exercises before saving
+      const passwordUpdates = [];
+      
+      // Get the exercises with password protection
+      lessonData.content.forEach(section => {
+        if (section.type === 'exercise' && section.passwordProtected && section.solutionPassword) {
+          const exerciseId = section.id || section.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+          passwordUpdates.push({
+            exerciseId,
+            password: section.solutionPassword
+          });
+        }
+      });
+      
+      // Save the lesson content first
       await onSave(lessonData);
-      setMessage({ type: 'success', text: 'Lesson saved successfully!' });
+      
+      // Then update any password settings
+      if (passwordUpdates.length > 0) {
+        for (const update of passwordUpdates) {
+          try {
+            await fetch('/api/admin/solution-passwords', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(update),
+            });
+          } catch (error) {
+            console.error(`Error setting password for ${update.exerciseId}:`, error);
+            // Continue with other password updates even if one fails
+          }
+        }
+        setMessage({ 
+          type: 'success', 
+          text: `Lesson saved successfully with ${passwordUpdates.length} solution password(s) updated!` 
+        });
+      } else {
+        setMessage({ type: 'success', text: 'Lesson saved successfully!' });
+      }
+      return true;
     } catch (error) {
       console.error('Error saving lesson:', error);
       setMessage({ type: 'error', text: 'Error saving lesson: ' + error.message });
+      return false;
     } finally {
       setIsSaving(false);
     }
@@ -637,6 +780,33 @@ const StructuredEditor = ({ lessons, onSave }) => {
             </div>
           )}
           
+          {/* Validation status */}
+          {errors.length > 0 && (
+            <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-yellow-800">Validation Issues</h3>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    Please fix the following issues before saving:
+                  </p>
+                  <ul className="list-disc pl-5 mt-1 text-sm text-yellow-700">
+                    {errors.slice(0, 5).map((error, index) => (
+                      <li key={index}>{error}</li>
+                    ))}
+                    {errors.length > 5 && (
+                      <li>...and {errors.length - 5} more issues</li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
+          
           {/* Save button */}
           <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 shadow-sm">
             <div className="flex justify-between items-center">
@@ -686,6 +856,114 @@ const StructuredEditor = ({ lessons, onSave }) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                   </svg>
                   Save & Preview
+                </button>
+
+                <button
+                  type="button"
+                  className="ml-2 px-4 py-2 text-white bg-orange-600 hover:bg-orange-700 rounded-md flex items-center"
+                  onClick={() => {
+                    // Fix missing language in exercise sections
+                    const updatedContent = [...lessonData.content];
+                    let fixedSections = 0;
+                    
+                    updatedContent.forEach((section, index) => {
+                      if (section.type === 'exercise' && (!section.language || section.language === '')) {
+                        updatedContent[index] = {
+                          ...section,
+                          language: 'python'
+                        };
+                        fixedSections++;
+                      }
+                      
+                      if (section.type === 'quiz' && section.questions) {
+                        let fixedQuestions = 0;
+                        const updatedQuestions = section.questions.map(question => {
+                          if (question.correctOptionIndex === undefined && question.options && question.options.length > 0) {
+                            fixedQuestions++;
+                            return {
+                              ...question,
+                              correctOptionIndex: 0 // Set to first option as default
+                            };
+                          }
+                          return question;
+                        });
+                        
+                        if (fixedQuestions > 0) {
+                          updatedContent[index] = {
+                            ...section,
+                            questions: updatedQuestions
+                          };
+                          console.log(`Fixed ${fixedQuestions} quiz questions in section ${index + 1}`);
+                        }
+                      }
+                    });
+                    
+                    if (fixedSections > 0 || updatedContent !== lessonData.content) {
+                      const updatedLessonData = { ...lessonData, content: updatedContent };
+                      setLessonData(updatedLessonData);
+                      validateLessonData(updatedLessonData);
+                      alert(`Fixed ${fixedSections} sections with missing language values.`);
+                    } else {
+                      alert('No sections needed fixing.');
+                    }
+                  }}
+                >
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                  </svg>
+                  Fix Missing Fields
+                </button>
+
+                <button
+                  type="button"
+                  className="ml-2 px-4 py-2 text-white bg-gray-600 hover:bg-gray-700 rounded-md flex items-center"
+                  onClick={() => {
+                    console.log('Current errors:', errors);
+                    console.log('Current lesson data:', lessonData);
+                    
+                    // Run a fresh validation check
+                    const checkForErrors = () => {
+                      const newErrors = [];
+                      
+                      if (!lessonData.id) newErrors.push('Lesson ID is required');
+                      if (!lessonData.title) newErrors.push('Lesson title is required');
+                      
+                      // Check each section
+                      (lessonData.content || []).forEach((section, index) => {
+                        if (!section.type) {
+                          newErrors.push(`Section ${index + 1}: Section type is required`);
+                          return;
+                        }
+                        
+                        // Check each section type for required fields
+                        console.log(`Checking section ${index + 1} of type ${section.type}:`, section);
+                        
+                        switch (section.type) {
+                          case 'exercise':
+                            if (!section.title) newErrors.push(`Section ${index + 1} (Exercise): Title is required`);
+                            if (!section.instructions) newErrors.push(`Section ${index + 1} (Exercise): Instructions are required`);
+                            if (!section.language || section.language === '') newErrors.push(`Section ${index + 1} (Exercise): Language is required`);
+                            if (section.passwordProtected && !section.solutionPassword) 
+                              newErrors.push(`Section ${index + 1} (Exercise): Solution password is required when password protection is enabled`);
+                            break;
+                            
+                          // Add other section types as needed
+                        }
+                      });
+                      
+                      return newErrors;
+                    };
+                    
+                    const freshErrors = checkForErrors();
+                    console.log('Fresh validation errors:', freshErrors);
+                    
+                    alert(`Debug info logged to console. Found ${errors.length} cached validation errors and ${freshErrors.length} fresh validation errors.`);
+                  }}
+                >
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  Debug
                 </button>
               </div>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   TextBlock,
@@ -12,9 +12,10 @@ import {
 } from './content';
 import InteractiveCode from './content/InteractiveCode';
 import CollapsibleSection from './content/CollapsibleSection';
+import { useUser } from '@/context/UserContext';
 
 // Helper function to render individual content items
-const renderContentItem = (section, index) => {
+const renderContentItem = (section, index, isAdmin) => {
   const { type, ...props } = section;
   
   switch (type) {
@@ -28,7 +29,7 @@ const renderContentItem = (section, index) => {
       return <InteractiveCode key={index} {...props} />;
       
     case 'exercise':
-      return <Exercise key={index} {...props} />;
+      return <Exercise key={index} {...props} isAdmin={isAdmin} />;
       
     case 'scenario':
       return <Scenario key={index} {...props} />;
@@ -159,6 +160,18 @@ const determineSectionType = (section, index, content) => {
 };
 
 const LessonRenderer = ({ content = [], expandedSections = {} }) => {
+  const { user } = useUser();
+  const [isAdmin, setIsAdmin] = useState(false);
+  
+  // Check if current user is an admin/instructor
+  useEffect(() => {
+    if (user && (user.role === 'admin' || user.role === 'instructor')) {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
+  
   if (!content || content.length === 0) {
     return (
       <div className="p-6 text-center text-gray-500">
@@ -243,7 +256,7 @@ const LessonRenderer = ({ content = [], expandedSections = {} }) => {
                   const originalIndex = content.findIndex(section => section === item);
                   return (
                     <div key={idx} id={`section-${originalIndex}`}>
-                      {renderContentItem(item, idx)}
+                      {renderContentItem(item, idx, isAdmin)}
                     </div>
                   );
                 })}

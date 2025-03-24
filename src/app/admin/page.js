@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import ConvertToModular from '@/components/admin/ConvertToModular';
 import LessonEditor from '@/components/admin/LessonEditor';
+import SolutionPasswordManager from '@/components/admin/SolutionPasswordManager';
 
 /**
  * Admin page component with various admin tools
@@ -16,6 +17,7 @@ export default function AdminPage() {
     { id: 'lessons', label: 'Edit Lessons' },
     { id: 'convert', label: 'Convert Lessons' },
     { id: 'manage', label: 'Manage Lessons' },
+    { id: 'passwords', label: 'Solution Passwords' },
   ];
   
   return (
@@ -98,6 +100,16 @@ export default function AdminPage() {
             <p className="text-gray-600">
               Lesson management features coming soon.
             </p>
+          </div>
+        )}
+        
+        {activeTab === 'passwords' && (
+          <div>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Solution Password Management</h2>
+            <p className="text-gray-600 mb-6">
+              This tool allows you to set passwords for exercise solutions. Students will need to enter the correct password to view solutions.
+            </p>
+            <SolutionPasswordManager />
           </div>
         )}
       </div>
