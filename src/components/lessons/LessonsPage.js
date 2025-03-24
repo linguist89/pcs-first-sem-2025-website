@@ -86,7 +86,6 @@ const LessonCard = ({ lesson, index }) => {
 const LessonsPage = () => {
   const [lessons, setLessons] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
   
   useEffect(() => {
     fetchLessons();
@@ -107,13 +106,6 @@ const LessonsPage = () => {
     }
   };
 
-  // Make sure filteredLessons is always an array
-  const filteredLessons = Array.isArray(lessons) 
-    ? (filter === 'all' 
-        ? lessons 
-        : lessons.filter(lesson => lesson.difficulty === filter))
-    : [];
-  
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -144,69 +136,6 @@ const LessonsPage = () => {
           </p>
         </motion.header>
         
-        {/* Filter controls */}
-        <motion.div 
-          className="mb-8 flex justify-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <div className="inline-flex rounded-md shadow-sm" role="group">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="button"
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 text-sm font-medium rounded-l-lg ${
-                filter === 'all' 
-                  ? 'bg-[#3B82F6] text-white' 
-                  : 'bg-white text-[#1F2937] hover:bg-gray-100'
-              }`}
-            >
-              All Lessons
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="button"
-              onClick={() => setFilter('Beginner')}
-              className={`px-4 py-2 text-sm font-medium ${
-                filter === 'Beginner' 
-                  ? 'bg-[#3B82F6] text-white' 
-                  : 'bg-white text-[#1F2937] hover:bg-gray-100'
-              }`}
-            >
-              Beginner
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="button"
-              onClick={() => setFilter('Intermediate')}
-              className={`px-4 py-2 text-sm font-medium ${
-                filter === 'Intermediate' 
-                  ? 'bg-[#3B82F6] text-white' 
-                  : 'bg-white text-[#1F2937] hover:bg-gray-100'
-              }`}
-            >
-              Intermediate
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              type="button"
-              onClick={() => setFilter('Advanced')}
-              className={`px-4 py-2 text-sm font-medium rounded-r-lg ${
-                filter === 'Advanced' 
-                  ? 'bg-[#3B82F6] text-white' 
-                  : 'bg-white text-[#1F2937] hover:bg-gray-100'
-              }`}
-            >
-              Advanced
-            </motion.button>
-          </div>
-        </motion.div>
-        
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[...Array(6)].map((_, index) => (
@@ -221,7 +150,7 @@ const LessonsPage = () => {
           </div>
         ) : (
           <>
-            {filteredLessons.length === 0 ? (
+            {lessons.length === 0 ? (
               <motion.div 
                 className="text-center py-12"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -229,7 +158,7 @@ const LessonsPage = () => {
                 transition={{ duration: 0.5 }}
               >
                 <h3 className="text-xl font-medium text-[#1F2937] mb-2">No lessons found</h3>
-                <p className="text-[#4B5563]">Try changing your filter or check back later for new content.</p>
+                <p className="text-[#4B5563]">Check back later for new content.</p>
               </motion.div>
             ) : (
               <motion.div 
@@ -238,7 +167,7 @@ const LessonsPage = () => {
                 initial="hidden"
                 animate="show"
               >
-                {filteredLessons.map((lesson, index) => (
+                {lessons.map((lesson, index) => (
                   <LessonCard key={lesson.id} lesson={lesson} index={index} />
                 ))}
               </motion.div>

@@ -1,23 +1,24 @@
 {
   "id": "02",
-  "title": "Memory Recall Experiments: Data Analysis and Comparison",
-  "description": "Learn how to analyze memory recall data by comparing lists and calculating statistics on recall accuracy.",
-  "difficulty": "Intermediate",
-  "duration": "50 minutes",
+  "slug": "02-memory-recall-experiments",
+  "title": "Functions, Args, and Kwargs: Analyzing Online Learning Attention",
+  "description": "Learn how to analyze online class attention data using functions with parameters, *args*, and **kwargs*. This lesson builds upon the fundamentals of Python functions, adding more flexibility to your data analysis toolkit.",
   "topics": [
     "File reading and parsing",
-    "String manipulation and case handling",
+    "List and dictionary manipulation",
+    "Basic data analysis",
     "Creating and using functions",
-    "List operations and comparisons",
-    "Data analysis and statistics",
-    "Set operations",
-    "Dictionary creation and manipulation"
+    "Parameterizing functions with args and kwargs",
+    "Data visualization basics"
   ],
+  "format": "json",
+  "prevLesson": "01",
+  "nextLesson": "03",
   "content": [
     {
       "type": "text",
       "title": "Introduction",
-      "content": "In this lesson, you will learn how to analyze memory recall data using Python. We'll work with data from a psychology experiment to determine how accurately participants recalled items from a list."
+      "content": "In this lesson, you will analyze data from a study on attention during online learning. The dataset captures how phone visibility affects student attention and test scores. Through a series of exercises, you'll learn to build flexible functions for data analysis using parameters, *args*, and **kwargs*."
     },
     {
       "type": "text",
@@ -27,7 +28,7 @@
     {
       "type": "code",
       "language": "bash",
-      "content": "# Download warmup.txt\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/lesson2-data/warmup.txt\n\n# Download recall_data.txt\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/lesson2-data/recall_data.txt"
+      "content": "# Download lesson2-warmup.csv\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/Lesson2-data/lesson2-warmup.csv\n\n# Download attention-data.csv\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/Lesson2-data/attention-data.csv"
     },
     {
       "type": "text",
@@ -37,96 +38,110 @@
     {
       "type": "code",
       "language": "python",
-      "caption": "Reading lists from a file",
-      "content": "# Open a file and read its contents\nwith open('warmup.txt', 'w') as f:\n    f.write(\"red, green, blue\\nyellow, red, purple\")\nwith open('warmup.txt', 'r') as file:\n    lines = file.readlines()\nlist1 = lines[0].strip().split(\", \")\nlist2 = lines[1].strip().split(\", \")\nprint(list1)\nprint(list2)"
+      "caption": "Reading from a CSV file using pandas",
+      "content": "import pandas as pd\n\n# Read the CSV file\ndata = pd.read_csv('lesson2-warmup.csv')\n\n# Display the data\nprint(data)"
     },
     {
       "type": "code",
       "language": "python",
-      "caption": "Case-insensitive string comparison",
-      "content": "original = [\"Apple\", \"Orange\", \"Banana\"]\nrecalled = [\"apple\", \"orange\", \"Grape\"]\ncorrect_matches = 0\n\nfor item in recalled:\n    if item.lower() in [x.lower() for x in original]:\n        correct_matches += 1\n\nprint(f\"Correct matches: {correct_matches}\")"
+      "caption": "Basic data filtering",
+      "content": "import pandas as pd\n\n# Read the CSV file\ndata = pd.read_csv('lesson2-warmup.csv')\n\n# Filter data based on attention label\nattentive_students = data[data['attention_label'] == 'Attentive']\nprint(\"Attentive students:\")\nprint(attentive_students)\n\n# Filter data based on phone duration\nlong_duration = data[data['phone_duration'] > 10]\nprint(\"\\nStudents with phone visible > 10 seconds:\")\nprint(long_duration)"
     },
     {
       "type": "code",
       "language": "python",
-      "caption": "Finding items in one list but not another",
-      "content": "list1 = [\"apple\", \"banana\", \"cherry\", \"date\"]\nlist2 = [\"banana\", \"cherry\", \"fig\", \"grape\"]\n\nmissing_items = [item for item in list1 if item not in list2]\nnew_items = [item for item in list2 if item not in list1]\n\nprint(f\"Missing from list2: {missing_items}\")\nprint(f\"New in list2: {new_items}\")"
+      "caption": "Creating a simple function",
+      "content": "import pandas as pd\n\n# Read the CSV file\ndata = pd.read_csv('lesson2-warmup.csv')\n\n# Define a function to calculate average test score\ndef get_average_score(data):\n    return data['test_score'].mean()\n\n# Use the function\naverage_score = get_average_score(data)\nprint(f\"Average test score: {average_score}\")"
     },
     {
       "type": "code",
       "language": "python",
-      "caption": "Creating a dictionary with analysis results",
-      "content": "list1 = [\"apple\", \"banana\", \"cherry\", \"date\"]\nlist2 = [\"banana\", \"cherry\", \"fig\", \"grape\"]\n\nresults = {\n    \"matches\": len([item for item in list2 if item in list1]),\n    \"missing\": [item for item in list1 if item not in list2],\n    \"new\": [item for item in list2 if item not in list1]\n}\n\nprint(results)"
+      "caption": "Using function parameters",
+      "content": "import pandas as pd\n\n# Read the CSV file\ndata = pd.read_csv('lesson2-warmup.csv')\n\n# Define a function with parameters\ndef get_filtered_average(data, column, filter_column=None, filter_value=None):\n    if filter_column and filter_value:\n        filtered_data = data[data[filter_column] == filter_value]\n        return filtered_data[column].mean()\n    return data[column].mean()\n\n# Use the function with different parameters\nprint(f\"Overall average score: {get_filtered_average(data, 'test_score')}\")\nprint(f\"Average score for attentive students: {get_filtered_average(data, 'test_score', 'attention_label', 'Attentive')}\")\nprint(f\"Average score for distracted students: {get_filtered_average(data, 'test_score', 'attention_label', 'Distracted')}\")"
     },
     {
       "type": "scenario",
-      "title": "Analyzing Memory Recall Data",
-      "content": "Professor Chen was conducting a memory experiment with her psychology students. \"Today, we're going to analyze memory recall accuracy,\" she explained to her research assistant, Alex. \"I showed participants a list of fruits and asked them to recall as many as they could. The data's in this file,\" she said, handing over a flash drive. \"We need to determine how accurately they recalled the items, ignoring case sensitivity. I'm particularly interested in which items they consistently forgot and which ones they incorrectly added. Can you write a program to analyze this data and give me some statistics on recall accuracy?\"",
-      "highlightedContent": "Professor Chen was conducting a memory experiment with her psychology students. \"Today, we're going to analyze [1 memory recall accuracy],\" she explained to her research assistant, Alex. \"I showed participants a list of fruits and asked them to recall as many as they could. The data's in this file,\" she said, handing over a flash drive. \"[2 We need to determine how accurately they recalled the items], ignoring case sensitivity. I'm particularly interested in [3 which items they consistently forgot and which ones they incorrectly added]. Can you write a program to analyze this data and give me some statistics on recall accuracy?\"",
-      "objective": "Professor Chen wants Alex to analyze memory recall data to understand recall accuracy. To do this, Alex needs to:\n\n1. **Compare the original and recalled lists:** Determine which items were correctly recalled, ignoring case sensitivity.\n2. **Calculate recall statistics:** Find the number and percentage of correctly recalled items.\n3. **Identify specific patterns:** Determine which items were forgotten and which ones were incorrectly added.\n\nTherefore, the main question is: **How can we analyze the provided memory recall data to determine recall accuracy and identify patterns in what people remember and forget?**"
+      "title": "Analyzing Attention in Online Learning",
+      "content": "Professor Chen walked into the weekly research meeting with a dataset in hand. \"Everyone, I have some fascinating data from our online learning study,\" she said, placing the file on the table. \"We tracked how often students had their phones visible during virtual classes, labeled their attention levels, and recorded their test scores. The data is quite revealing, but we need a deeper analysis to understand the patterns.\" She turned to Maya, a research assistant. \"Maya, could you analyze this data for us? We need to know how phone visibility correlates with attention and test scores. And could you build a set of flexible functions that we can reuse for future analyses? We'll want to filter by different criteria later.\" Maya nodded, \"I'll create functions with parameters that can handle various filtering conditions. This will help us identify key patterns in student attention during online learning.\"",
+      "highlightedContent": "Professor Chen walked into the weekly research meeting with a dataset in hand. \"Everyone, I have some fascinating data from our online learning study,\" she said, placing the file on the table. \"We tracked [1 how often students had their phones visible during virtual classes], labeled their attention levels, and recorded their test scores. The data is quite revealing, but [2 we need a deeper analysis to understand the patterns].\" She turned to Maya, a research assistant. \"Maya, could you analyze this data for us? [3 We need to know how phone visibility correlates with attention and test scores]. And could you [4 build a set of flexible functions that we can reuse for future analyses]? We'll want to filter by different criteria later.\" Maya nodded, \"I'll create functions with parameters that can handle various filtering conditions. This will help us identify key patterns in student attention during online learning.\"",
+      "objective": "Professor Chen wants Maya to analyze online learning data to understand how phone visibility affects student attention and performance. To do this, Maya needs to:\n\n1. **Analyze the relationship:** Determine how phone duration correlates with attention labels and test scores.\n2. **Build flexible functions:** Create reusable functions with parameters, *args*, and **kwargs* that can filter and analyze the data in various ways.\n3. **Identify outliers:** Find unusual patterns in the data that might provide additional insights.\n\nTherefore, the main question is: **How can we build flexible functions to analyze the relationship between phone visibility, student attention, and test performance in online learning environments?**"
     },
     {
       "type": "exercise",
-      "title": "Basic Recall Analysis",
-      "instructions": "Load the two lists from `recall_data.txt`. How many items were recalled correctly, ignoring case sensitivity?",
+      "title": "Basic Data Analysis",
+      "instructions": "Load the data from `attention-data.csv`. Calculate and print the average phone duration for all students, then separately for students labeled as 'Attentive' and 'Distracted'.",
       "difficulty": "beginner",
-      "starterCode": "# Your code here\n\n# Remember to:\n# 1. Open and read the file\n# 2. Split each line into items\n# 3. Convert all to lowercase\n# 4. Count how many items from the second list are in the first list",
-      "solution": "# Count correctly recalled items\nwith open('recall_data.txt', 'r') as file:\n    lines = file.readlines()\n\n# Get original and recalled lists\noriginal_list = lines[0].strip().split(', ')\nrecalled_list = lines[1].strip().split(', ')\n\n# Convert to lowercase for case-insensitive comparison\noriginal_lower = [item.lower() for item in original_list]\nrecalled_lower = [item.lower() for item in recalled_list]\n\n# Count correct recalls\ncorrect_recalls = 0\nfor item in recalled_lower:\n    if item in original_lower:\n        correct_recalls += 1\n\nprint(f\"Number of correctly recalled items: {correct_recalls}\")\n# Answer: 7"
+      "starterCode": "import pandas as pd\n\n# Your code here\n\n# Remember to:\n# 1. Read the CSV file\n# 2. Calculate the overall average phone duration\n# 3. Calculate average phone duration for 'Attentive' students\n# 4. Calculate average phone duration for 'Distracted' students",
+      "solution": "import pandas as pd\n\n# Read the CSV file\ndata = pd.read_csv('attention-data.csv')\n\n# Calculate the overall average phone duration\noverall_avg = data['phone_duration (sec)'].mean()\nprint(f\"Overall average phone duration: {overall_avg:.2f} seconds\")\n\n# Calculate average for 'Attentive' students\nattentive_data = data[data['attention_label'] == 'Attentive']\nattentive_avg = attentive_data['phone_duration (sec)'].mean()\nprint(f\"Average phone duration for attentive students: {attentive_avg:.2f} seconds\")\n\n# Calculate average for 'Distracted' students\ndistracted_data = data[data['attention_label'] == 'Distracted']\ndistracted_avg = distracted_data['phone_duration (sec)'].mean()\nprint(f\"Average phone duration for distracted students: {distracted_avg:.2f} seconds\")\n\n# Answer:\n# Overall average phone duration: ~50.32 seconds\n# Average phone duration for attentive students: ~15.42 seconds\n# Average phone duration for distracted students: ~95.68 seconds",
+      "passwordProtected": true,
+      "solutionPassword": "TEST",
+      "language": "python"
     },
     {
       "type": "exercise",
-      "title": "Calculating Recall Percentage",
-      "instructions": "Write a Python function `analyze_recall(filename)` that loads the lists from the file, converts all items to lowercase, and returns the percentage of correctly recalled items.",
+      "title": "Creating a Parameterized Analysis Function",
+      "instructions": "Write a Python function `analyze_attention_data(data, attention_type=None, threshold=None)` that filters the dataset based on attention type and/or phone duration threshold, then returns the average test score for the filtered data.",
       "difficulty": "intermediate",
-      "starterCode": "def analyze_recall(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read the file and get both lists\n    # 2. Convert all items to lowercase\n    # 3. Calculate how many items from the recalled list match the original list\n    # 4. Compute and return the percentage\n    \n    return percentage\n\n# Test your function\nresult = analyze_recall('recall_data.txt')\nprint(f\"Percentage of correctly recalled items: {result}%\")",
-      "solution": "def analyze_recall(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        lines = file.readlines()\n    \n    # Get original and recalled lists\n    original_list = lines[0].strip().split(', ')\n    recalled_list = lines[1].strip().split(', ')\n    \n    # Convert to lowercase for case-insensitive comparison\n    original_lower = [item.lower() for item in original_list]\n    recalled_lower = [item.lower() for item in recalled_list]\n    \n    # Count correct recalls\n    correct_recalls = 0\n    for item in recalled_lower:\n        if item in original_lower:\n            correct_recalls += 1\n    \n    # Calculate percentage\n    percentage = (correct_recalls / len(recalled_list)) * 100\n    return round(percentage, 1)\n\n# Test the function\nresult = analyze_recall('recall_data.txt')\nprint(f\"Percentage of correctly recalled items: {result}%\")\n# Answer: 70.0%"
+      "starterCode": "import pandas as pd\n\ndef analyze_attention_data(data, attention_type=None, threshold=None):\n    # Your code here\n    \n    # Steps:\n    # 1. Filter data based on attention_type if provided\n    # 2. Filter data based on threshold if provided\n    # 3. Calculate and return average test score\n    \n    pass\n\n# Read the data\ndata = pd.read_csv('attention-data.csv')\n\n# Test your function with different parameters\nprint(f\"Overall average test score: {analyze_attention_data(data)}\")\nprint(f\"Average test score for attentive students: {analyze_attention_data(data, attention_type='Attentive')}\")\nprint(f\"Average test score for students with phone duration > 30 sec: {analyze_attention_data(data, threshold=30)}\")\nprint(f\"Average test score for attentive students with phone duration > 20 sec: {analyze_attention_data(data, 'Attentive', 20)}\")",
+      "solution": "import pandas as pd\n\ndef analyze_attention_data(data, attention_type=None, threshold=None):\n    # Make a copy of the data to avoid modifying the original\n    filtered_data = data.copy()\n    \n    # Filter by attention type if provided\n    if attention_type is not None:\n        filtered_data = filtered_data[filtered_data['attention_label'] == attention_type]\n    \n    # Filter by threshold if provided\n    if threshold is not None:\n        filtered_data = filtered_data[filtered_data['phone_duration (sec)'] > threshold]\n    \n    # Return the average test score\n    return filtered_data['test_score'].mean()\n\n# Read the data\ndata = pd.read_csv('attention-data.csv')\n\n# Test the function with different parameters\nprint(f\"Overall average test score: {analyze_attention_data(data):.2f}\")\nprint(f\"Average test score for attentive students: {analyze_attention_data(data, attention_type='Attentive'):.2f}\")\nprint(f\"Average test score for students with phone duration > 30 sec: {analyze_attention_data(data, threshold=30):.2f}\")\nprint(f\"Average test score for attentive students with phone duration > 20 sec: {analyze_attention_data(data, 'Attentive', 20):.2f}\")\n\n# Answer:\n# Overall average test score: ~73.35\n# Average test score for attentive students: ~82.62\n# Average test score for students with phone duration > 30 sec: ~65.38\n# Average test score for attentive students with phone duration > 20 sec: ~78.40",
+      "language": "python"
     },
     {
       "type": "exercise",
-      "title": "Comprehensive Recall Analysis",
-      "instructions": "Load the lists from `recall_data.txt`. Write a Python function `recall_stats(filename)` that returns a dictionary containing: the number of correctly recalled items, the number of incorrectly recalled items, and a list of items that were in the original list but not recalled.",
+      "title": "Advanced Function with Args and Kwargs",
+      "instructions": "Enhance your analysis by creating a function `advanced_attention_analysis(data, *args, **kwargs)` that can filter the data based on multiple criteria and perform different calculations (mean, median, max, min) on any specified column.",
       "difficulty": "advanced",
-      "starterCode": "def recall_stats(filename):\n    # Your code here\n    \n    # Steps:\n    # 1. Read the file and get both lists\n    # 2. Process lists for case-insensitive comparison\n    # 3. Compute statistics:\n    #    - Correctly recalled items\n    #    - Incorrectly recalled items\n    #    - Items missed (in original but not recalled)\n    # 4. Return results in a dictionary\n    \n    return stats\n\n# Test your function\nresults = recall_stats('recall_data.txt')\nprint(results)",
-      "solution": "def recall_stats(filename):\n    # Read the file\n    with open(filename, 'r') as file:\n        lines = file.readlines()\n    \n    # Get original and recalled lists\n    original_list = lines[0].strip().split(', ')\n    recalled_list = lines[1].strip().split(', ')\n    \n    # Convert to lowercase for case-insensitive comparison\n    original_lower = [item.lower() for item in original_list]\n    recalled_lower = [item.lower() for item in recalled_list]\n    \n    # Count correct recalls\n    correct_recalls = 0\n    incorrect_recalls = 0\n    \n    for item in recalled_lower:\n        if item in original_lower:\n            correct_recalls += 1\n        else:\n            incorrect_recalls += 1\n    \n    # Find items that were not recalled (missed items)\n    missed_items = []\n    for i, item in enumerate(original_lower):\n        if item not in recalled_lower:\n            # Use the original case for the output\n            missed_items.append(original_list[i])\n    \n    stats = {\n        'correct': correct_recalls,\n        'incorrect': incorrect_recalls,\n        'missing': missed_items\n    }\n    \n    return stats\n\n# Test the function\nresults = recall_stats('recall_data.txt')\nprint(results)\n# Answer: A dictionary similar to: {'correct': 7, 'incorrect': 3, 'missing': ['elderberry', 'honeydew', 'kiwi']}"
+      "starterCode": "import pandas as pd\n\ndef advanced_attention_analysis(data, column='test_score', operation='mean', *args, **kwargs):\n    # Your code here\n    \n    # Steps:\n    # 1. Use kwargs to filter the data (e.g., attention_label='Attentive')\n    # 2. Use the operation parameter to determine which calculation to perform\n    # 3. Return the result\n    \n    pass\n\n# Read the data\ndata = pd.read_csv('attention-data.csv')\n\n# Test your function with different parameters\nprint(f\"Mean test score: {advanced_attention_analysis(data)}\")\nprint(f\"Median test score for attentive students: {advanced_attention_analysis(data, 'test_score', 'median', attention_label='Attentive')}\")\nprint(f\"Maximum phone duration for distracted students: {advanced_attention_analysis(data, 'phone_duration (sec)', 'max', attention_label='Distracted')}\")\nprint(f\"Minimum test score for students with phone duration > 40: {advanced_attention_analysis(data, operation='min', phone_duration_gt=40)}\")",
+      "solution": "import pandas as pd\nimport numpy as np\n\ndef advanced_attention_analysis(data, column='test_score', operation='mean', *args, **kwargs):\n    # Make a copy of the data to avoid modifying the original\n    filtered_data = data.copy()\n    \n    # Process each filter in kwargs\n    for key, value in kwargs.items():\n        if key.endswith('_gt'):\n            # Greater than filter (e.g., phone_duration_gt=30)\n            col_name = key.replace('_gt', '')\n            if col_name in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data[col_name] > value]\n            elif col_name == 'phone_duration' and 'phone_duration (sec)' in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data['phone_duration (sec)'] > value]\n        elif key.endswith('_lt'):\n            # Less than filter\n            col_name = key.replace('_lt', '')\n            if col_name in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data[col_name] < value]\n            elif col_name == 'phone_duration' and 'phone_duration (sec)' in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data['phone_duration (sec)'] < value]\n        else:\n            # Equality filter\n            if key in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data[key] == value]\n    \n    # Ensure the column exists\n    if column not in filtered_data.columns and column == 'phone_duration' and 'phone_duration (sec)' in filtered_data.columns:\n        column = 'phone_duration (sec)'\n    \n    # Perform the specified operation\n    if operation == 'mean':\n        return filtered_data[column].mean()\n    elif operation == 'median':\n        return filtered_data[column].median()\n    elif operation == 'max':\n        return filtered_data[column].max()\n    elif operation == 'min':\n        return filtered_data[column].min()\n    elif operation == 'std':\n        return filtered_data[column].std()\n    else:\n        return None\n\n# Read the data\ndata = pd.read_csv('attention-data.csv')\n\n# Test the function with different parameters\nprint(f\"Mean test score: {advanced_attention_analysis(data):.2f}\")\nprint(f\"Median test score for attentive students: {advanced_attention_analysis(data, 'test_score', 'median', attention_label='Attentive')}\")\nprint(f\"Maximum phone duration for distracted students: {advanced_attention_analysis(data, 'phone_duration (sec)', 'max', attention_label='Distracted')}\")\nprint(f\"Minimum test score for students with phone duration > 40: {advanced_attention_analysis(data, operation='min', phone_duration_gt=40)}\")\n\n# Answer:\n# Mean test score: ~73.35\n# Median test score for attentive students: 82.0\n# Maximum phone duration for distracted students: 500.0\n# Minimum test score for students with phone duration > 40: 30.0",
+      "language": "python"
+    },
+    {
+      "type": "exercise",
+      "title": "Visualizing Attention Data",
+      "instructions": "Create a function that visualizes the relationship between phone duration and test scores. The function should accept parameters to customize the plot, including filtering options and plot styling.",
+      "difficulty": "advanced",
+      "starterCode": "import pandas as pd\nimport matplotlib.pyplot as plt\n\ndef visualize_attention_data(data, x='phone_duration (sec)', y='test_score', highlight_attention=False, *args, **kwargs):\n    # Your code here\n    \n    # Steps:\n    # 1. Filter the data based on kwargs if any\n    # 2. Create a scatter plot of x vs y\n    # 3. If highlight_attention is True, color points by attention_label\n    # 4. Add labels, title, and any customization from kwargs\n    # 5. Show the plot\n    \n    pass\n\n# Read the data\ndata = pd.read_csv('attention-data.csv')\n\n# Test your function\nvisualize_attention_data(data)\nvisualize_attention_data(data, highlight_attention=True, title=\"Phone Duration vs Test Score by Attention Level\")",
+      "solution": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport numpy as np\n\ndef visualize_attention_data(data, x='phone_duration (sec)', y='test_score', highlight_attention=False, *args, **kwargs):\n    # Make a copy of the data to avoid modifying the original\n    filtered_data = data.copy()\n    \n    # Process filters in kwargs\n    for key, value in kwargs.items():\n        if key in ['title', 'figsize', 'alpha', 'marker', 'edgecolors', 's', 'cmap']:\n            # These are plot parameters, not filters\n            continue\n        \n        if key.endswith('_gt'):\n            # Greater than filter\n            col_name = key.replace('_gt', '')\n            if col_name in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data[col_name] > value]\n            elif col_name == 'phone_duration' and 'phone_duration (sec)' in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data['phone_duration (sec)'] > value]\n        elif key.endswith('_lt'):\n            # Less than filter\n            col_name = key.replace('_lt', '')\n            if col_name in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data[col_name] < value]\n            elif col_name == 'phone_duration' and 'phone_duration (sec)' in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data['phone_duration (sec)'] < value]\n        else:\n            # Equality filter\n            if key in filtered_data.columns:\n                filtered_data = filtered_data[filtered_data[key] == value]\n    \n    # Set up the figure\n    figsize = kwargs.get('figsize', (10, 6))\n    plt.figure(figsize=figsize)\n    \n    # Extract plot parameters\n    alpha = kwargs.get('alpha', 0.7)\n    marker = kwargs.get('marker', 'o')\n    edgecolors = kwargs.get('edgecolors', 'k')\n    s = kwargs.get('s', 50)\n    title = kwargs.get('title', 'Phone Duration vs Test Score')\n    \n    # Create the scatter plot\n    if highlight_attention:\n        # Color by attention label\n        attentive = filtered_data[filtered_data['attention_label'] == 'Attentive']\n        distracted = filtered_data[filtered_data['attention_label'] == 'Distracted']\n        \n        plt.scatter(attentive[x], attentive[y], \n                  alpha=alpha, marker=marker, edgecolors=edgecolors, s=s,\n                  color='green', label='Attentive')\n        plt.scatter(distracted[x], distracted[y], \n                  alpha=alpha, marker=marker, edgecolors=edgecolors, s=s,\n                  color='red', label='Distracted')\n        plt.legend()\n    else:\n        plt.scatter(filtered_data[x], filtered_data[y], \n                  alpha=alpha, marker=marker, edgecolors=edgecolors, s=s)\n    \n    # Add trendline\n    if len(filtered_data) > 1:\n        z = np.polyfit(filtered_data[x], filtered_data[y], 1)\n        p = np.poly1d(z)\n        x_min, x_max = filtered_data[x].min(), filtered_data[x].max()\n        plt.plot([x_min, x_max], [p(x_min), p(x_max)], 'k--', alpha=0.5)\n    \n    # Add labels and title\n    plt.xlabel(x)\n    plt.ylabel(y)\n    plt.title(title)\n    \n    # Add grid\n    plt.grid(alpha=0.3)\n    \n    # Show the plot\n    plt.tight_layout()\n    plt.show()\n\n# Read the data\ndata = pd.read_csv('attention-data.csv')\n\n# Test the function\nvisualize_attention_data(data)\nvisualize_attention_data(data, highlight_attention=True, title=\"Phone Duration vs Test Score by Attention Level\")\n\n# With additional filtering and customization\nvisualize_attention_data(data, \n                        highlight_attention=True, \n                        phone_duration_lt=100,  # Filter to phone duration < 100\n                        title=\"Phone Duration vs Test Score (Duration < 100s)\",\n                        alpha=0.8,\n                        marker='o',\n                        s=80,\n                        figsize=(12, 8))",
+      "language": "python"
     },
     {
       "type": "quiz",
       "title": "Knowledge Check",
       "questions": [
         {
-          "question": "What method would you use to read multiple lines from a file at once in Python?",
+          "question": "What is the primary advantage of using *args in a function definition?",
           "options": [
-            "file.read()",
-            "file.readlines()",
-            "file.readline()",
-            "file.readall()"
+            "It allows the function to accept a fixed number of arguments",
+            "It allows the function to accept any number of positional arguments",
+            "It restricts the function to only accept keyword arguments",
+            "It makes the function execute faster"
           ],
           "correctAnswer": 1,
-          "explanation": "The `readlines()` method reads all lines from a file and returns them as a list of strings."
+          "explanation": "*args allows a function to accept any number of positional arguments, which are collected into a tuple inside the function."
         },
         {
-          "question": "Which of these expressions correctly finds items that are in list1 but not in list2?",
+          "question": "What does **kwargs allow in a function definition?",
           "options": [
-            "[item for item in list1 if item in list2]",
-            "[item for item in list1 if item not in list2]",
-            "[item for item in list2 if item not in list1]",
-            "list1.difference(list2)"
+            "It allows the function to accept any number of keyword arguments",
+            "It restricts the function to only accept positional arguments",
+            "It makes the function handle errors automatically",
+            "It makes parameters mandatory instead of optional"
           ],
-          "correctAnswer": 1,
-          "explanation": "The list comprehension `[item for item in list1 if item not in list2]` iterates through list1 and includes only items that don't appear in list2."
+          "correctAnswer": 0,
+          "explanation": "**kwargs allows a function to accept any number of keyword arguments, which are collected into a dictionary inside the function."
         },
         {
-          "question": "What's the purpose of converting strings to lowercase when comparing them?",
+          "question": "In the context of data analysis, why are flexible functions with parameters important?",
           "options": [
-            "To make the code run faster",
-            "To enable case-insensitive comparison",
-            "To save memory",
-            "To prepare the strings for sorting"
+            "They make the code run faster",
+            "They allow for code reuse with different filtering criteria",
+            "They reduce the need for data processing",
+            "They automatically fix errors in the dataset"
           ],
           "correctAnswer": 1,
-          "explanation": "Converting strings to lowercase allows for case-insensitive comparison, meaning 'Apple' and 'apple' will be considered the same string."
+          "explanation": "Flexible functions with parameters allow for code reuse with different filtering criteria, making the analysis more versatile and eliminating the need to write new functions for each analysis scenario."
         }
       ]
     }
   ]
-}
+} 

@@ -3,8 +3,6 @@
   "slug": "01-introduction-to-functions",
   "title": "Introduction to Functions: Data Processing and Analysis",
   "description": "Learn how to create and use functions for data processing and analysis in Python.",
-  "difficulty": "Beginner",
-  "duration": "45 minutes",
   "topics": [
     "File I/O operations",
     "String parsing and manipulation",
