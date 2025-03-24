@@ -158,7 +158,7 @@ const determineSectionType = (section, index, content) => {
   return 'lesson';
 };
 
-const LessonRenderer = ({ content = [] }) => {
+const LessonRenderer = ({ content = [], expandedSections = {} }) => {
   if (!content || content.length === 0) {
     return (
       <div className="p-6 text-center text-gray-500">
@@ -235,14 +235,18 @@ const LessonRenderer = ({ content = [] }) => {
               title={sectionConfig[sectionType].title}
               type={sectionType}
               icon={sectionConfig[sectionType].icon}
-              defaultCollapsed={true}
+              defaultCollapsed={!expandedSections[sectionType]}
             >
               <div className="space-y-4">
-                {sectionItems.map((item, idx) => (
-                  <div key={idx} id={`section-${idx}`}>
-                    {renderContentItem(item, idx)}
-                  </div>
-                ))}
+                {sectionItems.map((item, idx) => {
+                  // Find the index in the original content array
+                  const originalIndex = content.findIndex(section => section === item);
+                  return (
+                    <div key={idx} id={`section-${originalIndex}`}>
+                      {renderContentItem(item, idx)}
+                    </div>
+                  );
+                })}
               </div>
             </CollapsibleSection>
           </motion.div>

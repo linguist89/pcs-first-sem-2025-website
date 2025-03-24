@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CollapsibleSection = ({ 
@@ -11,6 +11,11 @@ const CollapsibleSection = ({
   icon
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  
+  // Update isCollapsed when defaultCollapsed changes (e.g., when a section is selected from sidebar)
+  useEffect(() => {
+    setIsCollapsed(defaultCollapsed);
+  }, [defaultCollapsed]);
   
   // Define styling based on section type
   const typeStyles = {
