@@ -8,29 +8,167 @@ import LessonRenderer from './LessonRenderer';
 import { usePathname } from 'next/navigation';
 
 // Table of contents component
-const TableOfContents = ({ content, activeSection, onSectionClick }) => {
+const TableOfContents = ({ content, onSectionClick }) => {
   if (!content || content.length === 0) return null;
+  
+  // Group content into sections for TOC
+  const groupedSections = {
+    warmup: [],
+    lesson: [],
+    exercise: [],
+    postlesson: []
+  };
+  
+  // Helper function to determine section type, should match the one in LessonRenderer
+  const determineSectionType = (section, index, allContent) => {
+    const { type, title, caption, language, content: contentText } = section;
+    
+    // First, pre-process content to identify sequential warmup code blocks
+    const isWarmupSequence = () => {
+      // Check for previous warmup sections
+      let foundWarmupHeader = false;
+      let sequentialCodeBlocks = true;
+      
+      // Look backwards to find a warmup header
+      for (let i = index - 1; i >= 0; i--) {
+        const prevItem = allContent[i];
+        
+        // If we find a warmup header, mark it
+        if (prevItem.type === 'text' && 
+            prevItem.title && (
+              prevItem.title.toLowerCase().includes('warm') || 
+              prevItem.title.toLowerCase().includes('warmup') || 
+              prevItem.title.toLowerCase().includes('warm-up') ||
+              prevItem.title.toLowerCase().includes('prerequisites')
+            )) {
+          foundWarmupHeader = true;
+          break;
+        }
+        
+        // If we encounter a non-code block or a different section header before finding a warmup header,
+        // this breaks the sequential code blocks pattern
+        if (prevItem.type !== 'code') {
+          if (prevItem.type === 'text' && prevItem.title) {
+            // We hit a different section header
+            break;
+          }
+          // If it's not a code block or a section header, continue checking
+          if (prevItem.type !== 'text' || !(prevItem.content && !prevItem.title)) {
+            sequentialCodeBlocks = false;
+            break;
+          }
+        }
+      }
+      
+      // If there's a warmup header and we're in a sequence of code blocks
+      if (foundWarmupHeader && (type === 'code' || (type === 'text' && !title))) {
+        return true;
+      }
+      
+      return false;
+    };
+    
+    // Check for explicit warmup blocks
+    if (
+      title?.toLowerCase().includes('warm') || 
+      title?.toLowerCase().includes('warmup') ||
+      title?.toLowerCase().includes('warm-up') ||
+      title?.toLowerCase().includes('prerequisites') ||
+      caption?.toLowerCase().includes('warm') ||
+      (type === 'code' && language === 'bash' && 
+        (contentText?.includes('wget') || 
+         contentText?.includes('curl') || 
+         contentText?.includes('download')))
+    ) {
+      return 'warmup';
+    }
+    
+    // Check for sequential warmup code blocks
+    if (isWarmupSequence()) {
+      return 'warmup';
+    }
+    
+    // Check for previous item context (simpler cases)
+    const prevItem = index > 0 ? allContent[index - 1] : null;
+    
+    // If this is a code block that follows a warmup title, it should be part of warmup
+    if (prevItem && 
+        type === 'code' && 
+        prevItem.type === 'text' &&
+        prevItem.title && 
+        (prevItem.title.toLowerCase().includes('warm') || 
+         prevItem.title.toLowerCase().includes('prerequisites'))) {
+      return 'warmup';
+    }
+    
+    // Exercise section detection
+    if (
+      type === 'exercise' ||
+      title?.toLowerCase().includes('exercise') ||
+      title?.toLowerCase().includes('task') ||
+      title?.toLowerCase().includes('challenge')
+    ) {
+      return 'exercise';
+    }
+    
+    // Post-lesson section detection
+    if (
+      type === 'quiz' ||
+      title?.toLowerCase().includes('quiz') ||
+      title?.toLowerCase().includes('summary') ||
+      title?.toLowerCase().includes('conclusion') ||
+      title?.toLowerCase().includes('further reading') ||
+      title?.toLowerCase().includes('homework')
+    ) {
+      return 'postlesson';
+    }
+    
+    // Default to lesson section
+    return 'lesson';
+  };
+  
+  // Group content items by section type
+  content.forEach((section, index) => {
+    const sectionType = determineSectionType(section, index, content);
+    if (section.title) {
+      groupedSections[sectionType].push({ ...section, index });
+    }
+  });
+  
+  // Section titles for TOC
+  const sectionTitles = {
+    warmup: 'Warm-up',
+    lesson: 'Lesson Content',
+    exercise: 'Exercises',
+    postlesson: 'Post-Lesson'
+  };
+  
+  // Order of sections to display
+  const sectionOrder = ['warmup', 'lesson', 'exercise', 'postlesson'];
   
   return (
     <div className="mb-6 bg-gray-50 rounded-lg p-4">
       <h2 className="text-lg font-bold text-gray-800 mb-2">Contents</h2>
-      <ul className="space-y-1">
-        {content.map((section, index) => {
-          // Only show titled sections in TOC
-          if (!section.title) return null;
+      <ul className="space-y-2">
+        {sectionOrder.map(sectionType => {
+          const sections = groupedSections[sectionType];
+          if (sections.length === 0) return null;
           
           return (
-            <li key={index}>
-              <button
-                onClick={() => onSectionClick(index)}
-                className={`text-left w-full px-2 py-1 rounded ${
-                  activeSection === index 
-                    ? 'bg-blue-100 text-blue-800' 
-                    : 'text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {section.title}
-              </button>
+            <li key={sectionType}>
+              <div className="font-medium text-gray-700 mb-1">{sectionTitles[sectionType]}</div>
+              <ul className="pl-4 space-y-1">
+                {sections.map(section => (
+                  <li key={section.index}>
+                    <button
+                      onClick={() => onSectionClick(section.index)}
+                      className="text-left text-sm w-full px-2 py-1 rounded hover:bg-gray-100 text-gray-600"
+                    >
+                      {section.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </li>
           );
         })}
@@ -43,7 +181,6 @@ const ModernLessonDetail = ({ lessonId }) => {
   const [lesson, setLesson] = useState(null);
   const [content, setContent] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState(0);
   const [error, setError] = useState(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -110,7 +247,6 @@ const ModernLessonDetail = ({ lessonId }) => {
   };
   
   const handleSectionClick = (index) => {
-    setActiveSection(index);
     // Scroll to section
     document.getElementById(`section-${index}`)?.scrollIntoView({ 
       behavior: 'smooth',
@@ -191,7 +327,6 @@ const ModernLessonDetail = ({ lessonId }) => {
       {/* Table of contents */}
       <TableOfContents 
         content={content} 
-        activeSection={activeSection} 
         onSectionClick={handleSectionClick} 
       />
       

@@ -7,6 +7,7 @@ import Scenario from './Scenario';
 import MediaBlock from './MediaBlock';
 import Quiz from './Quiz';
 import InteractiveCode from './InteractiveCode';
+import CollapsibleSection from './CollapsibleSection';
 
 export {
   TextBlock,
@@ -15,5 +16,6 @@ export {
   Scenario,
   MediaBlock,
   Quiz,
-  InteractiveCode
+  InteractiveCode,
+  CollapsibleSection
 }; 
