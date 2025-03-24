@@ -4,6 +4,69 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 
+// Helper function to parse and render highlighted content
+const renderHighlightedContent = (content) => {
+  if (!content) return null;
+  
+  // Regular expression to match highlighted sections like [1 text to highlight]
+  const regex = /\[(\d+)\s+(.*?)\]/g;
+  
+  // Split the content by the regex matches
+  let parts = [];
+  let lastIndex = 0;
+  let match;
+  
+  while ((match = regex.exec(content)) !== null) {
+    // Add the text before the match
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'text',
+        content: content.substring(lastIndex, match.index)
+      });
+    }
+    
+    // Add the highlighted part
+    parts.push({
+      type: 'highlight',
+      number: match[1],
+      content: match[2]
+    });
+    
+    lastIndex = match.index + match[0].length;
+  }
+  
+  // Add any remaining text
+  if (lastIndex < content.length) {
+    parts.push({
+      type: 'text',
+      content: content.substring(lastIndex)
+    });
+  }
+  
+  // Render the parts
+  return (
+    <div>
+      {parts.map((part, index) => {
+        if (part.type === 'text') {
+          return <span key={index}>{part.content}</span>;
+        } else {
+          return (
+            <span 
+              key={index} 
+              className="bg-yellow-100 border-b-2 border-yellow-300 text-yellow-800 rounded px-1 mx-0.5 whitespace-normal"
+            >
+              <span className="inline-flex items-center justify-center bg-yellow-200 rounded-full h-4 w-4 text-xs font-bold mr-1">
+                {part.number}
+              </span>
+              {part.content}
+            </span>
+          );
+        }
+      })}
+    </div>
+  );
+};
+
 const Scenario = ({ content, title, highlightedContent, objective }) => {
   const [showHighlighted, setShowHighlighted] = useState(false);
   const [showObjective, setShowObjective] = useState(false);
@@ -25,9 +88,13 @@ const Scenario = ({ content, title, highlightedContent, objective }) => {
       </div>
       
       <div className="prose prose-sm max-w-none text-gray-700 mb-4">
-        <ReactMarkdown>
-          {content}
-        </ReactMarkdown>
+        {showHighlighted && highlightedContent ? (
+          renderHighlightedContent(highlightedContent)
+        ) : (
+          <ReactMarkdown>
+            {content}
+          </ReactMarkdown>
+        )}
       </div>
       
       <div className="flex flex-wrap gap-2 mt-4">
@@ -40,7 +107,7 @@ const Scenario = ({ content, title, highlightedContent, objective }) => {
                 : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
             }`}
           >
-            {showHighlighted ? 'Hide Highlighted Parts' : 'Show Highlighted Parts'}
+            {showHighlighted ? 'Hide Highlighted Version' : 'Show Highlighted Version'}
           </button>
         )}
         
@@ -57,22 +124,6 @@ const Scenario = ({ content, title, highlightedContent, objective }) => {
           </button>
         )}
       </div>
-      
-      {showHighlighted && highlightedContent && (
-        <motion.div 
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          transition={{ duration: 0.3 }}
-          className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-md"
-        >
-          <h4 className="text-md font-medium text-blue-800 mb-2">Highlighted Parts</h4>
-          <div className="prose prose-sm max-w-none text-gray-700">
-            <ReactMarkdown>
-              {highlightedContent}
-            </ReactMarkdown>
-          </div>
-        </motion.div>
-      )}
       
       {showObjective && objective && (
         <motion.div 
