@@ -8,6 +8,8 @@ import MediaBlock from './MediaBlock';
 import Quiz from './Quiz';
 import InteractiveCode from './InteractiveCode';
 import CollapsibleSection from './CollapsibleSection';
+import CodeSlider from './CodeSlider';
+import CodeSliderExample from './CodeSliderExample';
 
 export {
   TextBlock,
@@ -17,5 +19,7 @@ export {
   MediaBlock,
   Quiz,
   InteractiveCode,
-  CollapsibleSection
+  CollapsibleSection,
+  CodeSlider,
+  CodeSliderExample
 }; 

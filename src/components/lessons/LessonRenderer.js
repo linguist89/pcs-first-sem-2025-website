@@ -8,7 +8,8 @@ import {
   Exercise,
   Scenario,
   MediaBlock,
-  Quiz
+  Quiz,
+  CodeSlider
 } from './content';
 import InteractiveCode from './content/InteractiveCode';
 import CollapsibleSection from './content/CollapsibleSection';
@@ -39,6 +40,9 @@ const renderContentItem = (section, index, isAdmin) => {
       
     case 'quiz':
       return <Quiz key={index} {...props} />;
+      
+    case 'codeSlider':
+      return <CodeSlider key={index} {...props} />;
       
     default:
       return (

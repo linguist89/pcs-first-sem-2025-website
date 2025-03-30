@@ -20,6 +20,54 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Custom Components
+
+### CodeSlider
+
+The `CodeSlider` component creates interactive learning experiences by guiding users through a sequence of code evolution. It's designed for teaching coding concepts by showing the progression from simple to more advanced implementations.
+
+#### Features
+
+- **Block-based focus**: Automatically detects code blocks based on comments and focuses on one block at a time
+- **Progressive navigation**: Step through each block before moving to the next slide
+- **Block-specific explanations**: Each code block can have its own targeted explanation
+- **Visual focus**: Current block is highlighted while other blocks are blurred
+- **Rich content**: Supports Markdown formatting including bold, italic, lists, and code snippets
+- **Animated transitions**: Smooth transitions between code slides with fade effects
+- **Dot navigation**: Allows users to jump between slides
+
+#### Usage Example
+
+```jsx
+import CodeSlider from '@/components/lessons/CodeSlider';
+
+const slides = [
+  {
+    code: `# First code block
+console.log("Hello World");
+
+# Second code block
+function greet(name) {
+  console.log("Hello " + name);
+}
+
+# Third code block
+greet("World");`,
+    blockExplanations: [
+      "This is a simple Hello World example that prints to the console directly.",
+      "Here we define a reusable function that can greet any name we provide.",
+      "Now we call our function with the 'World' argument."
+    ]
+  }
+];
+
+function MyComponent() {
+  return <CodeSlider slides={slides} />;
+}
+```
+
+See a live demo at `/examples/codeslider`
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
