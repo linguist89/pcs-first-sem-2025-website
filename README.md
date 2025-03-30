@@ -31,7 +31,9 @@ The `CodeSlider` component creates interactive learning experiences by guiding u
 - **Block-based focus**: Automatically detects code blocks based on comments and focuses on one block at a time
 - **Progressive navigation**: Step through each block before moving to the next slide
 - **Block-specific explanations**: Each code block can have its own targeted explanation
-- **Visual focus**: Current block is highlighted while other blocks are blurred
+- **Smart spotlight**: Spotlight focus is automatically enabled when showing explanations for better context
+- **Toggleable spotlight**: Users can disable the spotlight effect to view the entire code without dimming
+- **Draggable explanations**: Explanation boxes can be moved anywhere on screen and maintain position when navigating
 - **Rich content**: Supports Markdown formatting including bold, italic, lists, and code snippets
 - **Animated transitions**: Smooth transitions between code slides with fade effects
 - **Dot navigation**: Allows users to jump between slides

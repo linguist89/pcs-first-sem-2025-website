@@ -22,10 +22,21 @@ const CodeSlider = ({
   const [currentBlockIndex, setCurrentBlockIndex] = useState(0);
   const [codeBlocks, setCodeBlocks] = useState([]);
   const [explanationPosition, setExplanationPosition] = useState({ x: 0, y: 0 });
+  const [spotlightEnabled, setSpotlightEnabled] = useState(true);
   const containerRef = useRef(null);
   const dragControls = useDragControls();
+  const lastPositionRef = useRef({ x: window.innerWidth * 0.3, y: window.innerHeight * 0.3 });
+  const isFirstRender = useRef(true);
   
   const currentSlide = slides[currentSlideIndex];
+  
+  // Initialize explanation position on first render
+  useEffect(() => {
+    if (isFirstRender.current) {
+      setExplanationPosition({ x: window.innerWidth * 0.3, y: window.innerHeight * 0.3 });
+      isFirstRender.current = false;
+    }
+  }, []);
   
   // Parse code blocks when the slide changes
   useEffect(() => {
@@ -34,8 +45,8 @@ const CodeSlider = ({
       setCodeBlocks(blocks);
       setCurrentBlockIndex(0);
       
-      // Reset explanation position when slide changes
-      setExplanationPosition({ x: window.innerWidth * 0.3, y: window.innerHeight * 0.3 });
+      // Use the last remembered position instead of resetting to default
+      setExplanationPosition(lastPositionRef.current);
     }
   }, [currentSlideIndex, currentSlide, language]);
   
@@ -103,10 +114,12 @@ const CodeSlider = ({
   const nextBlock = () => {
     if (currentBlockIndex < codeBlocks.length - 1) {
       setCurrentBlockIndex(currentBlockIndex + 1);
+      // Don't reset explanation position when changing blocks within the same slide
     } else {
       // If this is the last block in the slide, attempt to move to the next slide
       if (currentSlideIndex < slides.length - 1) {
         handleNext();
+        // Position will be reset by the useEffect when the slide changes
       }
     }
   };
@@ -114,11 +127,12 @@ const CodeSlider = ({
   const prevBlock = () => {
     if (currentBlockIndex > 0) {
       setCurrentBlockIndex(currentBlockIndex - 1);
+      // Don't reset explanation position when changing blocks within the same slide
     } else {
       // If this is the first block, attempt to move to the previous slide
       if (currentSlideIndex > 0) {
         handlePrev();
-        // The useEffect will reset the current block to 0
+        // Position will be reset by the useEffect when the slide changes
       }
     }
   };
@@ -225,9 +239,13 @@ const CodeSlider = ({
   };
   
   const renderCodeWithAnnotations = () => {
+    // Calculate the approximate line height and top offset for the spotlight
+    const lineHeight = 24; // Approximate line height in pixels
+    const topOffset = 16; // Initial padding offset
+
     return (
       <div className="relative h-full">
-        {/* Code syntax highlighting with focused block */}
+        {/* Code syntax highlighting */}
         <div className="h-full">
           <SyntaxHighlighter
             language={language}
@@ -244,29 +262,64 @@ const CodeSlider = ({
               position: 'relative'
             }}
             wrapLines={true}
-            lineProps={lineNumber => {
-              const style = {};
-              // Check if the line is part of the current focused block
-              const inFocusedBlock = lineNumber >= currentBlock.startLine && lineNumber <= currentBlock.endLine;
-              
-              if (inFocusedBlock) {
-                style.backgroundColor = 'rgba(62, 207, 142, 0.1)';
-                style.borderLeft = '3px solid #3ECF8E';
-                style.paddingLeft = '1rem';
-                style.filter = 'brightness(1.2)';
-                style.opacity = 1;
-              } else {
-                // Blur and fade lines that are not in the current block
-                style.filter = 'blur(1px) brightness(0.7)';
-                style.opacity = 0.5;
-                style.transition = 'filter 0.3s, opacity 0.3s';
-              }
-              
-              return { style };
-            }}
           >
             {currentSlide?.code || ''}
           </SyntaxHighlighter>
+          
+          {/* Spotlight overlay effect - only shown when spotlight is enabled */}
+          {spotlightEnabled && (
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              {/* Top overlay (above the spotlight) */}
+              <div 
+                className="absolute left-0 right-0 bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300"
+                style={{
+                  top: 0,
+                  height: `${currentBlock.startLine * lineHeight + topOffset}px`
+                }}
+              ></div>
+              
+              {/* Bottom overlay (below the spotlight) */}
+              <div 
+                className="absolute left-0 right-0 bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300"
+                style={{
+                  top: `${(currentBlock.endLine + 1) * lineHeight + topOffset}px`,
+                  bottom: 0
+                }}
+              ></div>
+              
+              {/* Left overlay (to the left of the spotlight but in the same rows) */}
+              <div 
+                className="absolute bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300 w-12"
+                style={{
+                  top: `${currentBlock.startLine * lineHeight + topOffset}px`,
+                  height: `${(currentBlock.endLine - currentBlock.startLine + 1) * lineHeight}px`,
+                  left: 0
+                }}
+              ></div>
+              
+              {/* Right overlay (to the right of the spotlight but in the same rows) */}
+              <div 
+                className="absolute bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300"
+                style={{
+                  top: `${currentBlock.startLine * lineHeight + topOffset}px`,
+                  height: `${(currentBlock.endLine - currentBlock.startLine + 1) * lineHeight}px`,
+                  left: 'calc(100% - 20px)',
+                  right: 0
+                }}
+              ></div>
+              
+              {/* Spotlight border */}
+              <div 
+                className="absolute box-content border-2 border-green-400/70 shadow-[0_0_15px_rgba(74,222,128,0.3)] transition-all duration-300"
+                style={{
+                  top: `${currentBlock.startLine * lineHeight + topOffset}px`,
+                  height: `${(currentBlock.endLine - currentBlock.startLine + 1) * lineHeight}px`,
+                  left: '12px',
+                  right: '20px'
+                }}
+              ></div>
+            </div>
+          )}
         </div>
         
         {/* Focus point indicator */}
@@ -288,18 +341,37 @@ const CodeSlider = ({
           </motion.div>
         )}
 
-        {/* Toggle button to show explanation when hidden */}
-        {!showExplanation && (
+        {/* Toggle buttons for explanation and spotlight */}
+        <div className="absolute bottom-4 right-4 z-20 flex space-x-2">
+          {/* Toggle button to show explanation when hidden */}
+          {!showExplanation && (
+            <button
+              onClick={() => {
+                setShowExplanation(true);
+                setSpotlightEnabled(true); // Also enable spotlight when showing explanation
+              }}
+              className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-colors"
+              title="Show explanation"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+          )}
+          
+          {/* Toggle button for spotlight focus */}
           <button
-            onClick={() => setShowExplanation(true)}
-            className="absolute bottom-4 right-4 z-20 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-colors"
-            title="Show explanation"
+            onClick={() => setSpotlightEnabled(!spotlightEnabled)}
+            className={`text-white rounded-full p-3 shadow-lg transition-colors ${
+              spotlightEnabled ? 'bg-green-600 hover:bg-green-700' : 'bg-slate-600 hover:bg-slate-700'
+            }`}
+            title={spotlightEnabled ? "Disable spotlight focus" : "Enable spotlight focus"}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
           </button>
-        )}
+        </div>
       </div>
     );
   };
@@ -462,10 +534,13 @@ const CodeSlider = ({
           }}
           transition={{ delay: 0.1, duration: 0.3 }}
           onDragEnd={(e, info) => {
-            setExplanationPosition({
+            const newPosition = {
               x: explanationPosition.x + info.offset.x,
               y: explanationPosition.y + info.offset.y
-            });
+            };
+            setExplanationPosition(newPosition);
+            // Store the position for persistence between slides
+            lastPositionRef.current = newPosition;
           }}
           className="fixed bg-slate-800/95 p-4 rounded-lg shadow-2xl border border-slate-600 max-w-md pointer-events-auto cursor-move"
           style={{
