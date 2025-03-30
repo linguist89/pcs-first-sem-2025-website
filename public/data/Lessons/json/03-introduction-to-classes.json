@@ -1,0 +1,166 @@
+{
+  "id": "03",
+  "slug": "03-attention-class-modeling",
+  "title": "Introducing Classes: Modeling Student Attention Profiles",
+  "description": "Learn how to organize data using Python classes by modeling each student's attention profile as an object. This lesson introduces object-oriented programming by building on earlier data analysis functions.",
+  "difficulty": "Intermediate",
+  "duration": "45 minutes",
+  "topics": [
+    "Class definition and instantiation",
+    "Instance attributes and methods",
+    "Organizing code with classes",
+    "Object-oriented thinking",
+    "Encapsulation principles",
+    "Special methods (__str__, __repr__)"
+  ],
+  "format": "json",
+  "prevLesson": "02",
+  "nextLesson": null,
+  "content": [
+    {
+      "type": "text",
+      "title": "Introduction",
+      "content": "You've built flexible functions to analyze attention and test score data. But as the research grows, you need a better way to organize and reason about individual students. In this lesson, you'll define a class to represent each student's attention profile and encapsulate related analysis behaviors inside methods. This object-oriented approach will make your code more intuitive, maintainable, and extensible."
+    },
+    {
+      "type": "scenario",
+      "title": "Professor Chen and Maya, Part 2",
+      "content": "A week later, Maya returns with a collection of reusable functions. Professor Chen nods in approval.\n\n\"This is excellent work, Maya. But as we start comparing students across multiple studies and sessions, things are getting harder to track. We have attention labels, test scores, phone durations — scattered across filters and functions.\"\n\nShe pauses, \"Could you structure this data in a way that lets us represent each student or study session as an object — one that knows how to calculate its own stats, compare itself to others, or check if it's an outlier?\"\n\nMaya smiles, \"I think it's time to build a class.\"",
+      "highlightedContent": "Could you structure this data in a way that lets us represent each student or study session as an object — one that knows how to calculate its own stats, compare itself to others, or check if it's an outlier?",
+      "objective": "Model each student as an object with behavior and data bundled together. Then use these objects for more structured and reusable analysis."
+    },
+    {
+      "type": "text",
+      "title": "Warm-up: The Evolution of Code Organization",
+      "content": "Before diving into classes for our student data, let's understand the progression from messy exploratory code to well-organized classes using a simple library book example."
+    },
+    {
+      "type": "text",
+      "title": "Warm-up Stage 1: Messy Exploratory Code",
+      "content": "When first exploring a problem, our code is often messy as we're figuring things out. We might write separate code blocks for each book we're analyzing:"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Warm-up: Messy exploratory code with repetition",
+      "content": "# First book information\ntitle1 = \"The Great Gatsby\"\nauthor1 = \"F. Scott Fitzgerald\"\npages1 = 180\ngenre1 = \"Fiction\"\nis_checked_out1 = False\n\n# Calculate if it's a long read\nis_long_read1 = pages1 > 300\n\n# Create a string with book information\nstatus1 = \"checked out\" if is_checked_out1 else \"available\"\ninfo1 = f\"\\\"{title1}\\\" by {author1} ({genre1}, {pages1} pages) - {status1}\"\n\nprint(info1)\nprint(f\"Is {title1} a long read? {is_long_read1}\")\n\n# Second book with almost identical code\ntitle2 = \"War and Peace\"\nauthor2 = \"Leo Tolstoy\"\npages2 = 1225\ngenre2 = \"Historical Fiction\"\nis_checked_out2 = False\n\n# Check it out\nis_checked_out2 = True\n\n# Calculate if it's a long read (duplicated logic)\nis_long_read2 = pages2 > 300\n\n# Create a string with book information (duplicated logic)\nstatus2 = \"checked out\" if is_checked_out2 else \"available\"\ninfo2 = f\"\\\"{title2}\\\" by {author2} ({genre2}, {pages2} pages) - {status2}\"\n\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\n# Return the book\nis_checked_out2 = False\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\n# Third book with more duplication\ntitle3 = \"Python Crash Course\"\nauthor3 = \"Eric Matthes\"\npages3 = 544\ngenre3 = \"Programming\"\nis_checked_out3 = False\n\n# Calculate if it's a long read (duplicated logic again)\nis_long_read3 = pages3 > 300\n\nprint(f\"Is {title3} a long read? {is_long_read3}\")"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up Stage 2: Functions for Common Tasks",
+      "content": "As we notice repeating patterns, we create functions to avoid code duplication and improve readability:"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Warm-up: Using functions to reduce repetition",
+      "content": "def is_long_read(pages):\n    \"\"\"Return True if the book has more than 300 pages.\"\"\"\n    return pages > 300\n\ndef format_book_info(title, author, genre, pages, is_checked_out):\n    \"\"\"Create a formatted string with book information.\"\"\"\n    status = \"checked out\" if is_checked_out else \"available\"\n    return f\"\\\"{title}\\\" by {author} ({genre}, {pages} pages) - {status}\"\n\ndef check_out_book(is_checked_out):\n    \"\"\"Check out a book.\"\"\"\n    return True\n\ndef return_book(is_checked_out):\n    \"\"\"Return a book.\"\"\"\n    return False\n\n# Using our functions with the first book\ntitle1 = \"The Great Gatsby\"\nauthor1 = \"F. Scott Fitzgerald\"\npages1 = 180\ngenre1 = \"Fiction\"\nis_checked_out1 = False\n\nprint(format_book_info(title1, author1, genre1, pages1, is_checked_out1))\nprint(f\"Is {title1} a long read? {is_long_read(pages1)}\")\n\n# Using our functions with the second book\ntitle2 = \"War and Peace\"\nauthor2 = \"Leo Tolstoy\"\npages2 = 1225\ngenre2 = \"Historical Fiction\"\nis_checked_out2 = False\n\nis_checked_out2 = check_out_book(is_checked_out2)\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\nis_checked_out2 = return_book(is_checked_out2)\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\n# Using our functions with the third book\ntitle3 = \"Python Crash Course\"\nauthor3 = \"Eric Matthes\"\npages3 = 544\ngenre3 = \"Programming\"\nis_checked_out3 = False\n\nprint(f\"Is {title3} a long read? {is_long_read(pages3)}\")"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up Stage 3: Data Bundling with Dictionaries",
+      "content": "We can further improve our code by bundling related data together in dictionaries:"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Warm-up: Using dictionaries to bundle related data",
+      "content": "def is_long_read(book):\n    \"\"\"Return True if the book has more than 300 pages.\"\"\"\n    return book['pages'] > 300\n\ndef format_book_info(book):\n    \"\"\"Create a formatted string with book information.\"\"\"\n    status = \"checked out\" if book['is_checked_out'] else \"available\"\n    return f\"\\\"{book['title']}\\\" by {book['author']} ({book['genre']}, {book['pages']} pages) - {status}\"\n\ndef check_out_book(book):\n    \"\"\"Check out a book.\"\"\"\n    book['is_checked_out'] = True\n    return book\n\ndef return_book(book):\n    \"\"\"Return a book.\"\"\"\n    book['is_checked_out'] = False\n    return book\n\n# Create book dictionaries\nbook1 = {\n    'title': \"The Great Gatsby\",\n    'author': \"F. Scott Fitzgerald\",\n    'pages': 180,\n    'genre': \"Fiction\",\n    'is_checked_out': False\n}\n\nbook2 = {\n    'title': \"War and Peace\",\n    'author': \"Leo Tolstoy\",\n    'pages': 1225,\n    'genre': \"Historical Fiction\",\n    'is_checked_out': False\n}\n\nbook3 = {\n    'title': \"Python Crash Course\",\n    'author': \"Eric Matthes\",\n    'pages': 544,\n    'genre': \"Programming\",\n    'is_checked_out': False\n}\n\n# Using our functions with the dictionaries\nprint(format_book_info(book1))\nprint(f\"Is {book1['title']} a long read? {is_long_read(book1)}\")\n\ncheck_out_book(book2)\nprint(f\"{book2['title']} is checked out: {book2['is_checked_out']}\")\nreturn_book(book2)\nprint(f\"{book2['title']} is checked out: {book2['is_checked_out']}\")\n\nprint(f\"Is {book3['title']} a long read? {is_long_read(book3)}\")"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up Stage 4: Classes - Bundling Data with Behavior",
+      "content": "Finally, we can use a class to bundle both the data (attributes) and the functions (methods) together. This creates a more intuitive, cohesive representation of a book:"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up: Library Book Tracking System",
+      "content": "Let's implement our book tracking system using a class. In this warm-up, you'll create a class to represent library books that:\n\n1. Stores the following data for each book:\n   - `title`, `author`, `pages`, `genre`, `is_checked_out`\n\n2. Includes the following methods:\n   - `check_out()`: Sets is_checked_out to True\n   - `return_book()`: Sets is_checked_out to False\n   - `is_long_read()`: Returns True if pages > 300\n   - `get_info()`: Returns a string with book information\n\n3. Creates several Book objects and uses their methods."
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Warm-up: Library Book Tracking System implemented with a class",
+      "content": "# Define the Book class\nclass Book:\n    def __init__(self, title, author, pages, genre):\n        # Initialize the book attributes here\n        pass\n    \n    # Implement the methods here\n    # def check_out(self):\n    # def return_book(self):\n    # def is_long_read(self):\n    # def get_info(self):\n\n# Create some book objects\nbook1 = Book(\"The Great Gatsby\", \"F. Scott Fitzgerald\", 180, \"Fiction\")\nbook2 = Book(\"War and Peace\", \"Leo Tolstoy\", 1225, \"Historical Fiction\")\nbook3 = Book(\"Python Crash Course\", \"Eric Matthes\", 544, \"Programming\")\n\n# Test the methods\nprint(book1.get_info())\nprint(f\"Is {book1.title} a long read? {book1.is_long_read()}\")\n\nbook2.check_out()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\nbook2.return_book()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\n\nprint(f\"Is {book3.title} a long read? {book3.is_long_read()}\")"
+    },
+    {
+      "type": "code",
+      "language": "python", 
+      "caption": "Warm-up: Library Book Tracking System Solution",
+      "content": "class Book:\n    def __init__(self, title, author, pages, genre):\n        self.title = title\n        self.author = author\n        self.pages = pages\n        self.genre = genre\n        self.is_checked_out = False\n    \n    def check_out(self):\n        self.is_checked_out = True\n    \n    def return_book(self):\n        self.is_checked_out = False\n    \n    def is_long_read(self):\n        return self.pages > 300\n    \n    def get_info(self):\n        status = \"checked out\" if self.is_checked_out else \"available\"\n        return f\"\\\"{self.title}\\\" by {self.author} ({self.genre}, {self.pages} pages) - {status}\"\n\n# Create some book objects\nbook1 = Book(\"The Great Gatsby\", \"F. Scott Fitzgerald\", 180, \"Fiction\")\nbook2 = Book(\"War and Peace\", \"Leo Tolstoy\", 1225, \"Historical Fiction\")\nbook3 = Book(\"Python Crash Course\", \"Eric Matthes\", 544, \"Programming\")\n\n# Test the methods\nprint(book1.get_info())\nprint(f\"Is {book1.title} a long read? {book1.is_long_read()}\")\n\nbook2.check_out()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\nbook2.return_book()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\n\nprint(f\"Is {book3.title} a long read? {book3.is_long_read()}\")"
+    },
+    {
+      "type": "text",
+      "title": "Warm-up: Benefits of the Class Approach",
+      "content": "Notice how the class approach offers many advantages:\n\n1. **Code Organization**: Related data and behavior are bundled together in a single unit\n2. **Code Reuse**: Each book object automatically has all the methods defined in the class\n3. **State Management**: Methods can modify the object's state (like `check_out()` changing `is_checked_out`)\n4. **Readability**: Code using classes is often more intuitive and mirrors how we think about real-world objects\n5. **Maintainability**: Changes to book behavior only need to be made in one place (the class definition)\n\nIn the next sections, we'll apply this object-oriented approach to our student attention data."
+    },
+    {
+      "type": "text",
+      "title": "Understanding Object-Oriented Programming",
+      "content": "In procedural programming, we think about actions (functions) that operate on data. Object-oriented programming (OOP) flips this perspective: we define objects that contain both data (attributes) and behaviors (methods).\n\nClasses are blueprints for creating objects. When you define a class, you're creating a template that specifies:\n\n- What data each object will store (instance attributes)\n- What actions each object can perform (instance methods)\n- How to initialize new objects (`__init__` method)\n\nThe key benefit of OOP is encapsulation — bundling data with the methods that operate on that data. This makes your code more modular, reusable, and often easier to reason about."
+    },
+    {
+      "type": "text",
+      "title": "Classes vs. Dictionaries",
+      "content": "You might wonder: why not just use dictionaries to store student data? Consider:"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Comparing dictionary and class approaches",
+      "content": "# Dictionary approach\nstudent = {\n    'name': 'Alex',\n    'test_score': 85,\n    'phone_duration': 45,\n    'attention_label': 'Attentive'\n}\n\n# vs. Class approach\nclass StudentRecord:\n    def __init__(self, name, test_score, phone_duration, attention_label):\n        self.name = name\n        self.test_score = test_score\n        self.phone_duration = phone_duration\n        self.attention_label = attention_label\n    \n    def is_attentive(self):\n        return self.attention_label == 'Attentive'"
+    },
+    {
+      "type": "text",
+      "title": "",
+      "content": "The class approach offers several advantages:\n\n1. **Behavior**: Classes include methods that operate on the data\n2. **Validation**: You can validate data when an object is created or modified\n3. **Structure**: Classes enforce a consistent structure for all student records\n4. **Type checking**: IDEs can provide better autocompletion and error checking\n5. **Extensibility**: You can use inheritance to create specialized types of records"
+    },
+    {
+      "type": "text",
+      "title": "Special Methods in Python Classes",
+      "content": "Python classes can implement special methods (also called \"dunder\" methods because they start and end with double underscores) that customize how objects behave in different contexts.\n\nTwo particularly useful special methods are:\n\n1. `__str__(self)`: Controls what's returned when you call `str(object)` or use `print(object)`\n2. `__repr__(self)`: Controls the \"official\" string representation of an object\n\nBy implementing these, you can make your StudentRecord objects more usable and debug-friendly:"
+    },
+    {
+      "type": "code",
+      "language": "python",
+      "caption": "Implementing special methods in a class",
+      "content": "def __str__(self):\n    return f\"{self.name}: Score={self.test_score}, Label={self.attention_label}\"\n\ndef __repr__(self):\n    return f\"StudentRecord('{self.name}', {self.test_score}, {self.phone_duration}, '{self.attention_label}')\""
+    },
+    {
+      "type": "text",
+      "title": "",
+      "content": "The `__str__` method should return a user-friendly string, while `__repr__` should ideally return a string that, when evaluated, recreates the object."
+    },
+    {
+      "type": "exercise",
+      "title": "Modeling Student Attention Profiles with Classes",
+      "instructions": "You're analyzing attention data, and your functions are becoming hard to manage. It's time to create a class that models each student's attention profile.\n\n1. Define a class `StudentRecord` that stores the following for each student:\n   - `name`, `test_score`, `phone_duration`, `attention_label`\n\n2. Add the following methods:\n   - `is_attentive()` returns True if attention_label is 'Attentive'\n   - `is_distracted()` returns True if phone_duration > 60 seconds\n   - `score_difference(average)` returns the difference from class average\n   - `score_percentile(all_scores)` returns the percentile rank of the student's score\n   - `__str__()` returns a user-friendly string representation\n   - `__repr__()` returns the official string representation\n\n3. Load the CSV data and create a `StudentRecord` object for each row.\n\n4. Calculate and print various statistics:\n   - How many students are attentive?\n   - How many students are distracted according to phone usage?\n   - What's the average test score for attentive vs distracted students?\n   - Which student has the highest score while being distracted?",
+      "difficulty": "intermediate",
+      "starterCode": "import pandas as pd\nimport numpy as np\n\n# Define the class\nclass StudentRecord:\n    def __init__(self, name, test_score, phone_duration, attention_label):\n        # Your code here\n        pass\n\n    # Define the methods\n    # def is_attentive(self):\n    # def is_distracted(self):\n    # def score_difference(self, average):\n    # def score_percentile(self, all_scores):\n    # def __str__(self):\n    # def __repr__(self):\n\n# Load the data\ndata = pd.read_csv('lesson3-data.csv')\n\n# Create StudentRecord objects\nstudents = []\nfor i, row in data.iterrows():\n    student = StudentRecord(\n        name=row.get('name', f\"Student {i}\"),\n        test_score=row['test_score'],\n        phone_duration=row['phone_duration (sec)'],\n        attention_label=row['attention_label']\n    )\n    students.append(student)\n\n# Print example student\nprint(\"Example student:\")\nprint(students[0])\nprint(repr(students[0]))\nprint(\"---\")\n\n# Calculate and display statistics\n# Your analysis code here",
+      "solution": "import pandas as pd\nimport numpy as np\n\nclass StudentRecord:\n    def __init__(self, name, test_score, phone_duration, attention_label):\n        self.name = name\n        self.test_score = test_score\n        self.phone_duration = phone_duration\n        self.attention_label = attention_label\n\n    def is_attentive(self):\n        return self.attention_label == 'Attentive'\n\n    def is_distracted(self):\n        return self.phone_duration > 60\n\n    def score_difference(self, average):\n        return self.test_score - average\n    \n    def score_percentile(self, all_scores):\n        return round(sum(self.test_score >= s for s in all_scores) / len(all_scores) * 100, 1)\n\n    def __str__(self):\n        return f\"{self.name}: Score={self.test_score}, Phone={self.phone_duration}s, Label={self.attention_label}\"\n    \n    def __repr__(self):\n        return f\"StudentRecord('{self.name}', {self.test_score}, {self.phone_duration}, '{self.attention_label}')\"\n\n# Load data\ndata = pd.read_csv('lesson3-data.csv')\naverage_score = data['test_score'].mean()\nall_scores = data['test_score'].tolist()\n\n# Create objects\nstudents = []\nfor i, row in data.iterrows():\n    student = StudentRecord(\n        name=row.get('name', f\"Student {i}\"),\n        test_score=row['test_score'],\n        phone_duration=row['phone_duration (sec)'],\n        attention_label=row['attention_label']\n    )\n    students.append(student)\n\n# Print example student\nprint(\"Example student:\")\nprint(students[0])\nprint(repr(students[0]))\nprint(\"---\")\n\n# Calculate statistics\nattentive_count = sum(student.is_attentive() for student in students)\nphone_distracted_count = sum(student.is_distracted() for student in students)\n\nattentive_scores = [s.test_score for s in students if s.is_attentive()]\ndistr_scores = [s.test_score for s in students if not s.is_attentive()]\n\nphone_attentive_scores = [s.test_score for s in students if not s.is_distracted()]\nphone_distr_scores = [s.test_score for s in students if s.is_distracted()]\n\n# Find the highest scoring distracted student\ndistracted_students = [s for s in students if s.is_distracted()]\ndistracted_students.sort(key=lambda s: s.test_score, reverse=True)\ntop_distracted = distracted_students[0] if distracted_students else None\n\n# Display results\nprint(f\"Total students: {len(students)}\")\nprint(f\"Attentive students: {attentive_count} ({attentive_count/len(students)*100:.1f}%)\")\nprint(f\"Phone-distracted students: {phone_distracted_count} ({phone_distracted_count/len(students)*100:.1f}%)\")\nprint(\"\\nAverage test scores:\")\nprint(f\"- By attention label: Attentive={np.mean(attentive_scores):.1f}, Distracted={np.mean(distr_scores):.1f}\")\nprint(f\"- By phone usage: Normal={np.mean(phone_attentive_scores):.1f}, Distracted={np.mean(phone_distr_scores):.1f}\")\n\nif top_distracted:\n    print(f\"\\nHighest scoring student with phone distraction: {top_distracted}\")\n    print(f\"Their score percentile: {top_distracted.score_percentile(all_scores)}%\")",
+      "language": "python",
+      "passwordProtected": true,
+      "solutionPassword": "class-ex-3"
+    },
+    {
+      "type": "text",
+      "title": "Best Practices for Class Design",
+      "content": "When creating classes, consider these best practices:\n\n1. **Single Responsibility Principle**: Each class should have a single purpose or responsibility\n\n2. **Encapsulation**: Keep internal details hidden and expose a clean interface\n\n3. **Don't Repeat Yourself (DRY)**: Avoid duplicating code across methods\n\n4. **Keep It Simple**: Start with the minimal set of attributes and methods needed\n\n5. **Consistent Naming**: Use clear, consistent naming conventions\n\nFor our `StudentRecord` class, we might eventually split it into multiple classes if it grows too complex. For example, we might create separate classes for different types of attention measures, or create a `ClassGroup` class that contains and analyzes collections of students."
+    },
+    {
+      "type": "challenge",
+      "title": "Challenge: Enhanced Student Record System",
+      "instructions": "Extend your `StudentRecord` class to make it more powerful and versatile:\n\n1. Add a `StudySession` class that contains a list of `StudentRecord`s and session metadata (date, duration, topic)\n\n2. Implement methods in `StudySession` for analyzing the session:\n   - `average_score()` - Calculate average test score in the session\n   - `attentive_percentage()` - Calculate percentage of attentive students\n   - `score_distribution()` - Return a dictionary with score ranges as keys and counts as values\n   - `correlation_analysis()` - Calculate correlation between phone usage and test scores\n\n3. Implement a method in `StudentRecord` to compare a student against a `StudySession`:\n   - `compare_to_session(session)` - Return a dictionary with comparisons to session averages\n\nBonus: Create a `Student` class that can contain multiple `StudentRecord`s (one per session) and track improvement over time.",
+      "starterCode": "# Build on your solution from the previous exercise\n# Add a StudySession class and enhance StudentRecord",
+      "solution": "# This is left as a challenge for the student",
+      "language": "python",
+      "passwordProtected": true,
+      "solutionPassword": "class-challenge-3"
+    },
+    {
+      "type": "text",
+      "title": "Conclusion",
+      "content": "You've learned how to design and implement classes in Python to model student attention profiles. By encapsulating data and behaviors together, you've created a more organized, maintainable, and extensible codebase.\n\nClasses make your code more intuitive by mapping directly to real-world entities (like students) and their behaviors. As your research grows, this object-oriented approach will scale better than procedural code.\n\nIn the next lessons, we'll explore more advanced OOP concepts like inheritance and polymorphism, which allow you to create specialized classes and share behavior between different types of objects."
+    }
+  ]
+} 
