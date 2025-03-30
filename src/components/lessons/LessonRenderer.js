@@ -14,6 +14,7 @@ import {
 import InteractiveCode from './content/InteractiveCode';
 import CollapsibleSection from './content/CollapsibleSection';
 import { useUser } from '@/context/UserContext';
+import ClassWarmup from './content/ClassWarmup';
 
 // Helper function to render individual content items
 const renderContentItem = (section, index, isAdmin) => {
@@ -44,6 +45,9 @@ const renderContentItem = (section, index, isAdmin) => {
     case 'codeSlider':
       return <CodeSlider key={index} {...props} />;
       
+    case 'classWarmup':
+      return <ClassWarmup key={index} />;
+      
     default:
       return (
         <div key={index} className="p-4 bg-yellow-50 border border-yellow-200 rounded-md mb-6">
@@ -58,6 +62,11 @@ const renderContentItem = (section, index, isAdmin) => {
 // Function to determine which section a content item belongs to
 const determineSectionType = (section, index, content) => {
   const { type, title, caption, language, content: contentText } = section;
+  
+  // Special case for classWarmup type
+  if (type === 'classWarmup') {
+    return 'warmup';
+  }
   
   // First, pre-process content to identify sequential warmup code blocks
   const isWarmupSequence = () => {

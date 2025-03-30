@@ -35,64 +35,7 @@
       "content": "Before diving into classes for our student data, let's understand the progression from messy exploratory code to well-organized classes using a simple library book example."
     },
     {
-      "type": "text",
-      "title": "Warm-up Stage 1: Messy Exploratory Code",
-      "content": "When first exploring a problem, our code is often messy as we're figuring things out. We might write separate code blocks for each book we're analyzing:"
-    },
-    {
-      "type": "code",
-      "language": "python",
-      "caption": "Warm-up: Messy exploratory code with repetition",
-      "content": "# First book information\ntitle1 = \"The Great Gatsby\"\nauthor1 = \"F. Scott Fitzgerald\"\npages1 = 180\ngenre1 = \"Fiction\"\nis_checked_out1 = False\n\n# Calculate if it's a long read\nis_long_read1 = pages1 > 300\n\n# Create a string with book information\nstatus1 = \"checked out\" if is_checked_out1 else \"available\"\ninfo1 = f\"\\\"{title1}\\\" by {author1} ({genre1}, {pages1} pages) - {status1}\"\n\nprint(info1)\nprint(f\"Is {title1} a long read? {is_long_read1}\")\n\n# Second book with almost identical code\ntitle2 = \"War and Peace\"\nauthor2 = \"Leo Tolstoy\"\npages2 = 1225\ngenre2 = \"Historical Fiction\"\nis_checked_out2 = False\n\n# Check it out\nis_checked_out2 = True\n\n# Calculate if it's a long read (duplicated logic)\nis_long_read2 = pages2 > 300\n\n# Create a string with book information (duplicated logic)\nstatus2 = \"checked out\" if is_checked_out2 else \"available\"\ninfo2 = f\"\\\"{title2}\\\" by {author2} ({genre2}, {pages2} pages) - {status2}\"\n\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\n# Return the book\nis_checked_out2 = False\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\n# Third book with more duplication\ntitle3 = \"Python Crash Course\"\nauthor3 = \"Eric Matthes\"\npages3 = 544\ngenre3 = \"Programming\"\nis_checked_out3 = False\n\n# Calculate if it's a long read (duplicated logic again)\nis_long_read3 = pages3 > 300\n\nprint(f\"Is {title3} a long read? {is_long_read3}\")"
-    },
-    {
-      "type": "text",
-      "title": "Warm-up Stage 2: Functions for Common Tasks",
-      "content": "As we notice repeating patterns, we create functions to avoid code duplication and improve readability:"
-    },
-    {
-      "type": "code",
-      "language": "python",
-      "caption": "Warm-up: Using functions to reduce repetition",
-      "content": "def is_long_read(pages):\n    \"\"\"Return True if the book has more than 300 pages.\"\"\"\n    return pages > 300\n\ndef format_book_info(title, author, genre, pages, is_checked_out):\n    \"\"\"Create a formatted string with book information.\"\"\"\n    status = \"checked out\" if is_checked_out else \"available\"\n    return f\"\\\"{title}\\\" by {author} ({genre}, {pages} pages) - {status}\"\n\ndef check_out_book(is_checked_out):\n    \"\"\"Check out a book.\"\"\"\n    return True\n\ndef return_book(is_checked_out):\n    \"\"\"Return a book.\"\"\"\n    return False\n\n# Using our functions with the first book\ntitle1 = \"The Great Gatsby\"\nauthor1 = \"F. Scott Fitzgerald\"\npages1 = 180\ngenre1 = \"Fiction\"\nis_checked_out1 = False\n\nprint(format_book_info(title1, author1, genre1, pages1, is_checked_out1))\nprint(f\"Is {title1} a long read? {is_long_read(pages1)}\")\n\n# Using our functions with the second book\ntitle2 = \"War and Peace\"\nauthor2 = \"Leo Tolstoy\"\npages2 = 1225\ngenre2 = \"Historical Fiction\"\nis_checked_out2 = False\n\nis_checked_out2 = check_out_book(is_checked_out2)\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\nis_checked_out2 = return_book(is_checked_out2)\nprint(f\"{title2} is checked out: {is_checked_out2}\")\n\n# Using our functions with the third book\ntitle3 = \"Python Crash Course\"\nauthor3 = \"Eric Matthes\"\npages3 = 544\ngenre3 = \"Programming\"\nis_checked_out3 = False\n\nprint(f\"Is {title3} a long read? {is_long_read(pages3)}\")"
-    },
-    {
-      "type": "text",
-      "title": "Warm-up Stage 3: Data Bundling with Dictionaries",
-      "content": "We can further improve our code by bundling related data together in dictionaries:"
-    },
-    {
-      "type": "code",
-      "language": "python",
-      "caption": "Warm-up: Using dictionaries to bundle related data",
-      "content": "def is_long_read(book):\n    \"\"\"Return True if the book has more than 300 pages.\"\"\"\n    return book['pages'] > 300\n\ndef format_book_info(book):\n    \"\"\"Create a formatted string with book information.\"\"\"\n    status = \"checked out\" if book['is_checked_out'] else \"available\"\n    return f\"\\\"{book['title']}\\\" by {book['author']} ({book['genre']}, {book['pages']} pages) - {status}\"\n\ndef check_out_book(book):\n    \"\"\"Check out a book.\"\"\"\n    book['is_checked_out'] = True\n    return book\n\ndef return_book(book):\n    \"\"\"Return a book.\"\"\"\n    book['is_checked_out'] = False\n    return book\n\n# Create book dictionaries\nbook1 = {\n    'title': \"The Great Gatsby\",\n    'author': \"F. Scott Fitzgerald\",\n    'pages': 180,\n    'genre': \"Fiction\",\n    'is_checked_out': False\n}\n\nbook2 = {\n    'title': \"War and Peace\",\n    'author': \"Leo Tolstoy\",\n    'pages': 1225,\n    'genre': \"Historical Fiction\",\n    'is_checked_out': False\n}\n\nbook3 = {\n    'title': \"Python Crash Course\",\n    'author': \"Eric Matthes\",\n    'pages': 544,\n    'genre': \"Programming\",\n    'is_checked_out': False\n}\n\n# Using our functions with the dictionaries\nprint(format_book_info(book1))\nprint(f\"Is {book1['title']} a long read? {is_long_read(book1)}\")\n\ncheck_out_book(book2)\nprint(f\"{book2['title']} is checked out: {book2['is_checked_out']}\")\nreturn_book(book2)\nprint(f\"{book2['title']} is checked out: {book2['is_checked_out']}\")\n\nprint(f\"Is {book3['title']} a long read? {is_long_read(book3)}\")"
-    },
-    {
-      "type": "text",
-      "title": "Warm-up Stage 4: Classes - Bundling Data with Behavior",
-      "content": "Finally, we can use a class to bundle both the data (attributes) and the functions (methods) together. This creates a more intuitive, cohesive representation of a book:"
-    },
-    {
-      "type": "text",
-      "title": "Warm-up: Library Book Tracking System",
-      "content": "Let's implement our book tracking system using a class. In this warm-up, you'll create a class to represent library books that:\n\n1. Stores the following data for each book:\n   - `title`, `author`, `pages`, `genre`, `is_checked_out`\n\n2. Includes the following methods:\n   - `check_out()`: Sets is_checked_out to True\n   - `return_book()`: Sets is_checked_out to False\n   - `is_long_read()`: Returns True if pages > 300\n   - `get_info()`: Returns a string with book information\n\n3. Creates several Book objects and uses their methods."
-    },
-    {
-      "type": "code",
-      "language": "python",
-      "caption": "Warm-up: Library Book Tracking System implemented with a class",
-      "content": "# Define the Book class\nclass Book:\n    def __init__(self, title, author, pages, genre):\n        # Initialize the book attributes here\n        pass\n    \n    # Implement the methods here\n    # def check_out(self):\n    # def return_book(self):\n    # def is_long_read(self):\n    # def get_info(self):\n\n# Create some book objects\nbook1 = Book(\"The Great Gatsby\", \"F. Scott Fitzgerald\", 180, \"Fiction\")\nbook2 = Book(\"War and Peace\", \"Leo Tolstoy\", 1225, \"Historical Fiction\")\nbook3 = Book(\"Python Crash Course\", \"Eric Matthes\", 544, \"Programming\")\n\n# Test the methods\nprint(book1.get_info())\nprint(f\"Is {book1.title} a long read? {book1.is_long_read()}\")\n\nbook2.check_out()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\nbook2.return_book()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\n\nprint(f\"Is {book3.title} a long read? {book3.is_long_read()}\")"
-    },
-    {
-      "type": "code",
-      "language": "python", 
-      "caption": "Warm-up: Library Book Tracking System Solution",
-      "content": "class Book:\n    def __init__(self, title, author, pages, genre):\n        self.title = title\n        self.author = author\n        self.pages = pages\n        self.genre = genre\n        self.is_checked_out = False\n    \n    def check_out(self):\n        self.is_checked_out = True\n    \n    def return_book(self):\n        self.is_checked_out = False\n    \n    def is_long_read(self):\n        return self.pages > 300\n    \n    def get_info(self):\n        status = \"checked out\" if self.is_checked_out else \"available\"\n        return f\"\\\"{self.title}\\\" by {self.author} ({self.genre}, {self.pages} pages) - {status}\"\n\n# Create some book objects\nbook1 = Book(\"The Great Gatsby\", \"F. Scott Fitzgerald\", 180, \"Fiction\")\nbook2 = Book(\"War and Peace\", \"Leo Tolstoy\", 1225, \"Historical Fiction\")\nbook3 = Book(\"Python Crash Course\", \"Eric Matthes\", 544, \"Programming\")\n\n# Test the methods\nprint(book1.get_info())\nprint(f\"Is {book1.title} a long read? {book1.is_long_read()}\")\n\nbook2.check_out()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\nbook2.return_book()\nprint(f\"{book2.title} is checked out: {book2.is_checked_out}\")\n\nprint(f\"Is {book3.title} a long read? {book3.is_long_read()}\")"
-    },
-    {
-      "type": "text",
-      "title": "Warm-up: Benefits of the Class Approach",
-      "content": "Notice how the class approach offers many advantages:\n\n1. **Code Organization**: Related data and behavior are bundled together in a single unit\n2. **Code Reuse**: Each book object automatically has all the methods defined in the class\n3. **State Management**: Methods can modify the object's state (like `check_out()` changing `is_checked_out`)\n4. **Readability**: Code using classes is often more intuitive and mirrors how we think about real-world objects\n5. **Maintainability**: Changes to book behavior only need to be made in one place (the class definition)\n\nIn the next sections, we'll apply this object-oriented approach to our student attention data."
+      "type": "classWarmup"
     },
     {
       "type": "text",

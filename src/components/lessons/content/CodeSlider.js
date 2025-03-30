@@ -61,40 +61,52 @@ const CodeSlider = ({
     // Determine comment character based on language
     const commentChar = lang === 'python' ? '#' : '//';
     
-    lines.forEach((line, index) => {
+    // First pass: identify comment-based block boundaries
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
       const trimmedLine = line.trim();
+      
       // Check if line starts with a comment
       if (trimmedLine.startsWith(commentChar)) {
-        // If we already have a block, push it and start a new one
+        // If we already have a block, finalize it and start a new one
         if (blockStarted && currentBlock.code.length > 0) {
-          currentBlock.endLine = index - 1;
-          blocks.push(currentBlock);
-          currentBlock = { comment: '', code: [], startLine: index, endLine: 0 };
-        }
-        // If this is the first block or a new block
-        if (!blockStarted) {
+          // The previous block ends at the line before this comment
+          currentBlock.endLine = i - 1;
+          blocks.push({...currentBlock}); // Create a copy to avoid reference issues
+          
+          // Start a new block from this comment line
+          currentBlock = { 
+            comment: trimmedLine.substring(commentChar.length).trim(), 
+            code: [line], 
+            startLine: i, 
+            endLine: i // Initialize with current line, will be updated if more lines follow
+          };
+        } else {
+          // If this is the first block or no block started yet
           blockStarted = true;
-          currentBlock.startLine = index;
+          currentBlock.startLine = i;
+          currentBlock.comment = trimmedLine.substring(commentChar.length).trim();
+          currentBlock.code = [line];
         }
-        // Extract comment text
-        currentBlock.comment = trimmedLine.substring(commentChar.length).trim();
-        // Add the comment line as part of the code block
-        currentBlock.code.push(line);
       } else if (blockStarted) {
         // Add non-comment lines to the current block
         currentBlock.code.push(line);
-      } else {
-        // Handle code before the first comment
-        if (blocks.length === 0) {
-          currentBlock.code.push(line);
+        // Update the end line as we include more lines
+        currentBlock.endLine = i;
+      } else if (blocks.length === 0) {
+        // Handle code before the first comment as a block without a comment label
+        if (currentBlock.code.length === 0) {
+          currentBlock.startLine = i;
         }
+        currentBlock.code.push(line);
+        currentBlock.endLine = i;
       }
-    });
+    }
     
-    // Add the last block
+    // Add the last block if not empty
     if (currentBlock.code.length > 0) {
-      currentBlock.endLine = lines.length - 1;
-      blocks.push(currentBlock);
+      // Already updated endLine during iteration
+      blocks.push({...currentBlock}); // Create a copy to avoid reference issues
     }
     
     // If no blocks were found, treat the entire code as one block
@@ -106,6 +118,14 @@ const CodeSlider = ({
         endLine: lines.length - 1
       });
     }
+    
+    // Log the blocks for debugging if needed
+    // console.log("Parsed blocks:", blocks.map(b => ({ 
+    //   comment: b.comment, 
+    //   startLine: b.startLine, 
+    //   endLine: b.endLine,
+    //   lines: b.code.length
+    // })));
     
     return blocks;
   };
@@ -146,8 +166,8 @@ const CodeSlider = ({
         return lineCount;
       }));
       
-      // Set minimum height based on line count (approximate 24px per line plus some padding)
-      const estimatedHeight = Math.max(200, maxLines * 24 + 80);
+      // Set minimum height based on line count (approximate 22px per line plus some padding)
+      const estimatedHeight = Math.max(200, maxLines * 22 + 80);
       setContainerHeight(`${estimatedHeight}px`);
     }
   }, [slides]);
@@ -239,9 +259,9 @@ const CodeSlider = ({
   };
   
   const renderCodeWithAnnotations = () => {
-    // Calculate the approximate line height and top offset for the spotlight
-    const lineHeight = 24; // Approximate line height in pixels
-    const topOffset = 16; // Initial padding offset
+    // Simple line-based highlighting calculations
+    const lineHeight = 22; // Height of each line in pixels
+    const padding = 16; // Padding around the code block
 
     return (
       <div className="relative h-full">
@@ -259,63 +279,38 @@ const CodeSlider = ({
               backgroundColor: '#1E293B',
               height: '100%',
               overflow: 'auto',
-              position: 'relative'
+              position: 'relative',
+              lineHeight: `${lineHeight}px`
             }}
             wrapLines={true}
+            lineProps={(lineNumber) => {
+              // Highlight the current block's lines
+              const isHighlighted = 
+                lineNumber >= currentBlock.startLine && 
+                lineNumber <= currentBlock.endLine;
+              
+              return {
+                style: {
+                  display: 'block',
+                  backgroundColor: isHighlighted ? 'rgba(34, 197, 94, 0.1)' : undefined,
+                  borderLeft: isHighlighted ? '3px solid rgb(34, 197, 94)' : undefined,
+                  paddingLeft: isHighlighted ? '13px' : undefined, // 16px standard padding - 3px border
+                }
+              };
+            }}
           >
             {currentSlide?.code || ''}
           </SyntaxHighlighter>
           
-          {/* Spotlight overlay effect - only shown when spotlight is enabled */}
-          {spotlightEnabled && (
-            <div className="absolute inset-0 pointer-events-none overflow-hidden">
-              {/* Top overlay (above the spotlight) */}
+          {/* No additional overlay needed anymore since we're highlighting directly in the syntax highlighter */}
+          {spotlightEnabled && currentBlock && (
+            <div className="absolute inset-0 pointer-events-none">
+              {/* We can add a subtle indicator for the current position if needed */}
               <div 
-                className="absolute left-0 right-0 bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300"
+                className="absolute right-0 w-1 bg-green-500/60 transition-all duration-300"
                 style={{
-                  top: 0,
-                  height: `${currentBlock.startLine * lineHeight + topOffset}px`
-                }}
-              ></div>
-              
-              {/* Bottom overlay (below the spotlight) */}
-              <div 
-                className="absolute left-0 right-0 bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300"
-                style={{
-                  top: `${(currentBlock.endLine + 1) * lineHeight + topOffset}px`,
-                  bottom: 0
-                }}
-              ></div>
-              
-              {/* Left overlay (to the left of the spotlight but in the same rows) */}
-              <div 
-                className="absolute bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300 w-12"
-                style={{
-                  top: `${currentBlock.startLine * lineHeight + topOffset}px`,
+                  top: `${padding + (currentBlock.startLine * lineHeight)}px`,
                   height: `${(currentBlock.endLine - currentBlock.startLine + 1) * lineHeight}px`,
-                  left: 0
-                }}
-              ></div>
-              
-              {/* Right overlay (to the right of the spotlight but in the same rows) */}
-              <div 
-                className="absolute bg-slate-900/70 backdrop-blur-[2px] transition-all duration-300"
-                style={{
-                  top: `${currentBlock.startLine * lineHeight + topOffset}px`,
-                  height: `${(currentBlock.endLine - currentBlock.startLine + 1) * lineHeight}px`,
-                  left: 'calc(100% - 20px)',
-                  right: 0
-                }}
-              ></div>
-              
-              {/* Spotlight border */}
-              <div 
-                className="absolute box-content border-2 border-green-400/70 shadow-[0_0_15px_rgba(74,222,128,0.3)] transition-all duration-300"
-                style={{
-                  top: `${currentBlock.startLine * lineHeight + topOffset}px`,
-                  height: `${(currentBlock.endLine - currentBlock.startLine + 1) * lineHeight}px`,
-                  left: '12px',
-                  right: '20px'
                 }}
               ></div>
             </div>
