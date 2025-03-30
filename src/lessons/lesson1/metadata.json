@@ -1,0 +1,15 @@
+{
+  "id": "1",
+  "title": "Processing and Analyzing Eye-Tracking Data",
+  "description": "Learn how to process and analyze eye-tracking data using Python functions, focusing on cleaning data and performing basic statistical analysis.",
+  "difficulty": "Intermediate",
+  "duration": "2 hours",
+  "dataUrl": "https://raw.githubusercontent.com/chcaa/pcs-2025-data/main/eye_tracking_data.txt",
+  "sections": [
+    "introduction",
+    "warmup",
+    "analyzing-eye-tracking-data",
+    "exercises",
+    "knowledge-check"
+  ]
+} 

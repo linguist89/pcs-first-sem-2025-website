@@ -1,0 +1,8 @@
+{
+  "id": "3",
+  "title": "Machine Learning for Text Analysis",
+  "description": "Explore how to apply machine learning techniques to analyze and extract insights from textual data using Python.",
+  "difficulty": "Advanced",
+  "duration": "3 hours",
+  "sections": ["introduction"]
+} 

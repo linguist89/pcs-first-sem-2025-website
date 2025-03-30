@@ -61,7 +61,47 @@ export default {
         'medium': '0 4px 6px var(--shadow-light), 0 1px 3px var(--shadow-dark)',
         'heavy': '0 10px 15px -3px var(--shadow-light), 0 4px 6px var(--shadow-dark)',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '100%',
+            color: 'var(--text-primary)',
+            a: {
+              color: 'var(--primary-color)',
+              '&:hover': {
+                color: 'var(--primary-dark)',
+              },
+            },
+            h1: {
+              color: 'var(--text-primary)',
+            },
+            h2: {
+              color: 'var(--text-primary)',
+            },
+            h3: {
+              color: 'var(--text-primary)',
+            },
+            h4: {
+              color: 'var(--text-primary)',
+            },
+            code: {
+              color: 'var(--accent-color)',
+              backgroundColor: 'var(--background-secondary)',
+              borderRadius: '0.25rem',
+              padding: '0.25rem 0.5rem',
+            },
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 };

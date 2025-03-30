@@ -1,0 +1,8 @@
+{
+  "id": "2",
+  "title": "Advanced Data Visualization with Python",
+  "description": "Learn how to create advanced data visualizations using Python libraries to effectively communicate insights from data analysis.",
+  "difficulty": "Intermediate",
+  "duration": "2.5 hours",
+  "sections": ["introduction"]
+} 

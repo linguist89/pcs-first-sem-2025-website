@@ -11,6 +11,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "ace-builds": "^1.39.1",
+    "clsx": "^2.1.0",
     "framer-motion": "^12.5.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.482.0",
@@ -21,10 +22,13 @@
     "react-markdown": "^9.1.0",
     "react-syntax-highlighter": "^15.6.1",
     "rehype-raw": "^7.0.0",
-    "remark-gfm": "^4.0.1"
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.0",
+    "tailwind-merge": "^2.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@tailwindcss/typography": "^0.5.10",
     "eslint": "^9",
     "eslint-config-next": "15.1.7",
     "postcss": "^8",

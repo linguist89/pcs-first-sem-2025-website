@@ -10,6 +10,7 @@ import InteractiveCode from './InteractiveCode';
 import CollapsibleSection from './CollapsibleSection';
 import CodeSlider from './CodeSlider';
 import CodeSliderExample from './CodeSliderExample';
+import ConceptBlock from './ConceptBlock';
 
 export {
   TextBlock,
@@ -21,5 +22,6 @@ export {
   InteractiveCode,
   CollapsibleSection,
   CodeSlider,
-  CodeSliderExample
+  CodeSliderExample,
+  ConceptBlock
 }; 
