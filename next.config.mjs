@@ -9,6 +9,15 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.externals = [
+        ...(config.externals || []),
+        'react-syntax-highlighter/dist/esm/styles/prism/coy'
+      ];
+    }
+    return config;
+  },
 };
 
 export default nextConfig;

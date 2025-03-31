@@ -23,6 +23,16 @@
       "content": "You've built flexible functions to analyze attention and test score data. But as the research grows, you need a better way to organize and reason about individual students. In this lesson, you'll define a class to represent each student's attention profile and encapsulate related analysis behaviors inside methods. This object-oriented approach will make your code more intuitive, maintainable, and extensible."
     },
     {
+      "type": "text",
+      "title": "Prerequisites",
+      "content": "Before beginning this lesson, you'll need to download the following data file:"
+    },
+    {
+      "type": "code",
+      "language": "bash",
+      "content": "# Download lesson3-data.csv\nwget https://raw.githubusercontent.com/linguist89/pcs-first-sem-2025-website/refs/heads/newLessonStructure/public/data/Lessons/Lesson3-data/lesson3-data.csv"
+    },
+    {
       "type": "scenario",
       "title": "Professor Chen and Maya, Part 2",
       "content": "A week later, Maya returns with a collection of reusable functions. Professor Chen nods in approval.\n\n\"This is excellent work, Maya. But as we start comparing students across multiple studies and sessions, things are getting harder to track. We have attention labels, test scores, phone durations — scattered across filters and functions.\"\n\nShe pauses, \"Could you structure this data in a way that lets us represent each student or study session as an object — one that knows how to calculate its own stats, compare itself to others, or check if it's an outlier?\"\n\nMaya smiles, \"I think it's time to build a class.\"",
