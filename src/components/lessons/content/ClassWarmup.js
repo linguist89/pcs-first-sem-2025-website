@@ -124,9 +124,7 @@ is_checked_out3 = False
 print(f"Is {title3} a long read? {is_long_read(pages3)}")`,
       explanation: "As we notice repeating patterns, we create functions to avoid code duplication and improve readability.",
       blockExplanations: [
-        "Here we've refactored the repetitive logic into a dedicated function. This `is_long_read` function takes `pages` as a parameter and returns whether it's a long read.",
-        "Similarly, we've created a function to format the book information string. Note how the function takes individual pieces of book data as parameters.",
-        "We've also created functions for checking out and returning books. These functions encapsulate the state changes.",
+        "Here we've refactored the repetitive logic into a dedicated function. This `is_long_read` function takes `pages` as a parameter and returns whether it's a long read based on our 300-page threshold. This simplifies the code and ensures the logic is consistent. The `format_book_info` function handles the string formatting by taking all book attributes as parameters and returning a formatted string. This eliminates repeated string formatting code and ensures all books are displayed consistently. The `check_out_book` function encapsulates the behavior of checking out a book by changing its status to checked out (True). While simple, this function gives us a well-named, descriptive action that makes the code more readable. Similarly, the `return_book` function handles the behavior of returning a book by changing its status to not checked out (False). Having dedicated functions for these state changes makes the code more maintainable and the intent clearer.",
         "We still have separate variables for each book, but now we're using consistent functions to work with the data.",
         "We use our `format_book_info` function to generate the book information string, passing in all the individual pieces of data.",
         "And we use our `is_long_read` function to check if the book is a long read. Notice how we're reusing the same function for different books.",
