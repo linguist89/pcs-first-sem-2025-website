@@ -376,7 +376,7 @@ const CodeSlider = ({
         className="mb-8"
       >
         {title && (
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">{title}</h3>
+          <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">{title}</h3>
         )}
         
         <div className="relative border border-gray-200 rounded-lg overflow-hidden">
