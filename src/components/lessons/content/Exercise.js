@@ -81,15 +81,15 @@ const Exercise = ({
   }, [effectiveIsAdmin, showAdminPanel, exerciseId]);
   
   const difficultyClasses = {
-    beginner: 'bg-green-100 text-green-800 border-green-200',
-    intermediate: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    advanced: 'bg-red-100 text-red-800 border-red-200'
+    beginner: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800',
+    intermediate: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-200 dark:border-yellow-800',
+    advanced: 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
   };
   
   const difficultyClass = difficultyClasses[difficulty.toLowerCase()] || difficultyClasses.intermediate;
   
   // Determine border color based on whether this is an exercise or challenge
-  const borderClass = isChallenge ? 'border-purple-500' : 'border-blue-500';
+  const borderClass = isChallenge ? 'border-purple-500 dark:border-purple-400' : 'border-blue-500 dark:border-blue-400';
   
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -176,15 +176,15 @@ const Exercise = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className={`bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 ${borderClass}`}
+      className={`bg-[var(--card-bg)] rounded-lg shadow-md p-6 mb-6 border-l-4 ${borderClass} border border-[var(--card-border)]`}
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">
+        <h3 className="text-xl font-bold text-[var(--text-primary)]">
           {isChallenge ? '🏆 ' : ''}{title || (isChallenge ? 'Challenge' : 'Exercise')}
         </h3>
         <div className="flex items-center space-x-2">
           {isChallenge && (
-            <span className="bg-purple-100 text-purple-800 border-purple-200 text-sm rounded-full px-3 py-1 font-medium border mr-2">
+            <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-800 text-sm rounded-full px-3 py-1 font-medium border mr-2">
               Challenge
             </span>
           )}
@@ -200,17 +200,17 @@ const Exercise = ({
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           transition={{ duration: 0.3 }}
-          className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg"
+          className="mb-6 p-4 bg-[var(--background-secondary)] border border-[var(--border-light)] rounded-lg"
         >
-          <h4 className="text-md font-medium text-gray-800 mb-2">Solution Password Management</h4>
+          <h4 className="text-md font-medium text-[var(--text-primary)] mb-2">Solution Password Management</h4>
           
           {successMessage && (
-            <div className="mb-3 p-2 bg-green-100 text-green-700 rounded-md text-sm">
+            <div className="mb-3 p-2 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-md text-sm">
               {successMessage}
             </div>
           )}
           
-          <p className="text-sm text-gray-600 mb-3">
+          <p className="text-sm text-[var(--text-secondary)] mb-3">
             {isPasswordRequired ? 
               `Current status: Password protected (ID: ${exerciseId})` : 
               `Current status: No password required (ID: ${exerciseId})`
@@ -219,7 +219,7 @@ const Exercise = ({
           
           <form onSubmit={handleAdminPasswordUpdate} className="space-y-3">
             <div>
-              <label htmlFor="adminPassword" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="adminPassword" className="block text-sm font-medium text-[var(--text-primary)] mb-1">
                 {isPasswordRequired ? 'Update Password' : 'Set Password'} (leave empty to remove)
               </label>
               <input
@@ -228,12 +228,12 @@ const Exercise = ({
                 value={adminPassword}
                 onChange={(e) => setAdminPassword(e.target.value)}
                 placeholder={isPasswordRequired ? "Change or clear password" : "Set password for this exercise"}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                className="w-full px-3 py-2 border border-[var(--border-light)] bg-[var(--card-bg)] text-[var(--text-primary)] rounded-md text-sm"
               />
             </div>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-md hover:opacity-90 transition-opacity text-sm font-medium"
             >
               {adminPassword ? 'Save Password' : 'Remove Password'}
             </button>
@@ -241,7 +241,7 @@ const Exercise = ({
         </motion.div>
       )}
       
-      <div className="prose prose-sm max-w-none text-gray-700 mb-4">
+      <div className="prose prose-sm dark:prose-invert max-w-none text-[var(--text-primary)] mb-4">
         <ReactMarkdown>
           {instructions}
         </ReactMarkdown>
@@ -249,7 +249,7 @@ const Exercise = ({
       
       {starterCode && (
         <div className="mb-6">
-          <div className="text-sm font-medium text-gray-700 mb-2">Starter Code:</div>
+          <div className="text-sm font-medium text-[var(--text-primary)] mb-2">Starter Code:</div>
           <SyntaxHighlighter
             language={language}
             style={tomorrow}
@@ -270,7 +270,7 @@ const Exercise = ({
           {!showSolution ? (
             <button 
               onClick={() => setShowSolution(true)}
-              className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium flex items-center"
+              className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors text-sm font-medium flex items-center"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -287,7 +287,7 @@ const Exercise = ({
             <>
               <button 
                 onClick={() => setShowSolution(false)}
-                className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors text-sm font-medium flex items-center"
+                className="px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-md hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors text-sm font-medium flex items-center"
               >
                 <svg 
                   xmlns="http://www.w3.org/2000/svg" 
@@ -306,10 +306,10 @@ const Exercise = ({
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   transition={{ duration: 0.3 }}
-                  className="mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg"
+                  className="mt-4 p-4 bg-[var(--background-secondary)] border border-[var(--border-light)] rounded-lg"
                 >
-                  <h4 className="text-md font-medium text-gray-800 mb-2">Password Required</h4>
-                  <p className="text-sm text-gray-600 mb-3">
+                  <h4 className="text-md font-medium text-[var(--text-primary)] mb-2">Password Required</h4>
+                  <p className="text-sm text-[var(--text-secondary)] mb-3">
                     This solution requires a password. Please enter it below.
                   </p>
                   
@@ -320,15 +320,15 @@ const Exercise = ({
                         value={passwordInput}
                         onChange={(e) => setPasswordInput(e.target.value)}
                         placeholder="Enter password"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                        className="w-full px-3 py-2 border border-[var(--border-light)] bg-[var(--card-bg)] text-[var(--text-primary)] rounded-md text-sm"
                       />
                       {passwordError && (
-                        <p className="text-red-500 text-xs mt-1">{passwordError}</p>
+                        <p className="text-red-500 dark:text-red-400 text-xs mt-1">{passwordError}</p>
                       )}
                     </div>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
+                      className="px-4 py-2 bg-[var(--primary-color)] text-white rounded-md hover:opacity-90 transition-opacity text-sm font-medium"
                     >
                       Submit
                     </button>
@@ -341,7 +341,7 @@ const Exercise = ({
                   transition={{ duration: 0.3 }}
                   className="mt-4"
                 >
-                  <div className="text-sm font-medium text-gray-700 mb-2">Solution:</div>
+                  <div className="text-sm font-medium text-[var(--text-primary)] mb-2">Solution:</div>
                   <SyntaxHighlighter
                     language={language}
                     style={tomorrow}

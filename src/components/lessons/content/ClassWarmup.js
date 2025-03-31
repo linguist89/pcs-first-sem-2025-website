@@ -261,25 +261,25 @@ print(f"Is {book3.title} a long read? {book3.is_long_read()}")`,
 
   return (
     <div className="my-8">
-      <h3 className="text-xl font-bold mb-4">The Evolution of Code Organization: Library Book Tracking</h3>
-      <p className="mb-4">
+      <h3 className="text-xl font-bold mb-4 text-[var(--text-primary)]">The Evolution of Code Organization: Library Book Tracking</h3>
+      <p className="mb-4 text-[var(--text-primary)]">
         Before diving into classes for our student data, let's understand the progression from messy exploratory code to 
         well-organized classes using a simple library book example.
       </p>
       
-      <p className="mb-4 bg-yellow-50 p-3 border-l-4 border-yellow-400 italic">
+      <p className="mb-4 bg-yellow-50 dark:bg-yellow-900/30 p-3 border-l-4 border-yellow-400 dark:border-yellow-700 italic text-[var(--text-primary)]">
         <strong>Scenario:</strong> Imagine you're developing software for a university library. 
         The library needs to track books, including whether they're checked out, if they're considered "long reads," 
         and how to display information about each book. As you work through this example, think about how your approach 
         to organizing the code evolves as the library's collection grows from just a few books to potentially thousands.
       </p>
       
-      <div className="bg-blue-50 p-4 rounded-lg mb-6">
-        <h4 className="font-medium text-blue-800 mb-2">Step-by-Step Code Evolution</h4>
-        <p className="text-blue-700">
+      <div className="bg-blue-50 dark:bg-blue-900/30 p-4 rounded-lg mb-6 border border-blue-100 dark:border-blue-800">
+        <h4 className="font-medium text-blue-800 dark:text-blue-300 mb-2">Step-by-Step Code Evolution</h4>
+        <p className="text-blue-700 dark:text-blue-300">
           Below is a guided walkthrough of how code can evolve from initial exploration to well-structured classes:
         </p>
-        <ul className="text-blue-700 mt-2 list-disc pl-5 space-y-1">
+        <ul className="text-blue-700 dark:text-blue-300 mt-2 list-disc pl-5 space-y-1">
           <li>Navigate through each stage using the arrows or dots</li>
           <li>Each stage shows a different approach to the same problem</li>
           <li>The floating box explains the key concepts of each approach</li>
@@ -294,15 +294,15 @@ print(f"Is {book3.title} a long read? {book3.is_long_read()}")`,
         showLineNumbers={true}
       />
       
-      <div className="mt-5 p-4 bg-green-50 border border-green-200 rounded-md">
-        <h4 className="font-semibold text-green-800 mb-2">Benefits of the Class Approach</h4>
-        <p className="text-green-700 mb-2">
+      <div className="mt-5 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-md">
+        <h4 className="font-semibold text-green-800 dark:text-green-300 mb-2">Benefits of the Class Approach</h4>
+        <p className="text-green-700 dark:text-green-300 mb-2">
           Notice how the class approach offers many advantages:
         </p>
-        <ol className="list-decimal pl-5 text-green-700 space-y-1">
+        <ol className="list-decimal pl-5 text-green-700 dark:text-green-300 space-y-1">
           <li><strong>Code Organization</strong>: Related data and behavior are bundled together in a single unit</li>
           <li><strong>Code Reuse</strong>: Each book object automatically has all the methods defined in the class</li>
-          <li><strong>State Management</strong>: Methods can modify the object's state (like <code>check_out()</code> changing <code>is_checked_out</code>)</li>
+          <li><strong>State Management</strong>: Methods can modify the object's state (like <code className="bg-green-100 dark:bg-green-800 px-1 rounded">check_out()</code> changing <code className="bg-green-100 dark:bg-green-800 px-1 rounded">is_checked_out</code>)</li>
           <li><strong>Readability</strong>: Code using classes is often more intuitive and mirrors how we think about real-world objects</li>
           <li><strong>Maintainability</strong>: Changes to book behavior only need to be made in one place (the class definition)</li>
         </ol>

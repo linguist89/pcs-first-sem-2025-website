@@ -194,7 +194,7 @@ const TableOfContentsSidebar = ({ content, onSectionClick, isOpen, toggleSidebar
   
   return (
     <motion.div 
-      className={`fixed top-16 bottom-0 left-0 bg-white border-r border-gray-200 shadow-lg z-30 overflow-y-auto overflow-x-hidden transition-all duration-300`}
+      className={`fixed top-16 bottom-0 left-0 bg-[var(--card-bg)] border-r border-[var(--card-border)] shadow-lg z-30 overflow-y-auto overflow-x-hidden transition-all duration-300`}
       initial={{ width: isOpen ? "280px" : "40px" }}
       animate={{ width: isOpen ? "280px" : "40px" }}
       transition={{ duration: 0.3 }}
@@ -203,12 +203,12 @@ const TableOfContentsSidebar = ({ content, onSectionClick, isOpen, toggleSidebar
       {/* Collapsed state - vertical tab indicator - use display property instead of conditional rendering */}
       <div 
         onClick={toggleSidebar}
-        className={`h-full w-full flex flex-col items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors relative ${isOpen ? 'hidden' : 'flex'}`}
+        className={`h-full w-full flex flex-col items-center justify-center cursor-pointer bg-[var(--background-secondary)] hover:bg-[var(--background-accent)] transition-colors relative ${isOpen ? 'hidden' : 'flex'}`}
         title="Open contents"
       >
         {/* Right edge arrow indicator */}
         <div className="absolute right-0 top-1/2 -translate-y-1/2 flex items-center">
-          <div className="h-8 w-3 bg-blue-500 rounded-l-sm flex items-center justify-center animate-pulse">
+          <div className="h-8 w-3 bg-[var(--primary-color)] rounded-l-sm flex items-center justify-center animate-pulse">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -218,7 +218,7 @@ const TableOfContentsSidebar = ({ content, onSectionClick, isOpen, toggleSidebar
         {/* Vertical text "CONTENTS" */}
         <div className="flex h-full w-full items-center justify-center">
           <div className="transform rotate-90 origin-center whitespace-nowrap">
-            <span className="text-xs tracking-widest font-semibold text-gray-600">CONTENTS</span>
+            <span className="text-xs tracking-widest font-semibold text-[var(--text-secondary)]">CONTENTS</span>
           </div>
         </div>
       </div>
@@ -226,13 +226,13 @@ const TableOfContentsSidebar = ({ content, onSectionClick, isOpen, toggleSidebar
       {/* Expanded state - full sidebar content - use display property instead of conditional rendering */}
       <div className={`p-4 min-w-[280px] ${isOpen ? 'block' : 'hidden'}`}>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold text-gray-800">Contents</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)]">Contents</h2>
           <button 
             onClick={toggleSidebar}
-            className="p-1 rounded-full hover:bg-gray-100"
+            className="p-1 rounded-full hover:bg-[var(--background-secondary)]"
             aria-label="Close sidebar"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[var(--text-secondary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -244,9 +244,9 @@ const TableOfContentsSidebar = ({ content, onSectionClick, isOpen, toggleSidebar
             if (sections.length === 0) return null;
             
             return (
-              <li key={sectionType} className="border-b border-gray-100 pb-2 last:border-0 last:pb-0">
-                <div className="flex items-center font-medium text-gray-700 mb-2">
-                  <span className="mr-2 text-gray-500">{sectionIcons[sectionType]}</span>
+              <li key={sectionType} className="border-b border-[var(--border-light)] pb-2 last:border-0 last:pb-0">
+                <div className="flex items-center font-medium text-[var(--text-primary)] mb-2">
+                  <span className="mr-2 text-[var(--text-secondary)]">{sectionIcons[sectionType]}</span>
                   {sectionTitles[sectionType]}
                 </div>
                 <ul className="pl-6 space-y-1.5">
@@ -259,7 +259,7 @@ const TableOfContentsSidebar = ({ content, onSectionClick, isOpen, toggleSidebar
                             toggleSidebar();
                           }
                         }}
-                        className="text-left text-sm w-full px-2 py-1 rounded hover:bg-gray-100 text-gray-600 truncate max-w-full block"
+                        className="text-left text-sm w-full px-2 py-1 rounded hover:bg-[var(--background-secondary)] text-[var(--text-secondary)] truncate max-w-full block"
                       >
                         {section.title}
                       </button>
@@ -418,17 +418,17 @@ const ModernLessonDetail = ({ lessonId }) => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[var(--primary-color)]"></div>
       </div>
     );
   }
   
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-300 text-red-800 p-4 rounded-lg">
+      <div className="bg-red-50 dark:bg-red-900/30 border border-red-300 dark:border-red-700 text-red-800 dark:text-red-300 p-4 rounded-lg">
         <h3 className="text-lg font-bold mb-2">Error</h3>
         <p>{error}</p>
-        <Link href="/lessons" className="mt-4 inline-block text-blue-500 hover:underline">
+        <Link href="/lessons" className="mt-4 inline-block text-[var(--primary-color)] hover:underline">
           Return to Lessons
         </Link>
       </div>
@@ -437,10 +437,10 @@ const ModernLessonDetail = ({ lessonId }) => {
   
   if (!lesson) {
     return (
-      <div className="bg-yellow-50 border border-yellow-300 text-yellow-800 p-4 rounded-lg">
+      <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 text-yellow-800 dark:text-yellow-300 p-4 rounded-lg">
         <h3 className="text-lg font-bold mb-2">Lesson Not Found</h3>
         <p>The requested lesson could not be found.</p>
-        <Link href="/lessons" className="mt-4 inline-block text-blue-500 hover:underline">
+        <Link href="/lessons" className="mt-4 inline-block text-[var(--primary-color)] hover:underline">
           Return to Lessons
         </Link>
       </div>
@@ -476,14 +476,14 @@ const ModernLessonDetail = ({ lessonId }) => {
           <header className="mb-8">
             <div className="flex flex-wrap justify-between items-center mb-4">
               <div className="mb-2 md:mb-0">
-                <span className="text-sm font-medium text-gray-500">Lesson {lessonId}</span>
-                <h1 className="text-3xl font-bold text-gray-900">{lesson.title}</h1>
+                <span className="text-sm font-medium text-[var(--text-secondary)]">Lesson {lessonId}</span>
+                <h1 className="text-3xl font-bold text-[var(--text-primary)]">{lesson.title}</h1>
               </div>
             </div>
             
             {/* Description */}
             {lesson.description && (
-              <p className="text-gray-600 mb-4">{lesson.description}</p>
+              <p className="text-[var(--text-secondary)] mb-4">{lesson.description}</p>
             )}
             
             {/* Topics */}
@@ -491,7 +491,7 @@ const ModernLessonDetail = ({ lessonId }) => {
               <div className="mb-4">
                 <div className="flex flex-wrap gap-2">
                   {lesson.topics.map((topic, index) => (
-                    <span key={index} className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
+                    <span key={index} className="bg-[var(--background-secondary)] text-[var(--text-primary)] text-xs px-2 py-1 rounded">
                       {topic}
                     </span>
                   ))}
@@ -501,7 +501,7 @@ const ModernLessonDetail = ({ lessonId }) => {
           </header>
           
           {/* Lesson content */}
-          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <div className="bg-[var(--card-bg)] rounded-lg shadow-md p-6 mb-8 border border-[var(--card-border)]">
             <LessonRenderer 
               content={content}
               expandedSections={expandedSections}
@@ -515,8 +515,8 @@ const ModernLessonDetail = ({ lessonId }) => {
               disabled={!lesson.prevLesson}
               className={`px-4 py-2 rounded-md flex items-center ${
                 lesson.prevLesson 
-                  ? 'bg-gray-100 text-gray-800 hover:bg-gray-200' 
-                  : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                  ? 'bg-[var(--background-secondary)] text-[var(--text-primary)] hover:bg-[var(--background-accent)]' 
+                  : 'bg-[var(--background-secondary)] text-[var(--text-secondary)] opacity-50 cursor-not-allowed'
               }`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -530,8 +530,8 @@ const ModernLessonDetail = ({ lessonId }) => {
               disabled={!lesson.nextLesson}
               className={`px-4 py-2 rounded-md flex items-center ${
                 lesson.nextLesson 
-                  ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                  ? 'bg-[var(--primary-color)] text-white hover:bg-[color-mix(in_srgb,var(--primary-color),black_10%)]' 
+                  : 'bg-[var(--background-secondary)] text-[var(--text-secondary)] opacity-50 cursor-not-allowed'
               }`}
             >
               Next Lesson

@@ -61,7 +61,7 @@ const CodeBlock = ({ content, language, caption, showLineNumbers = true }) => {
         {content}
       </SyntaxHighlighter>
       {caption && (
-        <div className="text-sm text-gray-600 italic mt-2 px-1">
+        <div className="text-sm text-[var(--text-secondary)] italic mt-2 px-1">
           {caption}
         </div>
       )}

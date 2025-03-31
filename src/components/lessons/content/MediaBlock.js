@@ -64,7 +64,7 @@ const MediaBlock = ({ src, alt, caption, type = 'image', width = 800, height = 4
       </div>
       
       {caption && (
-        <div className="text-sm text-gray-600 italic mt-2 px-1">
+        <div className="text-sm text-[var(--text-secondary)] italic mt-2 px-1">
           {caption}
         </div>
       )}

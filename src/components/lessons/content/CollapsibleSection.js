@@ -20,39 +20,39 @@ const CollapsibleSection = ({
   // Define styling based on section type
   const typeStyles = {
     warmup: {
-      border: 'border-green-400',
-      background: 'bg-gradient-to-r from-green-50 to-green-100',
-      text: 'text-green-800',
-      icon: 'text-green-600',
-      hover: 'hover:bg-green-100',
+      border: 'border-green-400 dark:border-green-600',
+      background: 'bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/20',
+      text: 'text-green-800 dark:text-green-300',
+      icon: 'text-green-600 dark:text-green-400',
+      hover: 'hover:bg-green-100 dark:hover:bg-green-800/30',
     },
     lesson: {
-      border: 'border-blue-400',
-      background: 'bg-gradient-to-r from-blue-50 to-blue-100',
-      text: 'text-blue-800',
-      icon: 'text-blue-600',
-      hover: 'hover:bg-blue-100',
+      border: 'border-blue-400 dark:border-blue-600',
+      background: 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/20',
+      text: 'text-blue-800 dark:text-blue-300',
+      icon: 'text-blue-600 dark:text-blue-400',
+      hover: 'hover:bg-blue-100 dark:hover:bg-blue-800/30',
     },
     exercise: {
-      border: 'border-yellow-400',
-      background: 'bg-gradient-to-r from-yellow-50 to-yellow-100',
-      text: 'text-yellow-800',
-      icon: 'text-yellow-600',
-      hover: 'hover:bg-yellow-100',
+      border: 'border-yellow-400 dark:border-yellow-600',
+      background: 'bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/30 dark:to-yellow-800/20',
+      text: 'text-yellow-800 dark:text-yellow-300',
+      icon: 'text-yellow-600 dark:text-yellow-400',
+      hover: 'hover:bg-yellow-100 dark:hover:bg-yellow-800/30',
     },
     postlesson: {
-      border: 'border-purple-400',
-      background: 'bg-gradient-to-r from-purple-50 to-purple-100',
-      text: 'text-purple-800',
-      icon: 'text-purple-600',
-      hover: 'hover:bg-purple-100',
+      border: 'border-purple-400 dark:border-purple-600',
+      background: 'bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/20',
+      text: 'text-purple-800 dark:text-purple-300',
+      icon: 'text-purple-600 dark:text-purple-400',
+      hover: 'hover:bg-purple-100 dark:hover:bg-purple-800/30',
     },
     default: {
-      border: 'border-gray-400',
-      background: 'bg-gradient-to-r from-gray-50 to-gray-100',
-      text: 'text-gray-800',
-      icon: 'text-gray-600',
-      hover: 'hover:bg-gray-100',
+      border: 'border-gray-400 dark:border-gray-600',
+      background: 'bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900',
+      text: 'text-gray-800 dark:text-gray-300',
+      icon: 'text-gray-600 dark:text-gray-400',
+      hover: 'hover:bg-gray-100 dark:hover:bg-gray-700',
     }
   };
   
@@ -89,7 +89,7 @@ const CollapsibleSection = ({
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden bg-white"
+            className="overflow-hidden bg-[var(--card-bg)]"
           >
             <div className="px-4 py-4">
               {children}

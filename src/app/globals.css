@@ -32,6 +32,10 @@
   --warning-color: #f59f00;
   --info-color: #3182ce;
   
+  /* Card backgrounds */
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  
   /* Shadows - Softer shadows for depth */
   --shadow-light: rgba(0, 0, 0, 0.05);
   --shadow-dark: rgba(0, 0, 0, 0.1);
@@ -64,6 +68,10 @@
   /* Borders */
   --border-light: #4a5568;
   --border-dark: #a0aec0;
+  
+  /* Card backgrounds */
+  --card-bg: #2d3748;
+  --card-border: #4a5568;
   
   /* Shadows - Stronger shadows for contrast */
   --shadow-light: rgba(0, 0, 0, 0.3);
@@ -98,6 +106,10 @@
     /* Borders */
     --border-light: #4a5568;
     --border-dark: #a0aec0;
+    
+    /* Card backgrounds */
+    --card-bg: #2d3748;
+    --card-border: #4a5568;
     
     /* Shadows - Stronger shadows for contrast */
     --shadow-light: rgba(0, 0, 0, 0.3);
