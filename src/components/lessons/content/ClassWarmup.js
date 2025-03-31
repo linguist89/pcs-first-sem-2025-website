@@ -267,6 +267,13 @@ print(f"Is {book3.title} a long read? {book3.is_long_read()}")`,
         well-organized classes using a simple library book example.
       </p>
       
+      <p className="mb-4 bg-yellow-50 p-3 border-l-4 border-yellow-400 italic">
+        <strong>Scenario:</strong> Imagine you're developing software for a university library. 
+        The library needs to track books, including whether they're checked out, if they're considered "long reads," 
+        and how to display information about each book. As you work through this example, think about how your approach 
+        to organizing the code evolves as the library's collection grows from just a few books to potentially thousands.
+      </p>
+      
       <div className="bg-blue-50 p-4 rounded-lg mb-6">
         <h4 className="font-medium text-blue-800 mb-2">Step-by-Step Code Evolution</h4>
         <p className="text-blue-700">
