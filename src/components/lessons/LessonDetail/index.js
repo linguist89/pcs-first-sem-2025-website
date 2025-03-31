@@ -12,7 +12,7 @@ import CustomStyle from './CustomStyle';
 import ContentRenderer from './ContentRenderer';
 import SidebarContent from './SidebarContent';
 import Collapsible from './Collapsible';
-import MarkdownRenderer from './MarkdownRenderer';
+import MarkdownRenderer from './__MarkdownRenderer';
 import PageTransition from '../PageTransition';
 
 const DifficultyBadge = ({ level }) => {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { validateLesson } from '@/utils/lessonSchema';
 import StructuredEditor from './StructuredEditor';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import dynamic from 'next/dynamic';
 
 // Dynamically import AceEditor with no SSR to avoid hydration issues

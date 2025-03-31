@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import ReactMarkdown from 'react-markdown';
 
 const CodeSlider = ({
@@ -25,16 +25,21 @@ const CodeSlider = ({
   const [spotlightEnabled, setSpotlightEnabled] = useState(true);
   const containerRef = useRef(null);
   const dragControls = useDragControls();
-  const lastPositionRef = useRef({ x: window.innerWidth * 0.3, y: window.innerHeight * 0.3 });
+  const lastPositionRef = useRef({ x: 0, y: 0 });
   const isFirstRender = useRef(true);
   
   const currentSlide = slides[currentSlideIndex];
   
-  // Initialize explanation position on first render
+  // Initialize explanation position on first render - only runs on client side
   useEffect(() => {
-    if (isFirstRender.current) {
-      setExplanationPosition({ x: window.innerWidth * 0.3, y: window.innerHeight * 0.3 });
-      isFirstRender.current = false;
+    if (typeof window !== 'undefined') {
+      if (isFirstRender.current) {
+        const defaultX = window.innerWidth * 0.3;
+        const defaultY = window.innerHeight * 0.3;
+        setExplanationPosition({ x: defaultX, y: defaultY });
+        lastPositionRef.current = { x: defaultX, y: defaultY };
+        isFirstRender.current = false;
+      }
     }
   }, []);
   

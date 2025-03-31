@@ -1,6 +1,6 @@
 'use client';
 
-import MarkdownRenderer from '../MarkdownRenderer';
+import MarkdownRenderer from '../__MarkdownRenderer';
 
 // Text content section
 const TextContent = ({ content }) => (
