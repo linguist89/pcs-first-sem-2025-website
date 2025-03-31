@@ -18,15 +18,17 @@ const Exercise = ({
   difficulty = 'intermediate',
   id,
   isAdmin = false,
-  isChallenge = false
+  isChallenge = false,
+  passwordProtected = false,
+  solutionPassword = ''
 }) => {
   const [showSolution, setShowSolution] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [isPasswordRequired, setIsPasswordRequired] = useState(true);
+  const [isPasswordRequired, setIsPasswordRequired] = useState(passwordProtected);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
-  const [adminPassword, setAdminPassword] = useState('');
+  const [adminPassword, setAdminPassword] = useState(solutionPassword);
   const [successMessage, setSuccessMessage] = useState('');
   
   // Use the auto admin mode or passed isAdmin prop
@@ -34,32 +36,56 @@ const Exercise = ({
   
   const exerciseId = id || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
   
+  // Effect to initialize password state when component mounts
   useEffect(() => {
-    // Check if this exercise has a password requirement
-    const checkPasswordStatus = async () => {
-      try {
-        const response = await fetch('/api/solution-passwords');
-        if (response.ok) {
-          const data = await response.json();
-          const hasPassword = data.passwords && data.passwords[exerciseId];
-          setIsPasswordRequired(!!hasPassword);
-          
-          // If no password is required, allow showing solution
-          if (!hasPassword) {
-            setIsPasswordCorrect(true);
-          }
-        }
-      } catch (error) {
-        console.error('Error checking password status:', error);
-      }
-    };
+    // If we have direct props, use them
+    setIsPasswordRequired(passwordProtected);
     
-    checkPasswordStatus();
-  }, [exerciseId]);
+    // If password is not required, user can see solution
+    if (!passwordProtected) {
+      setIsPasswordCorrect(true);
+    }
+    
+    // For debugging only
+    console.log(`Exercise ${exerciseId}: passwordProtected=${passwordProtected}, hasPassword=${!!solutionPassword}`);
+  }, [passwordProtected, solutionPassword, exerciseId]);
+  
+  useEffect(() => {
+    // Only run API check if passwordProtected isn't specified via props
+    if (passwordProtected === false) {
+      // Check if this exercise has a password requirement via API
+      const checkPasswordStatus = async () => {
+        try {
+          const response = await fetch('/api/solution-passwords');
+          if (response.ok) {
+            const data = await response.json();
+            const hasPassword = data.passwords && data.passwords[exerciseId];
+            setIsPasswordRequired(!!hasPassword);
+            
+            // If no password is required, allow showing solution
+            if (!hasPassword) {
+              setIsPasswordCorrect(true);
+            }
+          }
+        } catch (error) {
+          console.error('Error checking password status:', error);
+        }
+      };
+      
+      checkPasswordStatus();
+    }
+  }, [exerciseId, passwordProtected]);
   
   // Fetch the current password for admin panel if admin mode is active
   useEffect(() => {
     if (effectiveIsAdmin && showAdminPanel) {
+      // If we already have the solutionPassword prop, use it
+      if (solutionPassword) {
+        setAdminPassword(solutionPassword);
+        return;
+      }
+      
+      // Otherwise fetch from API
       const fetchPassword = async () => {
         try {
           const response = await fetch('/api/admin/solution-passwords');
@@ -78,7 +104,7 @@ const Exercise = ({
       
       fetchPassword();
     }
-  }, [effectiveIsAdmin, showAdminPanel, exerciseId]);
+  }, [effectiveIsAdmin, showAdminPanel, exerciseId, solutionPassword]);
   
   const difficultyClasses = {
     beginner: 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800',
@@ -100,6 +126,19 @@ const Exercise = ({
     }
     
     try {
+      // If we have the solution password prop, verify directly
+      if (solutionPassword) {
+        if (passwordInput === solutionPassword) {
+          setIsPasswordCorrect(true);
+          setPasswordError('');
+          setShowSolution(true);
+        } else {
+          setPasswordError('Incorrect password. Please try again.');
+        }
+        return;
+      }
+      
+      // Otherwise verify via API
       const response = await fetch('/api/verify-solution-password', {
         method: 'POST',
         headers: {

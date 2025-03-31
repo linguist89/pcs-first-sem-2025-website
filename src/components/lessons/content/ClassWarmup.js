@@ -225,7 +225,7 @@ class Book:
     
     def get_info(self):
         status = "checked out" if self.is_checked_out else "available"
-        return f"\"{self.title}\" by {self.author} ({self.genre}, {self.pages} pages) - {status}"
+        return f"'{self.title}' by {self.author} ({self.genre}, {self.pages} pages) - {status}"
 
 # Create some book objects
 book1 = Book("The Great Gatsby", "F. Scott Fitzgerald", 180, "Fiction")
