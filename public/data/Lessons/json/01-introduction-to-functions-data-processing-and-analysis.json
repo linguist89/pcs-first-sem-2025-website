@@ -74,7 +74,7 @@
       "difficulty": "beginner",
       "starterCode": "# Your code here\n\n# Remember to:\n# 1. Open and read the file\n# 2. Split the data\n# 3. Filter out non-numeric values\n# 4. Count values > 600",
       "solution": "# Count gaze durations > 600ms\nwith open('eye_tracking_data.txt', 'r') as file:\n    data_string = file.read()\n\n# Split by commas\ndata_list = data_string.split(',')\n\n# Clean and convert to numbers\nvalid_durations = []\nfor item in data_list:\n    item = item.strip()\n    if item.isdigit():\n        valid_durations.append(int(item))\n\n# Count values > 600\nlonger_gazes = [d for d in valid_durations if d > 600]\nprint(f\"Number of gaze durations > 600ms: {len(longer_gazes)}\")\n# Answer: 14",
-      "passwordProtected": true,
+      "passwordProtected": false,
       "solutionPassword": "TEST",
       "language": "python"
     },
