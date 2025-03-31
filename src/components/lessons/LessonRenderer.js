@@ -33,6 +33,9 @@ const renderContentItem = (section, index, isAdmin) => {
     case 'exercise':
       return <Exercise key={index} {...props} isAdmin={isAdmin} />;
       
+    case 'challenge':
+      return <Exercise key={index} {...props} isAdmin={isAdmin} isChallenge={true} />;
+      
     case 'scenario':
       return <Scenario key={index} {...props} />;
       

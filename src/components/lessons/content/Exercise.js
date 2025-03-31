@@ -17,7 +17,8 @@ const Exercise = ({
   language = 'python',
   difficulty = 'intermediate',
   id,
-  isAdmin = false
+  isAdmin = false,
+  isChallenge = false
 }) => {
   const [showSolution, setShowSolution] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
@@ -86,6 +87,9 @@ const Exercise = ({
   };
   
   const difficultyClass = difficultyClasses[difficulty.toLowerCase()] || difficultyClasses.intermediate;
+  
+  // Determine border color based on whether this is an exercise or challenge
+  const borderClass = isChallenge ? 'border-purple-500' : 'border-blue-500';
   
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -172,11 +176,18 @@ const Exercise = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-blue-500"
+      className={`bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 ${borderClass}`}
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-xl font-bold text-gray-800">{title || 'Exercise'}</h3>
+        <h3 className="text-xl font-bold text-gray-800">
+          {isChallenge ? '🏆 ' : ''}{title || (isChallenge ? 'Challenge' : 'Exercise')}
+        </h3>
         <div className="flex items-center space-x-2">
+          {isChallenge && (
+            <span className="bg-purple-100 text-purple-800 border-purple-200 text-sm rounded-full px-3 py-1 font-medium border mr-2">
+              Challenge
+            </span>
+          )}
           <span className={`${difficultyClass} text-sm rounded-full px-3 py-1 font-medium border`}>
             {difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
           </span>

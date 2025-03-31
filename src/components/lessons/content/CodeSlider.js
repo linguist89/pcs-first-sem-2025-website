@@ -38,6 +38,11 @@ const CodeSlider = ({
     }
   }, []);
   
+  // Update spotlight when explanation visibility changes
+  useEffect(() => {
+    setSpotlightEnabled(showExplanation);
+  }, [showExplanation]);
+  
   // Parse code blocks when the slide changes
   useEffect(() => {
     if (currentSlide && currentSlide.code) {
@@ -284,8 +289,9 @@ const CodeSlider = ({
             }}
             wrapLines={true}
             lineProps={(lineNumber) => {
-              // Highlight the current block's lines
+              // Highlight the current block's lines only if spotlight is enabled
               const isHighlighted = 
+                spotlightEnabled && 
                 lineNumber >= currentBlock.startLine && 
                 lineNumber <= currentBlock.endLine;
               
@@ -302,10 +308,9 @@ const CodeSlider = ({
             {currentSlide?.code || ''}
           </SyntaxHighlighter>
           
-          {/* No additional overlay needed anymore since we're highlighting directly in the syntax highlighter */}
+          {/* Right side indicator - only shown when spotlight is enabled */}
           {spotlightEnabled && currentBlock && (
             <div className="absolute inset-0 pointer-events-none">
-              {/* We can add a subtle indicator for the current position if needed */}
               <div 
                 className="absolute right-0 w-1 bg-green-500/60 transition-all duration-300"
                 style={{
@@ -336,15 +341,11 @@ const CodeSlider = ({
           </motion.div>
         )}
 
-        {/* Toggle buttons for explanation and spotlight */}
+        {/* Toggle button for explanation when hidden */}
         <div className="absolute bottom-4 right-4 z-20 flex space-x-2">
-          {/* Toggle button to show explanation when hidden */}
           {!showExplanation && (
             <button
-              onClick={() => {
-                setShowExplanation(true);
-                setSpotlightEnabled(true); // Also enable spotlight when showing explanation
-              }}
+              onClick={() => setShowExplanation(true)}
               className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-colors"
               title="Show explanation"
             >
@@ -353,19 +354,6 @@ const CodeSlider = ({
               </svg>
             </button>
           )}
-          
-          {/* Toggle button for spotlight focus */}
-          <button
-            onClick={() => setSpotlightEnabled(!spotlightEnabled)}
-            className={`text-white rounded-full p-3 shadow-lg transition-colors ${
-              spotlightEnabled ? 'bg-green-600 hover:bg-green-700' : 'bg-slate-600 hover:bg-slate-700'
-            }`}
-            title={spotlightEnabled ? "Disable spotlight focus" : "Enable spotlight focus"}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-            </svg>
-          </button>
         </div>
       </div>
     );
