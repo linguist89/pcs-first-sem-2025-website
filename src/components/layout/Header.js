@@ -7,24 +7,14 @@ import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import UserProfile from '@/components/ui/UserProfile';
-import LoginForm from '@/components/ui/LoginForm';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const { theme } = useTheme();
   const { user, isAuthenticated } = useUser();
   
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-  
-  const openLoginModal = () => {
-    setShowLoginModal(true);
-  };
-  
-  const closeLoginModal = () => {
-    setShowLoginModal(false);
   };
   
   return (
@@ -86,6 +76,12 @@ const Header = () => {
             >
               Lessons
             </Link>
+            <Link 
+              href="/visualization" 
+              className="text-text-primary hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors"
+            >
+              Python Visualization
+            </Link>
           </nav>
           
           {/* Right Actions */}
@@ -93,16 +89,9 @@ const Header = () => {
             {/* Theme Toggle */}
             <ThemeToggle />
             
-            {/* User Profile / Login Button */}
-            {isAuthenticated ? (
+            {/* User Profile Only - Sign In Button Removed */}
+            {isAuthenticated && (
               <UserProfile />
-            ) : (
-              <button 
-                onClick={openLoginModal}
-                className="text-sm text-white bg-primary hover:bg-primary/90 px-4 py-2 rounded-md transition-colors"
-              >
-                Sign In
-              </button>
             )}
             
             {/* Mobile Menu Button */}
@@ -145,34 +134,17 @@ const Header = () => {
               >
                 Lessons
               </Link>
+              <Link 
+                href="/visualization" 
+                className="text-text-primary hover:bg-bg-secondary px-3 py-2 rounded-md text-base font-medium transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Python Visualization
+              </Link>
             </nav>
           </div>
         )}
       </div>
-      
-      {/* Login Modal */}
-      {showLoginModal && (
-        <div className="fixed inset-0 bg-neutral-dark bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="relative bg-bg-primary rounded-lg shadow-lg p-4 max-w-md w-full">
-            <button 
-              onClick={closeLoginModal}
-              className="absolute top-4 right-4 text-text-secondary hover:text-text-primary"
-              aria-label="Close"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-6 w-6" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <LoginForm onSuccess={closeLoginModal} showSignUp={true} />
-          </div>
-        </div>
-      )}
     </header>
   );
 };
