@@ -11,6 +11,7 @@ import CollapsibleSection from './CollapsibleSection';
 import CodeSlider from './CodeSlider';
 import CodeSliderExample from './CodeSliderExample';
 import ClassWarmup from './ClassWarmup';
+import InheritanceWarmup from './InheritanceWarmup';
 
 export {
   TextBlock,
@@ -23,5 +24,6 @@ export {
   CollapsibleSection,
   CodeSlider,
   CodeSliderExample,
-  ClassWarmup
+  ClassWarmup,
+  InheritanceWarmup
 }; 

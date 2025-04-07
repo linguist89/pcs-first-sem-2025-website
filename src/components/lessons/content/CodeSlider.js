@@ -57,6 +57,9 @@ const CodeSlider = ({
       
       // Use the last remembered position instead of resetting to default
       setExplanationPosition(lastPositionRef.current);
+      
+      // Scroll to the highlighted code after the slide change
+      setTimeout(scrollToHighlightedCode, 100);
     }
   }, [currentSlideIndex, currentSlide, language]);
   
@@ -129,13 +132,31 @@ const CodeSlider = ({
       });
     }
     
-    // Log the blocks for debugging if needed
-    // console.log("Parsed blocks:", blocks.map(b => ({ 
-    //   comment: b.comment, 
-    //   startLine: b.startLine, 
-    //   endLine: b.endLine,
-    //   lines: b.code.length
-    // })));
+    // Ensure each block has valid start and end lines
+    blocks.forEach(block => {
+      // Make sure startLine is not greater than endLine
+      if (block.startLine > block.endLine) {
+        block.endLine = block.startLine;
+      }
+      
+      // Ensure the block has code
+      if (block.code.length === 0) {
+        block.code = [lines[block.startLine] || ''];
+      }
+    });
+    
+    // Debug function to log block information
+    const debugBlocks = () => {
+      console.log("Parsed blocks:", blocks.map(b => ({ 
+        comment: b.comment, 
+        startLine: b.startLine, 
+        endLine: b.endLine,
+        lines: b.code.length
+      })));
+    };
+    
+    // Uncomment the line below to enable debugging
+    // debugBlocks();
     
     return blocks;
   };
@@ -145,6 +166,9 @@ const CodeSlider = ({
     if (currentBlockIndex < codeBlocks.length - 1) {
       setCurrentBlockIndex(currentBlockIndex + 1);
       // Don't reset explanation position when changing blocks within the same slide
+      
+      // Scroll to the highlighted code section
+      scrollToHighlightedCode();
     } else {
       // If this is the last block in the slide, attempt to move to the next slide
       if (currentSlideIndex < slides.length - 1) {
@@ -158,6 +182,9 @@ const CodeSlider = ({
     if (currentBlockIndex > 0) {
       setCurrentBlockIndex(currentBlockIndex - 1);
       // Don't reset explanation position when changing blocks within the same slide
+      
+      // Scroll to the highlighted code section
+      scrollToHighlightedCode();
     } else {
       // If this is the first block, attempt to move to the previous slide
       if (currentSlideIndex > 0) {
@@ -165,6 +192,33 @@ const CodeSlider = ({
         // Position will be reset by the useEffect when the slide changes
       }
     }
+  };
+  
+  // Function to scroll to the highlighted code section
+  const scrollToHighlightedCode = () => {
+    // Wait for the next render cycle to ensure the highlighting is applied
+    setTimeout(() => {
+      const codeContainer = document.querySelector('.react-syntax-highlighter');
+      if (codeContainer && currentBlock) {
+        // Calculate the position to scroll to based on the current block
+        const lineHeight = 22; // Height of each line in pixels
+        const padding = 16; // Padding around the code block
+        
+        // Calculate the target scroll position
+        // Position the highlighted code about 1/3 from the top of the container
+        const targetPosition = (currentBlock.startLine * lineHeight) - (codeContainer.clientHeight / 3);
+        
+        // Ensure we don't scroll past the beginning or end of the content
+        const maxScroll = codeContainer.scrollHeight - codeContainer.clientHeight;
+        const scrollPosition = Math.max(0, Math.min(targetPosition, maxScroll));
+        
+        // Smooth scroll to the position
+        codeContainer.scrollTo({
+          top: scrollPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 50);
   };
   
   // Find the maximum number of lines across all slides to determine container height
@@ -218,6 +272,14 @@ const CodeSlider = ({
     navigator.clipboard.writeText(currentSlide.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+  
+  // Navigate to a specific block
+  const goToBlock = (index) => {
+    if (index >= 0 && index < codeBlocks.length && index !== currentBlockIndex) {
+      setCurrentBlockIndex(index);
+      scrollToHighlightedCode();
+    }
   };
   
   // Fade animation variants with slight scale for smoother effect
@@ -297,8 +359,9 @@ const CodeSlider = ({
               // Highlight the current block's lines only if spotlight is enabled
               const isHighlighted = 
                 spotlightEnabled && 
-                lineNumber >= currentBlock.startLine && 
-                lineNumber <= currentBlock.endLine;
+                currentBlock && 
+                lineNumber >= currentBlock.startLine + 1 && // +1 because line numbers are 1-indexed
+                lineNumber <= currentBlock.endLine + 1;     // +1 because line numbers are 1-indexed
               
               return {
                 style: {
@@ -365,7 +428,12 @@ const CodeSlider = ({
   };
   
   // Get the current block data for use in both renderCodeWithAnnotations and the floating explanation
-  const currentBlock = codeBlocks[currentBlockIndex] || { comment: '', code: [], startLine: 0, endLine: 0 };
+  const currentBlock = codeBlocks[currentBlockIndex] || { 
+    comment: 'Code', 
+    code: currentSlide?.code?.split('\n') || [], 
+    startLine: 0, 
+    endLine: (currentSlide?.code?.split('\n')?.length || 1) - 1 
+  };
   
   return (
     <>
@@ -385,9 +453,26 @@ const CodeSlider = ({
             <div className="text-gray-400 text-sm font-mono flex items-center">
               <span className="mr-3">{language}</span>
               {codeBlocks.length > 0 && (
-                <span className="text-xs bg-gray-800 px-2 py-0.5 rounded">
-                  Block {currentBlockIndex + 1}/{codeBlocks.length}
-                </span>
+                <div className="flex items-center">
+                  <span className="text-xs bg-gray-800 px-2 py-0.5 rounded mr-2">
+                    Block {currentBlockIndex + 1}/{codeBlocks.length}
+                  </span>
+                  <div className="flex space-x-1">
+                    {codeBlocks.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToBlock(index)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          index === currentBlockIndex 
+                            ? 'bg-green-500 transform scale-110' 
+                            : 'bg-gray-600 hover:bg-gray-500'
+                        }`}
+                        aria-label={`Go to block ${index + 1}`}
+                        title={`Block ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
               )}
             </div>
             <div className="flex space-x-2">

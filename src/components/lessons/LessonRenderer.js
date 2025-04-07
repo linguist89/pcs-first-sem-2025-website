@@ -15,6 +15,7 @@ import InteractiveCode from './content/InteractiveCode';
 import CollapsibleSection from './content/CollapsibleSection';
 import { useUser } from '@/context/UserContext';
 import ClassWarmup from './content/ClassWarmup';
+import InheritanceWarmup from './content/InheritanceWarmup';
 
 // Helper function to render individual content items
 const renderContentItem = (section, index, isAdmin) => {
@@ -51,6 +52,9 @@ const renderContentItem = (section, index, isAdmin) => {
     case 'classWarmup':
       return <ClassWarmup key={index} />;
       
+    case 'inheritanceWarmup':
+      return <InheritanceWarmup key={index} />;
+      
     default:
       return (
         <div key={index} className="p-4 bg-yellow-50 border border-yellow-200 rounded-md mb-6">
@@ -68,6 +72,11 @@ const determineSectionType = (section, index, content) => {
   
   // Special case for classWarmup type
   if (type === 'classWarmup') {
+    return 'warmup';
+  }
+  
+  // Special case for inheritanceWarmup type
+  if (type === 'inheritanceWarmup') {
     return 'warmup';
   }
   
