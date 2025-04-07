@@ -52,24 +52,17 @@ const LessonCard = ({ lesson, index }) => {
         className="block bg-[var(--card-bg)] dark:bg-[var(--card-bg)] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-[var(--card-border)]"
       >
         <div className="p-6">
-          <div className="flex justify-between items-start mb-3">
+          <div className="mb-3">
             <motion.span 
               whileHover={{ scale: 1.1, rotate: 5 }}
               className="inline-block bg-[var(--primary-color)] text-white text-sm font-bold rounded-full h-8 w-8 flex items-center justify-center"
             >
               {lesson.id}
             </motion.span>
-            <DifficultyBadge level={lesson.difficulty} />
           </div>
           <h2 className="text-xl font-bold text-[var(--text-primary)] mb-2 line-clamp-2">{lesson.title}</h2>
           <p className="text-[var(--text-secondary)] mb-4 text-sm line-clamp-3">{lesson.description}</p>
-          <div className="flex justify-between items-center text-sm text-[var(--text-secondary)]">
-            <span className="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {lesson.duration}
-            </span>
+          <div className="flex justify-end items-center text-sm text-[var(--text-secondary)]">
             <motion.span 
               className="text-[var(--primary-color)] font-medium"
               whileHover={{ x: 3 }}
