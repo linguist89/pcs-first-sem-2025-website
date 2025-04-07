@@ -77,7 +77,7 @@ const Header = () => {
               Lessons
             </Link>
             <Link 
-              href="/visualization" 
+              href="/python-concepts" 
               className="text-text-primary hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors"
             >
               Python Visualization
@@ -135,7 +135,7 @@ const Header = () => {
                 Lessons
               </Link>
               <Link 
-                href="/visualization" 
+                href="/python-concepts" 
                 className="text-text-primary hover:bg-bg-secondary px-3 py-2 rounded-md text-base font-medium transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
