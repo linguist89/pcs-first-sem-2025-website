@@ -12,6 +12,8 @@ import CodeSlider from './CodeSlider';
 import CodeSliderExample from './CodeSliderExample';
 import ClassWarmup from './ClassWarmup';
 import InheritanceWarmup from './InheritanceWarmup';
+import PythonConceptVisualizer from './PythonConceptVisualizer';
+import PythonConceptVisualizerDemo from './PythonConceptVisualizerDemo';
 
 export {
   TextBlock,
@@ -25,5 +27,7 @@ export {
   CodeSlider,
   CodeSliderExample,
   ClassWarmup,
-  InheritanceWarmup
+  InheritanceWarmup,
+  PythonConceptVisualizer,
+  PythonConceptVisualizerDemo
 }; 

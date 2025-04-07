@@ -9,7 +9,9 @@ import {
   Scenario,
   MediaBlock,
   Quiz,
-  CodeSlider
+  CodeSlider,
+  PythonConceptVisualizer,
+  PythonConceptVisualizerDemo
 } from './content';
 import InteractiveCode from './content/InteractiveCode';
 import CollapsibleSection from './content/CollapsibleSection';
@@ -54,6 +56,12 @@ const renderContentItem = (section, index, isAdmin) => {
       
     case 'inheritanceWarmup':
       return <InheritanceWarmup key={index} />;
+      
+    case 'pythonConceptVisualizer':
+      return <PythonConceptVisualizer key={index} {...props} />;
+      
+    case 'pythonConceptVisualizerDemo':
+      return <PythonConceptVisualizerDemo key={index} {...props} />;
       
     default:
       return (
